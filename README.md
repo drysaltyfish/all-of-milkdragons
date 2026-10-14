@@ -104,14 +104,24 @@ python3 analyze_logos.py
 > workflow（GitHub 防递归），所以 `refresh-data.yml` 末尾必须显式
 > `gh workflow run deploy.yml`，否则数据更新了但页面不会重新发布。
 
-### 换自定义域名 / 换仓库名
+### 自定义域名 / 换仓库名（最容易白屏的地方）
 
-项目站点默认挂在 `/<repo>/` 子路径下，所以 `vite.config.js` 里的 `base` 是
-`/all-of-milkdragons/`。如果要改成根路径站点（自定义域名），构建时设 `BASE_PATH=/`：
+站点绑在 **www.宇宙奶龙大全.space**（punycode `www.xn--15qr2q0gp9eucq780c.space`）上，
+自定义域名下站点挂在**根路径**，所以 `vite.config.js` 里 `base` 的默认值是 `/`，
+`public/CNAME` 里也写好了域名。
 
-```bash
-BASE_PATH=/ npm run build
-```
+⚠️ **base 和实际路径不一致 = 整页白屏**：HTML 能返回 200，但里面引的是
+`/<base>/assets/...`，路径对不上就是一片 404，JS/CSS 全加载不到，页面空白、控制台一堆红。
+本仓库踩过一次：绑了自定义域名但 base 还是 `/all-of-milkdragons/`。
+
+* 回到 GitHub Pages「项目站点」→ 构建时改回子路径：
+  ```bash
+  BASE_PATH=/all-of-milkdragons/ npm run build
+  ```
+* 换自定义域名 → 把 `public/CNAME` 改成新域名（IDN 用 punycode），base 保持 `/`。
+
+判断是不是这个毛病，一行就够：`curl -s <站点> | grep -o 'src="[^"]*"'`，
+看它要的路径和你实际部署的路径是否一致。
 
 ## 设计说明（为什么长这样）
 

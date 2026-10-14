@@ -1,10 +1,14 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-// GitHub Pages 的「项目站点」会挂在 https://<user>.github.io/<repo>/ 这个子路径下，
-// 所以生产构建的 base 必须是 /<repo>/。
-// 以后如果绑了自定义域名（变成根路径站点），把环境变量 BASE_PATH 设为 / 即可。
-const base = process.env.BASE_PATH || '/all-of-milkdragons/'
+// 站点已经绑了自定义域名 www.宇宙奶龙大全.space（punycode: www.xn--15qr2q0gp9eucq780c.space），
+// 自定义域名下站点挂在**根路径**，所以 base 默认是 '/'。
+//
+// ⚠️ 如果哪天去掉自定义域名、回到 GitHub Pages 的「项目站点」，
+//    站点会变成挂在 https://<user>.github.io/<repo>/ 子路径下，
+//    那时必须用 BASE_PATH=/<repo>/ 构建，否则 assets / fonts / logos 全部 404，页面白屏：
+//        BASE_PATH=/all-of-milkdragons/ npm run build
+const base = process.env.BASE_PATH || '/'
 
 export default defineConfig({
   base,
