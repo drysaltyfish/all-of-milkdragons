@@ -1,446 +1,454 @@
 {
-  "logos/xn--1lq90ic7f9iv6f088h.com.png": {
-    "aspect": 3.207,
-    "tone": "light"
-  },
-  "logos/xn--1lq90ic7f9iv6f6w9n.fun.png": {
-    "aspect": 5.039,
-    "tone": "light"
-  },
-  "logos/xn--1lq90ic7f9iv6f6w9n.org.png": {
-    "aspect": 1.0,
-    "tone": "light"
-  },
-  "logos/xn--1lq90ic7f9iv6f6w9n.top.png": {
-    "aspect": 3.906,
-    "tone": "light"
-  },
-  "logos/xn--1lqq7iu1f9iv6f088h.cn.png": {
-    "aspect": 2.935,
+  "logos/111.117.146.166.png": {
+    "aspect": 2.438,
     "tone": "dark"
   },
-  "logos/xn--1lqq7iu1f9iv6f6w9n.com.png": {
-    "aspect": 3.593,
-    "tone": "light"
-  },
-  "logos/xn--6kr28k0gz4e0t2h9y1a.cn.png": {
-    "aspect": 3.587,
-    "tone": "light"
-  },
-  "logos/xn--6kr28k0gz4e0t2h9y1a.com.png": {
-    "aspect": 1.363,
-    "tone": "light"
-  },
-  "logos/xn--6kr28k0gz4e0t2h9y1a.icu.png": {
-    "aspect": 3.587,
-    "tone": "light"
-  },
-  "logos/xn--6kr28k0gz4e0t2h9y1a.org.png": {
-    "aspect": 3.587,
-    "tone": "light"
-  },
-  "logos/xn--6kr28k0gz4e7y6gfld.cn.png": {
-    "aspect": 3.587,
-    "tone": "light"
-  },
-  "logos/xn--6kr28k0gz4e7y6gfld.com.png": {
-    "aspect": 3.587,
-    "tone": "light"
-  },
-  "logos/xn--6kr28k0gz4eq33b1t7a.cn.png": {
-    "aspect": 3.625,
+  "logos/cityu-dg.edu.cn.png": {
+    "aspect": 5.76,
     "tone": "dark"
   },
-  "logos/xn--6kr28k0gz4eq33b7r1e.top.svg": {
-    "aspect": 4.262,
+  "logos/drise.dlut.edu.cn.png": {
+    "aspect": 3.908,
     "tone": "light"
   },
-  "logos/xn--6kr28k0gz4eruv6t8f.top.png": {
-    "aspect": 3.791,
-    "tone": "light"
-  },
-  "logos/xn--6kr28k0gz4evu0b1z3e.com.png": {
-    "aspect": 3.778,
-    "tone": "light"
-  },
-  "logos/xn--74qv5ax7l9iv6f0tfyt6m.space.png": {
-    "aspect": 1.0,
-    "tone": "light"
-  },
-  "logos/xn--9kq39it1f9iv6f6w9n.com.png": {
-    "aspect": 3.256,
-    "tone": "light"
-  },
-  "logos/xn--9pry2j0gz4e1uz8i3f.com.jpg": {
-    "aspect": 3.174,
+  "logos/en.zafu.edu.cn.png": {
+    "aspect": 3.632,
     "tone": "dark"
   },
-  "logos/xn--djry4l0gz4e7y6gfld.com.png": {
-    "aspect": 1.291,
+  "logos/mob.xjtu.edu.cn.png": {
+    "aspect": 3.867,
+    "tone": "light"
+  },
+  "logos/mobile.xidian.edu.cn.png": {
+    "aspect": 3.725,
     "tone": "dark"
   },
-  "logos/xn--djry4l0gz4e7y6gfld.icu.png": {
-    "aspect": 3.71,
-    "tone": "light"
-  },
-  "logos/xn--djry4l0gz4eq33b7r1e.com.png": {
-    "aspect": 4.011,
-    "tone": "light"
-  },
-  "logos/xn--djry4l0gz4eruv6t8f.com.png": {
-    "aspect": 3.91,
-    "tone": "light"
-  },
-  "logos/xn--djry4l0gz4evu0b1z3e.com.png": {
-    "aspect": 3.443,
-    "tone": "light"
-  },
-  "logos/xn--djry4l0gz4evu0bv19a.com.png": {
-    "aspect": 1.105,
-    "tone": "light"
-  },
-  "logos/xn--fes68b0gz4eb62bdf8a.cn.svg": {
-    "aspect": 1.436,
-    "tone": "dark"
-  },
-  "logos/xn--fes68b0gz4eb62bdf8a.com.svg": {
-    "aspect": 1.436,
-    "tone": "dark"
-  },
-  "logos/xn--fhqu4y0gz4ew51b8z8a.com.png": {
-    "aspect": 4.948,
-    "tone": "light"
-  },
-  "logos/xn--fhqu4y0gz4ew51bfy2e.com.png": {
-    "aspect": 3.0,
-    "tone": "light"
-  },
-  "logos/xn--fhqu4y0gz4ew51bfy2e.icu.png": {
-    "aspect": 3.239,
-    "tone": "light"
-  },
-  "logos/xn--fhqu4y0gz4ew51bfy2e.top.png": {
-    "aspect": 1.0,
-    "tone": "light"
-  },
-  "logos/xn--fiqs8srwb9iv6f088h.com.png": {
-    "aspect": 4.103,
-    "tone": "light"
-  },
-  "logos/xn--fiqs8srwb9iv6f088h.site.png": {
-    "aspect": 4.103,
-    "tone": "light"
-  },
-  "logos/xn--fiqs8srwb9iv6f088h.top.png": {
-    "aspect": 3.812,
-    "tone": "light"
-  },
-  "logos/xn--fiqs8srwb9iv6f6w9n.com.svg": {
-    "aspect": 3.804,
-    "tone": "light"
-  },
-  "logos/xn--fiqs8srwb9iv6f6w9n.net.png": {
-    "aspect": 1.0,
-    "tone": "dark"
-  },
-  "logos/xn--fiqs8srwb9iv6f6w9n.org.png": {
-    "aspect": 4.776,
-    "tone": "dark"
-  },
-  "logos/xn--fiqv8jmxf9iv6f6w9n.com.png": {
-    "aspect": 3.817,
-    "tone": "light"
-  },
-  "logos/xn--fiqv8jmxf9iv6f6w9n.site.png": {
+  "logos/neu.edu.cn.png": {
     "aspect": 3.753,
     "tone": "light"
   },
-  "logos/xn--pssa0vz4e155inzt.com.png": {
+  "logos/nuaa.edu.cn.png": {
+    "aspect": 3.593,
+    "tone": "light"
+  },
+  "logos/swu.edu.cn.png": {
+    "aspect": 3.587,
+    "tone": "light"
+  },
+  "logos/www.ahut.edu.cn.jpg": {
+    "aspect": 4.167,
+    "tone": "dark"
+  },
+  "logos/www.bigc.edu.cn.png": {
+    "aspect": 3.906,
+    "tone": "light"
+  },
+  "logos/www.bistu.edu.cn.png": {
+    "aspect": 5.039,
+    "tone": "light"
+  },
+  "logos/www.bit.edu.cn.png": {
+    "aspect": 1.0,
+    "tone": "light"
+  },
+  "logos/www.bjtu.edu.cn.png": {
+    "aspect": 3.738,
+    "tone": "light"
+  },
+  "logos/www.bjut.edu.cn.png": {
+    "aspect": 3.207,
+    "tone": "light"
+  },
+  "logos/www.cafuc.edu.cn.png": {
+    "aspect": 4.558,
+    "tone": "light"
+  },
+  "logos/www.cau.edu.cn.png": {
+    "aspect": 3.232,
+    "tone": "light"
+  },
+  "logos/www.ccnu.edu.cn.png": {
+    "aspect": 3.753,
+    "tone": "light"
+  },
+  "logos/www.cqu.edu.cn.png": {
+    "aspect": 3.183,
+    "tone": "dark"
+  },
+  "logos/www.cqytxy.edu.cn.png": {
+    "aspect": 7.901,
+    "tone": "dark"
+  },
+  "logos/www.ctgu.edu.cn.png": {
+    "aspect": 3.817,
+    "tone": "light"
+  },
+  "logos/www.cugb.edu.cn.png": {
+    "aspect": 3.812,
+    "tone": "light"
+  },
+  "logos/www.cumt.edu.cn.png": {
+    "aspect": 4.103,
+    "tone": "light"
+  },
+  "logos/www.cust.edu.cn.png": {
+    "aspect": 3.642,
+    "tone": "light"
+  },
+  "logos/www.cuz.edu.cn.png": {
+    "aspect": 5.958,
+    "tone": "light"
+  },
+  "logos/www.dgut.edu.cn.png": {
+    "aspect": 4.371,
+    "tone": "dark"
+  },
+  "logos/www.dhu.edu.cn.png": {
+    "aspect": 1.0,
+    "tone": "dark"
+  },
+  "logos/www.dlut.edu.cn.svg": {
+    "aspect": 3.804,
+    "tone": "light"
+  },
+  "logos/www.ecjtu.edu.cn.png": {
+    "aspect": 3.903,
+    "tone": "light"
+  },
+  "logos/www.ecust.edu.cn.png": {
+    "aspect": 1.0,
+    "tone": "light"
+  },
+  "logos/www.fudan.edu.cn.png": {
+    "aspect": 3.239,
+    "tone": "light"
+  },
+  "logos/www.gdmu.edu.cn.png": {
+    "aspect": 3.656,
+    "tone": "light"
+  },
+  "logos/www.gdut.cn.png": {
+    "aspect": 4.384,
+    "tone": "dark"
+  },
+  "logos/www.gdut.edu.cn.png": {
+    "aspect": 4.384,
+    "tone": "dark"
+  },
+  "logos/www.guet.edu.cn.svg": {
+    "aspect": 6.139,
+    "tone": "dark"
+  },
+  "logos/www.gxmu.edu.cn.png": {
+    "aspect": 5.556,
+    "tone": "dark"
+  },
+  "logos/www.gzhu.edu.cn.png": {
+    "aspect": 3.315,
+    "tone": "light"
+  },
+  "logos/www.gzucm.edu.cn.png": {
+    "aspect": 4.307,
+    "tone": "light"
+  },
+  "logos/www.hbeu.edu.cn.png": {
+    "aspect": 3.5,
+    "tone": "light"
+  },
+  "logos/www.hdu.edu.cn.svg": {
+    "aspect": 4.492,
+    "tone": "dark"
+  },
+  "logos/www.hebut.edu.cn.png": {
+    "aspect": 1.105,
+    "tone": "light"
+  },
+  "logos/www.henu.edu.cn.png": {
+    "aspect": 3.562,
+    "tone": "light"
+  },
+  "logos/www.hgu.edu.cn.png": {
+    "aspect": 3.443,
+    "tone": "light"
+  },
+  "logos/www.hit.edu.cn.png": {
+    "aspect": 4.295,
+    "tone": "light"
+  },
+  "logos/www.hitsz.edu.cn.png": {
+    "aspect": 1.278,
+    "tone": "dark"
+  },
+  "logos/www.hkust-gz.edu.cn.png": {
+    "aspect": 5.231,
+    "tone": "light"
+  },
+  "logos/www.hlju.edu.cn.png": {
+    "aspect": 3.431,
+    "tone": "light"
+  },
+  "logos/www.hljucm.net.png": {
+    "aspect": 6.095,
+    "tone": "light"
+  },
+  "logos/www.hnu.edu.cn.png": {
+    "aspect": 3.206,
+    "tone": "light"
+  },
+  "logos/www.hnust.edu.cn.svg": {
+    "aspect": 4.262,
+    "tone": "light"
+  },
+  "logos/www.hrbust.edu.cn.png": {
+    "aspect": 5.267,
+    "tone": "light"
+  },
+  "logos/www.htu.edu.cn.png": {
+    "aspect": 4.62,
+    "tone": "light"
+  },
+  "logos/www.hust.edu.cn.png": {
+    "aspect": 4.255,
+    "tone": "light"
+  },
+  "logos/www.huznu.edu.cn.png": {
+    "aspect": 4.776,
+    "tone": "dark"
+  },
+  "logos/www.imut.edu.cn.png": {
+    "aspect": 2.735,
+    "tone": "light"
+  },
+  "logos/www.jcut.edu.cn.png": {
+    "aspect": 4.011,
+    "tone": "light"
+  },
+  "logos/www.jhc.edu.cn.svg": {
+    "aspect": 5.835,
+    "tone": "dark"
+  },
+  "logos/www.jiangnan.edu.cn.png": {
+    "aspect": 0.859,
+    "tone": "light"
+  },
+  "logos/www.jlu.edu.cn.jpg": {
+    "aspect": 3.174,
+    "tone": "dark"
+  },
+  "logos/www.jou.edu.cn.jpg": {
+    "aspect": 4.607,
+    "tone": "dark"
+  },
+  "logos/www.jxust.edu.cn.png": {
+    "aspect": 1.067,
+    "tone": "light"
+  },
+  "logos/www.lntu.edu.cn.png": {
+    "aspect": 5.039,
+    "tone": "light"
+  },
+  "logos/www.lnu.edu.cn.png": {
+    "aspect": 3.394,
+    "tone": "light"
+  },
+  "logos/www.nankai.edu.cn.png": {
+    "aspect": 3.292,
+    "tone": "light"
+  },
+  "logos/www.ncut.edu.cn.png": {
+    "aspect": 3.91,
+    "tone": "light"
+  },
+  "logos/www.neau.edu.cn.png": {
+    "aspect": 1.0,
+    "tone": "light"
+  },
+  "logos/www.neu.edu.cn.png": {
+    "aspect": 3.753,
+    "tone": "light"
+  },
+  "logos/www.neuq.edu.cn.png": {
+    "aspect": 5.338,
+    "tone": "light"
+  },
+  "logos/www.neusoft.edu.cn.png": {
     "aspect": 4.839,
     "tone": "light"
   },
-  "logos/xn--pssd5uz4e6t1bhg3e.com.png": {
+  "logos/www.njtech.edu.cn.png": {
+    "aspect": 2.935,
+    "tone": "dark"
+  },
+  "logos/www.njuit.edu.cn.png": {
+    "aspect": 6.494,
+    "tone": "light"
+  },
+  "logos/www.njupt.edu.cn.png": {
+    "aspect": 3.935,
+    "tone": "light"
+  },
+  "logos/www.nottingham.edu.cn.jpg": {
+    "aspect": 2.719,
+    "tone": "dark"
+  },
+  "logos/www.nwu.edu.cn.png": {
+    "aspect": 3.71,
+    "tone": "light"
+  },
+  "logos/www.polyu.edu.hk.png": {
+    "aspect": 5.219,
+    "tone": "dark"
+  },
+  "logos/www.qust.edu.cn.png": {
+    "aspect": 3.326,
+    "tone": "dark"
+  },
+  "logos/www.rzpt.edu.cn.png": {
+    "aspect": 5.246,
+    "tone": "light"
+  },
+  "logos/www.scu.edu.cn.png": {
+    "aspect": 3.103,
+    "tone": "light"
+  },
+  "logos/www.scut.edu.cn.png": {
+    "aspect": 4.183,
+    "tone": "light"
+  },
+  "logos/www.sdu.edu.cn.svg": {
+    "aspect": 3.224,
+    "tone": "light"
+  },
+  "logos/www.sdufe.edu.cn.png": {
+    "aspect": 4.449,
+    "tone": "light"
+  },
+  "logos/www.seu.edu.cn.png": {
+    "aspect": 3.244,
+    "tone": "light"
+  },
+  "logos/www.shmtu.edu.cn.png": {
+    "aspect": 1.0,
+    "tone": "light"
+  },
+  "logos/www.shufe-zj.edu.cn.png": {
+    "aspect": 7.048,
+    "tone": "light"
+  },
+  "logos/www.shzu.edu.cn.svg": {
+    "aspect": 3.674,
+    "tone": "light"
+  },
+  "logos/www.sicnu.edu.cn.png": {
+    "aspect": 4.657,
+    "tone": "light"
+  },
+  "logos/www.sustech.edu.cn.png": {
+    "aspect": 3.791,
+    "tone": "light"
+  },
+  "logos/www.sut.edu.cn.png": {
+    "aspect": 4.106,
+    "tone": "dark"
+  },
+  "logos/www.swu.edu.cn.png": {
+    "aspect": 3.587,
+    "tone": "light"
+  },
+  "logos/www.swufe.edu.cn.png": {
+    "aspect": 1.363,
+    "tone": "light"
+  },
+  "logos/www.szpu.edu.cn.png": {
+    "aspect": 4.631,
+    "tone": "light"
+  },
+  "logos/www.sztu.edu.cn.svg": {
+    "aspect": 1.436,
+    "tone": "dark"
+  },
+  "logos/www.tju.edu.cn.png": {
     "aspect": 3.288,
     "tone": "light"
   },
-  "logos/xn--pssd5uz4e6t1bhg3e.top.png": {
+  "logos/www.tjut.edu.cn.png": {
     "aspect": 4.444,
+    "tone": "light"
+  },
+  "logos/www.tongji.edu.cn.png": {
+    "aspect": 3.0,
+    "tone": "light"
+  },
+  "logos/www.usc.edu.cn.png": {
+    "aspect": 3.625,
+    "tone": "dark"
+  },
+  "logos/www.usts.edu.cn.png": {
+    "aspect": 3.979,
+    "tone": "dark"
+  },
+  "logos/www.wzu.edu.cn.png": {
+    "aspect": 3.825,
+    "tone": "light"
+  },
+  "logos/www.xauat.edu.cn.png": {
+    "aspect": 5.09,
+    "tone": "dark"
+  },
+  "logos/www.xaut.edu.cn.png": {
+    "aspect": 4.706,
+    "tone": "dark"
+  },
+  "logos/www.xbmu.edu.cn.png": {
+    "aspect": 1.291,
+    "tone": "dark"
+  },
+  "logos/www.xjtlu.edu.cn.svg": {
+    "aspect": 7.179,
+    "tone": "dark"
+  },
+  "logos/www.xjut.edu.cn.png": {
+    "aspect": 4.35,
+    "tone": "light"
+  },
+  "logos/www.xmu.edu.cn.png": {
+    "aspect": 3.531,
+    "tone": "light"
+  },
+  "logos/www.ynu.edu.cn.png": {
+    "aspect": 3.256,
+    "tone": "light"
+  },
+  "logos/www.zcmu.edu.cn.png": {
+    "aspect": 4.507,
+    "tone": "light"
+  },
+  "logos/www.zjxu.edu.cn.png": {
+    "aspect": 3.494,
+    "tone": "light"
+  },
+  "logos/www.zzu.edu.cn.png": {
+    "aspect": 3.778,
     "tone": "light"
   },
   "logos/xn--psszg58c4v2g9rnrjn.icu.png": {
     "aspect": 5.319,
     "tone": "light"
   },
-  "logos/xn--psszg58c6d27tnq2e.com.jpg": {
-    "aspect": 4.167,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58c6d346v9y1a.com.png": {
-    "aspect": 5.09,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58c6dz32ufld.cn.png": {
-    "aspect": 4.706,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58c6dz32ufld.com.png": {
-    "aspect": 3.867,
-    "tone": "light"
-  },
-  "logos/xn--psszg58c74sf2trw1d.com.png": {
-    "aspect": 4.35,
-    "tone": "light"
-  },
-  "logos/xn--psszg58c81dj45bdvx.com.png": {
-    "aspect": 1.0,
-    "tone": "light"
-  },
   "logos/xn--psszg58c81dj45bjw8c.cn.png": {
     "aspect": 3.831,
-    "tone": "light"
-  },
-  "logos/xn--psszg58c81dj45bjw8c.icu.png": {
-    "aspect": 3.642,
-    "tone": "light"
-  },
-  "logos/xn--psszg58c81dj45bjw8c.org.png": {
-    "aspect": 1.0,
-    "tone": "light"
-  },
-  "logos/xn--psszg58c81dj45bjw8c.top.png": {
-    "aspect": 5.267,
     "tone": "light"
   },
   "logos/xn--psszg58c9ct98x9y1a.top.png": {
     "aspect": 4.301,
     "tone": "light"
   },
-  "logos/xn--psszg58c9cx251ac5t.com.png": {
-    "aspect": 3.394,
-    "tone": "light"
-  },
-  "logos/xn--psszg58c9cz42hyr3e.cn.jpg": {
-    "aspect": 2.719,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58c9vt44nmm9d.icu.png": {
-    "aspect": 5.246,
-    "tone": "light"
-  },
   "logos/xn--psszg58cb73ap6a0z9g.icu.png": {
     "aspect": 4.908,
     "tone": "light"
   },
-  "logos/xn--psszg58ccj875iqr5c.vip.png": {
-    "aspect": 7.901,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58cf07f.cn.png": {
-    "aspect": 4.384,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58cf07f.fun.png": {
-    "aspect": 4.62,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cf07f.icu.svg": {
-    "aspect": 4.492,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58cf07f.org.png": {
-    "aspect": 4.384,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58cf07f.site.png": {
-    "aspect": 3.394,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cf07f.top.png": {
-    "aspect": 3.753,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cf1d3mp353a.com.png": {
-    "aspect": 5.818,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cf1d3z4axz1e.com.png": {
-    "aspect": 3.825,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cf1d8u4erdxb.com.svg": {
-    "aspect": 7.179,
-    "tone": "dark"
-  },
   "logos/xn--psszg58cf1d8wad17z.cn.png": {
     "aspect": 1.062,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cf1d8wad17z.com.png": {
-    "aspect": 4.307,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cf1d8wad17z.online.png": {
-    "aspect": 5.231,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cf1dt0rh95f.com.svg": {
-    "aspect": 4.492,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58cgv6a4t1cr1l.com.png": {
-    "aspect": 4.106,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58cgv6aq83axit.work.png": {
-    "aspect": 2.438,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58ci9aj27nlnk.com.png": {
-    "aspect": 3.326,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58cj45k.com.png": {
-    "aspect": 4.558,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cj45k.fun.png": {
-    "aspect": 3.753,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cj45k.net.png": {
-    "aspect": 3.0,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cj45k.space.png": {
-    "aspect": 5.338,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cj45k.store.svg": {
-    "aspect": 5.835,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58cm5ej12gtkr.com.png": {
-    "aspect": 3.183,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58cr55a3u1dk8aca.online.png": {
-    "aspect": 6.095,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cr55afj7a8y1a.com.png": {
-    "aspect": 1.067,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cr55auuzqd0b.com.png": {
-    "aspect": 3.244,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cr55auuzqd0b.icu.png": {
-    "aspect": 3.244,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cr55ay9af15g.cn.png": {
-    "aspect": 7.048,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cr55ay9af15g.com.png": {
-    "aspect": 5.958,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cr55ay9al75p.cn.png": {
-    "aspect": 3.632,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58cr55ay9al75p.com.png": {
-    "aspect": 4.507,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cr55ay9al75p.fun.png": {
-    "aspect": 3.494,
-    "tone": "light"
-  },
-  "logos/xn--psszg58csy9abg2a1rx.com.png": {
-    "aspect": 5.76,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58csy9ayt3cnsh.com.png": {
-    "aspect": 5.219,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58csy9ayt3cnsh.top.png": {
-    "aspect": 5.219,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58ct4e003egld.com.png": {
-    "aspect": 5.556,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58ct4eus8e8y1a.com.svg": {
-    "aspect": 6.139,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58cv22goony8m.com.png": {
-    "aspect": 4.706,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58cydsd5672a.cn.png": {
-    "aspect": 3.292,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cydsdq780c.com.png": {
-    "aspect": 3.315,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cydsdq780c.site.png": {
-    "aspect": 3.562,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cz1myp5a4lq.com.png": {
-    "aspect": 3.725,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58cz1myp5a4lq.icu.png": {
-    "aspect": 3.979,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58cz1myp5abn1c.com.png": {
-    "aspect": 4.255,
-    "tone": "light"
-  },
-  "logos/xn--qvrq5h0gz4e1yak04fbi5e.online.png": {
-    "aspect": 3.742,
-    "tone": "light"
-  },
-  "logos/xn--qvrq5h0gz4e1yak04fbi5e.site.png": {
-    "aspect": 4.295,
-    "tone": "light"
-  },
-  "logos/xn--rhqr3y0gz4ec38cj9v.com.png": {
-    "aspect": 3.753,
-    "tone": "light"
-  },
-  "logos/xn--rhqr3y0gz4ec38cpb7c.com.png": {
-    "aspect": 3.908,
-    "tone": "light"
-  },
-  "logos/xn--tlq19wzg04e6y6gfvl.cn.png": {
-    "aspect": 3.867,
-    "tone": "light"
-  },
-  "logos/xn--tlq19wzg04e6y6gfvl.icu.png": {
-    "aspect": 3.738,
-    "tone": "light"
-  },
-  "logos/xn--tlq19wzg04enx6i9ot.top.png": {
-    "aspect": 3.903,
-    "tone": "light"
-  },
-  "logos/xn--v6qr1dq5g9iv6f7z3hqryb.cn.png": {
-    "aspect": 2.735,
-    "tone": "light"
-  },
-  "logos/xn--vcs43c0gz4e619joyl.icu.png": {
-    "aspect": 3.531,
     "tone": "light"
   },
   "logos/xn--vhq58ftvi7ix6f4w9n.com.svg": {
@@ -451,64 +459,8 @@
     "aspect": 5.081,
     "tone": "dark"
   },
-  "logos/xn--wbs66c0gz4ecwe320l.cn.png": {
-    "aspect": 3.103,
-    "tone": "light"
-  },
-  "logos/xn--wbs66c0gz4ecwe320l.top.png": {
-    "aspect": 4.657,
-    "tone": "light"
-  },
-  "logos/xn--xhq02y0gz4ebvbj98t.cn.png": {
-    "aspect": 4.449,
-    "tone": "light"
-  },
   "logos/xn--xhq02y0gz4ebvbj98t.icu.png": {
     "aspect": 4.965,
-    "tone": "light"
-  },
-  "logos/xn--xhq02y0gz4ebvbj98t.top.svg": {
-    "aspect": 3.224,
-    "tone": "light"
-  },
-  "logos/xn--xhq02y0gz4eg2f663f.fun.png": {
-    "aspect": 3.656,
-    "tone": "light"
-  },
-  "logos/xn--xhq02y0gz4eg2fdt3k.cn.png": {
-    "aspect": 4.384,
-    "tone": "dark"
-  },
-  "logos/xn--xhq02y0gz4eg2fdt3k.com.png": {
-    "aspect": 1.278,
-    "tone": "dark"
-  },
-  "logos/xn--xhq02y0gz4eg2fdt3k.top.png": {
-    "aspect": 4.384,
-    "tone": "dark"
-  },
-  "logos/xn--xhq02y0gz4eg2fdt3k.vip.png": {
-    "aspect": 4.371,
-    "tone": "dark"
-  },
-  "logos/xn--xhq44jb2f9iv6f088h.com.jpg": {
-    "aspect": 3.174,
-    "tone": "dark"
-  },
-  "logos/xn--xhq44jb2f9iv6f6w9n.icu.png": {
-    "aspect": 1.0,
-    "tone": "light"
-  },
-  "logos/xn--xhq44jb2f9iv6f6w9n.top.png": {
-    "aspect": 3.394,
-    "tone": "light"
-  },
-  "logos/xn--xhq89jmxf9iv6f088h.com.png": {
-    "aspect": 1.0,
-    "tone": "light"
-  },
-  "logos/xn--xhq89jmxf9iv6f6w9n.com.png": {
-    "aspect": 0.859,
     "tone": "light"
   }
 }
