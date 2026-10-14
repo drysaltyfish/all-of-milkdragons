@@ -5,7 +5,7 @@ import re
 import threading
 import time
 from itertools import product
-from urllib.parse import urljoin, urlparse
+from urllib.parse import unquote, urljoin, urlparse
 
 import random
 import idna
@@ -21,7 +21,14 @@ urllib3.disable_warnings()
 
 # ---------- 配置 ----------
 DNS_WORKERS = 500
-HTTP_WORKERS = 200
+# ★ 从 200 降到 48。
+#   176 个奶龙域名里有一大批挂在同一个「域名停放/跳转」服务后面
+#   （单看 15.197.162.184 一个 IP 上就挤了 11 个域名），200 个线程一股脑
+#   打过去会触发对方的限流：返回 403 / 412 / 429，或者干脆掐断连接。
+#   结果是一堆本来活得好好的域名被记成「打不开」——线上实测 34 个「打不开」
+#   里有 20 个当时用同样的请求头再发一次就是 200。降并发 + 阶段 2.5 复检，
+#   既不慢又能把误判捡回来。
+HTTP_WORKERS = 48
 
 # 单个 DNS 服务器的等待时间 / 一次解析的总预算。
 # ★ 这两个值必须分开：dnspython 的 lifetime 是整次解析的预算，
@@ -42,6 +49,13 @@ DNS_SERVERS = ["8.8.8.8", "1.1.1.1"]
 DNS_RESCUE_WORKERS = 60
 DNS_RESCUE_TIMEOUT = 5
 DNS_RESCUE_LIFETIME = 20
+
+# HTTP 复检：把「像是被限流 / 超时」的行换个慢节奏重跑一遍。
+HTTP_RETRY_WORKERS = 4
+HTTP_RETRY_JITTER = 1.5
+# 这些状态码基本都是临时性的（限流 / 人机挑战 / 网关抖动），重试有意义。
+# 404 / 400 这种是站点自己说的「没有」，重试也不会变，不浪费请求。
+TRANSIENT_STATUS = {403, 408, 412, 425, 429, 500, 502, 503, 504, 520, 521, 522, 524}
 
 OUT_JSON = "result.json"
 LOGO_DIR = "logos"
@@ -296,14 +310,50 @@ def extract_body_target(html: str, base: str):
     return None, None
 
 
+# 静态资源后缀：从页面里"抢"出来的这些地址不是跳转目标，是外链的 CSS/字体/图片。
+_STATIC_ASSET_RE = re.compile(
+    r"\.(?:css|less|scss|sass|js|mjs|map|json|xml|png|jpe?g|gif|svg|webp|avif|"
+    r"ico|bmp|woff2?|ttf|eot|otf|mp4|webm|mp3|wav)$",
+    re.I,
+)
+# 解 URL 编码后还带这些字符的，八成是把 HTML 片段/模板当成了地址
+_BAD_URL_CHARS = re.compile(r"""[<>"'`{}\\]""")
+
+
+def is_sane_url(u: str) -> bool:
+    """这个地址像不像一个「能访问的网页」？
+
+    ★ 为什么需要：`location` 附近的 URL 是用正则在**可能已经损坏的 HTML** 里
+      抠出来的，抠到过这种东西：
+        https://www.hkust-gz.edu.cn/%3ELocation%3C/a%3E%3C/li%3E...
+        https://www.polyu.edu.hk/:%20%7B%20%20%20...
+      前者解码后是 `>Location</a></li>`，后者是 `: {    `。
+      跟着它们走只会得到 404，还会把 final_url 污染成一串乱码。
+    """
+    if not u or not u.startswith(("http://", "https://")):
+        return False
+    # 原文里的空白（正则是按非空白截断的，出现空白说明是拼出来的）
+    if any(c.isspace() for c in u):
+        return False
+    # 解码后再看一遍：编码过的尖括号 / 花括号同样是拼接痕迹
+    if _BAD_URL_CHARS.search(unquote(u)):
+        return False
+    if _STATIC_ASSET_RE.search(urlparse(u).path):
+        return False
+    return True
+
+
 def extract_next(html: str, base: str):
     html = html[:MAX_HTML]
+
+    def ok(u: str) -> bool:
+        return bool(u) and not is_noise_url(u) and is_sane_url(u)
 
     # 1) meta refresh
     m = META_RE.search(html)
     if m:
         u = urljoin(base, m.group(1))
-        if not is_noise_url(u):
+        if ok(u):
             return u, "meta"
 
     # 2) window.location / location.href = ...
@@ -312,7 +362,7 @@ def extract_next(html: str, base: str):
         if raw.startswith(("javascript:", "#", "about:")):
             continue
         u = urljoin(base, raw)
-        if not is_noise_url(u):
+        if ok(u):
             return u, "js_location"
 
     # 3) script 里出现 location 附近拼的 URL
@@ -322,27 +372,103 @@ def extract_next(html: str, base: str):
             continue
         for raw in JS_CTX_URL_RE.findall(s):
             u = urljoin(base, raw)
-            if not is_noise_url(u):
+            if ok(u):
                 return u, "js_script"
 
     # 4) 配置对象里的字面量 URL（url: '...' / redirect: '...'）
-    #    跳过指向自己的（很多站点会在 og:url / canonical 里写自身地址）
+    #    ★ 只扫 <script> 里的内容。
+    #      以前直接扫整个 HTML，于是 `<link href="https://fonts.googleapis.com/...">`
+    #      这种静态资源引用也被当成「跳转目标」—— 实测有域名被跳到
+    #      fonts.googleapis.com 的字体 CSS 和 cdn.amoe.cc 的 misans.css 上。
+    #      这个模式本来就只在 JS 配置对象里成立，扫 script 才是正确的作用域。
+    #    ★ 跳过指向自己的（很多站点会在 og:url / canonical 里写自身地址）
     base_host = urlparse(base).netloc.lower()
-    for m in JS_CONFIG_RE.finditer(html):
-        raw = m.group(1)
-        u = urljoin(base, raw)
-        if is_noise_url(u):
-            continue
-        if urlparse(u).netloc.lower() == base_host:
-            continue
-        return u, "js_config"
+    for sm in SCRIPT_RE.finditer(html):
+        for m in JS_CONFIG_RE.finditer(sm.group(1)):
+            raw = m.group(1)
+            u = urljoin(base, raw)
+            if not ok(u):
+                continue
+            if urlparse(u).netloc.lower() == base_host:
+                continue
+            return u, "js_config"
 
     # 5) 兜底：HTML body 里出现 .edu.cn 之类的目标域名
     u, how = extract_body_target(html, base)
-    if u:
+    if u and ok(u):
         return u, how
 
     return None, None
+
+
+# ==================== 这一跳该不该跟 ====================
+# ★ 已知的「中间页 / 拦截页」。
+#   域名跳到这些地方，说明这个奶龙域名并没有指向自己的校园站点，只是被停放、
+#   被拦截、或者被甩给了搜索引擎。以前爬虫会继续跟着这些页面往下跳，于是抓回来
+#   的标题变成「百度搜索结果」「DNSPod 的广告」「IE 下载帮助页」——
+#   那已经是别人家网站的内部导航了。
+INTERSTITIAL_HOSTS = {
+    "dnspod.qcloud.com": "域名被 DNSPod 拦截（未解析或已封停）",
+    "www.dnspod.cn": "域名被 DNSPod 拦截（未解析或已封停）",
+    "support.microsoft.com": "落地页只认旧版 IE，被甩到浏览器下载说明页",
+    "baidu.com": "域名被停放，跳到了百度",
+    "www.baidu.com": "域名被停放，跳到了百度",
+    "top.baidu.com": "域名被停放，跳到了百度",
+    "m.baidu.com": "域名被停放，跳到了百度",
+    "www.google.com": "域名被停放，跳到了 Google",
+    "www.aliyun.com": "域名被停放，跳到了阿里云",
+    "wanwang.aliyun.com": "域名被停放，跳到了阿里云",
+}
+
+# 「弱跳转信号」：页面里出现一个 `url: "..."` / 正文里出现一个 .edu.cn 域名，
+# 都不代表「本站在跳转」。只有当它出现在这个奶龙域名自己的页面上时才认。
+WEAK_JUMP_METHODS = ("body_target", "js_config")
+
+
+def host_of(url: str) -> str:
+    try:
+        return (urlparse(url).netloc or "").lower().split(":")[0]
+    except Exception:
+        return ""
+
+
+def interstitial_reason(url: str):
+    """这个 URL 是不是已知的中间页？是的话返回一句人话，否则 None。"""
+    host = host_of(url)
+    if not host:
+        return None
+    if host in INTERSTITIAL_HOSTS:
+        return INTERSTITIAL_HOSTS[host]
+    for known, reason in INTERSTITIAL_HOSTS.items():
+        if host.endswith("." + known):
+            return reason
+    return None
+
+
+def should_follow(nxt: str, how: str, cur_url: str, origin_url: str) -> bool:
+    """这一跳还该不该跟下去？纯函数，方便单测。
+
+    三种「不该跟」：
+      1. 当前已经站在中间页 / 拦截页上 —— 再往下是别人家网站的内部导航；
+      2. 弱信号，且已经不在最初那个奶龙域名上 —— 典型事故：沈阳奶蛙大学.work
+         落到某校教务系统，系统提示「请用 IE 打开」，页面里的
+         `url: '...internet-explorer-downloads'` 被当成了跳转目标；
+      3. 弱信号，且当前已经在 .edu.cn 上 —— 别被拖进 IAM / SSO 认证链。
+    """
+    if not nxt:
+        return False
+
+    if interstitial_reason(cur_url):
+        return False
+
+    if how in WEAK_JUMP_METHODS:
+        cur_host = host_of(cur_url)
+        if cur_host != host_of(origin_url):
+            return False
+        if has_target_suffix(cur_host):
+            return False
+
+    return True
 
 
 # ==================== 阶段 2：HTTP + 跳转 ====================
@@ -370,7 +496,11 @@ def fetch_chain(session, url, allow_redirects=True, referer=None):
         return None, type(e).__name__
 
 
-def http_check(item):
+def http_check(item, delay=0.0):
+    # 复检时用：错开每个线程发出的时间，别又攒成一波打过去
+    if delay:
+        time.sleep(random.uniform(0, delay))
+
     u, a, ips = item["domain"], item["ascii"], item["ips"]
 
     row = {
@@ -421,20 +551,17 @@ def http_check(item):
 
     last_url = r.url
     visited = {last_url}
+    origin_url = hops[0][1]
 
     for _ in range(MAX_HOPS):
         nxt, how = extract_next(response_text(r), last_url)
         if not nxt or nxt == last_url or nxt in visited:
             break
 
-        # ★ 关键修复：当前页面已经在 .edu.cn 上时，不再因为 body_target / js_config
-        #   这类"弱信号"继续深入跳转（避免被拖进 IAM / SSO 认证链，
-        #   也避免把真实大学页面里的 url: '...' 当成跳转）。
-        #   meta / js_location / js_script 这类"显式跳转"仍允许。
-        if how in ("body_target", "js_config"):
-            cur_host = urlparse(last_url).netloc.lower()
-            if has_target_suffix(cur_host):
-                break
+        # ★ 该不该跟这一跳，全部交给 should_follow（判断依据见上面那段注释）：
+        #   已经站在中间页上就停；弱信号只在最初那个奶龙域名自己的页面上才认。
+        if not should_follow(nxt, how, last_url, origin_url):
+            break
 
         # ★ 明文跳转时把上一跳当作 Referer
         r, err = fetch_chain(session, nxt, allow_redirects=True, referer=last_url)
@@ -453,10 +580,19 @@ def http_check(item):
         if len(hops) >= MAX_HOPS:
             break
 
-    row["first_status"] = hops[0][0]
-    row["final_url"] = hops[-1][1]
-    row["final_status"] = hops[-1][0]
     row["redirect_chain"] = " -> ".join(f"{st}:{u}" for st, u in hops)
+
+    # ★ 落点如果还是中间页 / 拦截页，就把链接收回「最后一跳干净的地方」并打上
+    #   blocked 标记 —— 后面既不抓标题也不下载校徽（那是别人家的页面）。
+    reason = interstitial_reason(hops[-1][1])
+    if reason:
+        row["blocked"] = reason
+        hops = [(st, u) for st, u in hops if not interstitial_reason(u)]
+
+    if hops:
+        row["first_status"] = hops[0][0]
+        row["final_url"] = hops[-1][1]
+        row["final_status"] = hops[-1][0]
     row["method"] = "+".join(dict.fromkeys(methods))
     row["latency_s"] = f"{time.perf_counter() - start:.3f}"
     row["_hop_count"] = len(hops)
@@ -641,6 +777,12 @@ def enrich(item):
         row.pop("_hop_count", None)
         return row
 
+    # 落到中间页 / 拦截页的域名：链接已经收回奶龙域名本身，这时候再去抓标题、
+    # 校徽只会抓到别人家的页面（百度搜索结果、DNSPod 广告……），直接跳过。
+    if row.get("blocked"):
+        row.pop("_hop_count", None)
+        return row
+
     session = get_session()
     # ★ 抓取最终页时把 final_url 自身当 Referer
     title, logo_url, err = extract_title_logo(session, final_url, referer=final_url)
@@ -666,6 +808,7 @@ JSON_FIELDS = [
     "logo_path", "logo_url",
     "jump_type", "redirect_chain", "method",
     "first_status", "final_status", "latency_s", "ips", "error",
+    "blocked",
 ]
 
 
@@ -719,6 +862,20 @@ def rescue_dns(item, previous_ips):
 
 
 # ==================== 主流程 ====================
+def is_transient(row) -> bool:
+    """这一行是不是「像是被限流 / 超时」，值得换个节奏再问一遍？
+
+    没有拿到状态码（超时、连接被掐）算临时失败；
+    拿到了状态码则只有限流/网关抖动那一类才算。
+    """
+    if row.get("blocked"):
+        return False
+    code = row.get("final_status")
+    if not isinstance(code, int):
+        return True
+    return code in TRANSIENT_STATUS
+
+
 def main():
     os.makedirs(LOGO_DIR, exist_ok=True)
 
@@ -762,6 +919,27 @@ def main():
         http_check, live,
         max_workers=HTTP_WORKERS, desc="HTTP", chunksize=1,
     )
+
+    # 复检：高并发下被限流 / 网络抖掉的行，用几个线程慢慢再问一遍。
+    # ★ 为什么需要：这些域名很多挂在同一个停放跳转服务后面，一波打过去会被
+    #   限流成 403/412/429 或者直接断连 —— 不复检就会有一批活域名被标成
+    #   「打不开」，而且每天的名单还会来回跳。
+    retry_targets = [r for r in http_results if is_transient(r)]
+    if retry_targets:
+        print(f"\n[阶段 2.5] {len(retry_targets)} 个疑似被限流 / 超时，降并发复检")
+        retried = thread_map(
+            lambda it: http_check(it, delay=HTTP_RETRY_JITTER), retry_targets,
+            max_workers=HTTP_RETRY_WORKERS, desc="HTTP复检", chunksize=1,
+        )
+        by_ascii = {r["ascii"]: r for r in http_results}
+        back = 0
+        for r in retried:
+            # 只有复检结果更好才替换，别把原来就好的行覆盖坏
+            if not is_transient(r):
+                by_ascii[r["ascii"]] = r
+                back += 1
+        print(f"复检救回 {back} / {len(retry_targets)} 个")
+        http_results = [by_ascii[r["ascii"]] for r in http_results]
 
     print("\n[阶段 3] 抓取 title + logo")
     enriched = thread_map(

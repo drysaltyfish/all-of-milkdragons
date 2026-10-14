@@ -38,6 +38,14 @@ jobs:
       - name: Install python dependencies
         run: pip install -r requirements.txt
 
+      # 纯函数单测，不联网，几秒钟。放在抓取前面：
+      # 跳转规则 / 校徽明暗判定改错了就地拦下，别等抓完 20 分钟才发现
+      # 一堆域名又跳去了百度。
+      - name: 跑回归测试
+        run: |
+          python tests/test_jump_rules.py
+          python tests/test_logo_tone.py
+
       - name: 阶段 1-3：DNS + HTTP + 标题/校徽抓取
         run: python update.py
 

@@ -43,6 +43,9 @@ src/components/*.vue 组件层：只吃 props，不碰抓取细节
 ├── logos/                  校徽（每日刷新，入库）
 ├── logo_tones.json         校徽体检结果（每日刷新，入库）
 ├── requirements.txt        Python 依赖
+├── tests/                  纯函数回归测试（不联网，CI 里抓取前先跑）
+│   ├── test_jump_rules.py     跳转该不该跟 / 中间页识别 / 地址合法性
+│   └── test_logo_tone.py      校徽明暗判定（位图 + SVG）
 │
 ├── scripts/build-data.mjs  result.json -> src/data/sites.json（Node，无第三方依赖）
 ├── src/
@@ -156,6 +159,22 @@ python3 analyze_logos.py
   52px 里），整面墙的校徽高度全乱。改成 `display: flex` 后交叉轴尺寸确定，才约束得住。
 * **小图不要放大**。`process_logos.py` 只缩不放：把 63px 高的小图插值到 160px 只会让
   仓库体积翻倍、画质更糊，显示尺寸本来就由 CSS 统一。
+* **flex 子项的 `min-width: auto` 会把卡片撑破网格**。`.card__foot` 是一行
+  `flex-wrap: nowrap` 的「落地链接 + 徽章」，它的 min-content 宽度是两者 min-content
+  之和（实测 126px + 145px ≈ 279px）；卡片又默认 `min-width: auto`，于是把这个
+  min-content 当成了自己的最小宽度。轨道被压到最小值（`--card-min: 17.5rem`）时，
+  卡片比轨道宽出二三十像素，直接盖到右边那张卡片上 —— 实测 1280 / 1440 宽度下有
+  4 对卡片重叠、16 张宽度不一致。在 `.grid__cell` 和 `.grid__cell > *` 上补
+  `min-width: 0` 即可（`SiteGrid.vue`）。**排查手法**：用 CDP 量每张卡片的
+  `getBoundingClientRect()` 和它所在格子的宽度，差值为正就是它；再克隆一份设
+  `width: min-content` 量出归因。
+* **白底 logo 的判定只看「白墨水占比」**。`analyze_logos.py` 原来要求「平均亮度 > 0.82
+  且白墨水 > 0.70」，两条都要满足，结果 17 张白色字标（南方科技大学、辽宁大学、
+  复旦大学、广州大学……）因为带投影/描边，白墨水占比落在 0.51~0.71、平均亮度被压到
+  0.73~0.85，两条都不达标，白字被摆到了白底板上直接隐形。现在只看白墨水占比 ≥ 0.5。
+  唯一的例外是**整张图完全不透明**（自带实色底，放深色板上会露出一块白方块），
+  这种永远给白底板。SVG 也不能漏：Pillow 打不开 SVG，得解析 `fill` 声明，
+  否则一律 `unknown` → 白底板（山东大学的 `fill: #fff` SVG 就栽在这里）。
 
 ## 抓取踩过的坑（改 `update.py` 前先看这里）
 
@@ -170,6 +189,12 @@ python3 analyze_logos.py
    `location` 后面并没有字面量 URL，所以「`location.*= "..."`」和「location 附近的 URL」
    两条正则都抓不到。新增 `JS_CONFIG_RE` 兜住这种写法（并跳过指向自身 host 的
    `og:url` / canonical）。
+   ⚠️ 但它**只能扫 `<script>` 里的内容**：直接扫整个 HTML 会把
+   `<link href="https://fonts.googleapis.com/...">` 这种外链静态资源当成跳转目标 ——
+   实测有域名被跳到了 Google Fonts 的 CSS 和 `cdn.amoe.cc` 的字体 CSS 上。
+   另外 `is_sane_url()` 会拦掉静态资源后缀，以及从**已损坏的 HTML** 里抠出来的
+   乱码地址（见过 `.../%3ELocation%3C/a%3E` 和 `.../:%20%7B%20%20`，
+   解出来就是 `>Location</a>` 和 `: {  `）。
 4. **DNS 预算**。`resolver.lifetime` 是整次解析的总预算，原来它和 `timeout` 都设成 3 秒，
    第一个 DNS 服务器一超时就吃光预算、后面的服务器根本轮不到。海外 runner 上前两跳容易抖，
    于是稳定丢掉三成域名。现在 `timeout=3 / lifetime=9`，并去掉了对境外查询会拒答的
@@ -177,6 +202,44 @@ python3 analyze_logos.py
 
 另外：`download_logo` 用 `stream=True`，**任何提前 return 都必须关掉响应**（这里用
 `with r:`），否则连接池会被占满，两百个线程一起卡死，整个抓取看起来像挂住。
+
+### 「抓回别人家的页面」——跳转不能跟着乱跳
+
+上面四个坑是「该抓到却没抓到」，这几个反过来：**抓到了，但抓到的是别人家网站的内部导航**。
+三个现场：
+
+| 域名 | 抓回来的东西 | 为什么 |
+| --- | --- | --- |
+| 东北奶龙大学.com | 百度搜索结果 | 域名真的 301 到 `www.baidu.com`，爬虫接着跟了百度首页里的 `url: 'https://top.baidu.com/board?...'`，再跟着跳进百度搜索 |
+| 江苏奶蛙大学.com | DNSPod 的广告页 | 域名 302 到 `dnspod.qcloud.com/static/webblock.html`（DNSPod 的拦截页），爬虫接着逛起了 DNSPod 自己的站 |
+| 沈阳奶蛙大学.work | Microsoft 的 IE 帮助页 | 域名 301 到某校教务系统，系统提示「请用 IE 打开」，页面里的 `url: '.../internet-explorer-downloads'` 被当成了跳转目标 |
+
+收敛成两条规则（`should_follow()`，纯函数，`tests/test_jump_rules.py` 全覆盖）：
+
+1. **已经站在已知的中间页/拦截页上就停**（`INTERSTITIAL_HOSTS`：DNSPod 拦截页、百度、
+   Google、Microsoft 支持页……）。落点要是这些，就标记 `blocked`、把链接收回最后一跳
+   干净的地方，并且**不抓标题也不下载校徽**（那是别人家的内容）。
+2. **弱信号（`js_config` / `body_target`）只在最初那个奶龙域名自己的页面上才认**。
+   它们只是页面里一个 `url: "..."` 字面量，不代表「本站在跳转」；一旦已经跨域
+   （尤其是落到某个学校的教务系统），再认就会把浏览器兼容提示里的下载链接当跳转。
+
+`meta` / `location.href = "..."` 这类**显式跳转**仍然允许跨域继续 —— 那是站点在明说
+「我要去别处」。
+
+### 「打不开」里有一半是误判
+
+实测 34 个「打不开」里有 20 个，同一时刻用**一模一样的请求头**再发一次就是 200，
+其中 6 个是彻底没拿到状态码（超时/断连）、其余是 403 / 412 / 429。
+
+排查时先确认不是请求头的问题：把 `DEFAULT_HEADERS` 和「只带 UA」两种发法对比跑一遍，
+两者结果一样，就说明跟头无关（实测确实一样）。真正的原因是**并发**：176 个奶龙域名
+里一大批挂在同一个「域名停放/跳转」服务后面（单看 `15.197.162.184` 一个 IP 上就挤了
+11 个），`HTTP_WORKERS = 200` 一股脑打过去，对端直接限流或者掐连接。
+
+对策两条：`HTTP_WORKERS` 降到 48；再补一个 **[阶段 2.5] 降并发复检**（4 个线程 +
+随机错峰），把「像是被限流/超时」的行重跑一遍，只有结果更好才替换。
+`TRANSIENT_STATUS` 只放限流/网关抖动那类状态码 —— 404 / 400 是站点自己说的「没有」，
+重试没有意义。
 
 ## 无障碍
 

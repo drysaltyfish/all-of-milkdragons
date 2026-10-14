@@ -127,6 +127,18 @@ function statusBadgeOf(row) {
   const raw = String(row.error || '')
   const code = toNumber(row.final_status)
 
+  // ★ 落点是「中间页 / 拦截页」：DNSPod 的域名拦截页、百度首页、IE 下载说明页……
+  //   不管 HTTP 状态码是多少，这个奶龙域名都没有指向真正的校园站点，
+  //   所以不能算「可访问」，也不该把别人家的标题当成校名。
+  //   说明来自 update.py 的 INTERSTITIAL_HOSTS。
+  if (row.blocked) {
+    return {
+      status: 'offline',
+      label: '无有效跳转',
+      detail: `没有指向真正的校园站点 —— ${String(row.blocked)}`,
+    }
+  }
+
   if (code && code >= 200 && code < 400) {
     // 站点本身是通的，但抓详情/跳转目标时出过问题，如实写在说明里
     const detail = raw
@@ -254,6 +266,8 @@ function normalize(row, tones) {
     statusLabel: badge.label,
     /** 徽章放不下的完整说明，进 title / aria-label */
     statusDetail: badge.detail,
+    /** 落到中间页 / 拦截页的原因（空串表示没有），前端只用来做说明 */
+    blockedReason: row.blocked ? String(row.blocked) : '',
     latency: toNumber(row.latency_s),
     ips: String(row.ips || '')
       .split(',')
