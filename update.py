@@ -81,7 +81,9 @@ DNS_RESCUE_TIMEOUT = 5
 DNS_RESCUE_LIFETIME = 20
 
 # HTTP 复检：把「像是被限流 / 超时」的行换个慢节奏重跑一遍。
-HTTP_RETRY_WORKERS = 4
+# ★ 8 而不是 4：这一轮不再退避（见 tiers=0），纯串行等待没有意义，
+#   稍微给点并发既快又不会重新制造一次突发。
+HTTP_RETRY_WORKERS = 8
 HTTP_RETRY_JITTER = 1.5
 # 这些状态码基本都是临时性的（限流 / 人机挑战 / 网关抖动），重试有意义。
 # 404 / 400 这种是站点自己说的「没有」，重试也不会变，不浪费请求。
@@ -203,17 +205,25 @@ def close_response(resp) -> None:
         pass
 
 
-def fetch_with_retry(session, url, *, allow_redirects=True, referer=None, stream=False):
+def fetch_with_retry(session, url, *, allow_redirects=True, referer=None, stream=False,
+                     tiers=None):
     """带指数退避的 GET，返回 (响应, 错误码)。
 
     退避只对「可能马上就好」的失败生效：超时、连接被掐、
     以及 403 / 408 / 412 / 429 / 5xx 这些限流与网关抖动。
     404 / 400 是站点明确说「没有」，立刻返回，不白等 50 秒。
+
+    `tiers` 覆盖退避级数（默认 BACKOFF_TIERS=3）。[阶段 2.5] 的慢节奏复检传 0：
+    那一轮的意义只是「风暴过去之后再问一次」，不是「再退避着重试三遍」。
+    ★ 这是个真踩过的坑：加了逐请求退避之后忘了收口复检那一轮，于是每个失败域名
+      被退避两次，而那一轮只有 4 个线程 —— update.py 从 26.8 分钟涨到 44 分钟
+      还没跑完。
     """
+    tiers = BACKOFF_TIERS if tiers is None else tiers
     headers = {"Referer": referer} if referer else None
     last_err = ""
 
-    for attempt in range(BACKOFF_TIERS + 1):
+    for attempt in range(tiers + 1):
         if attempt:
             sleep_backoff(attempt - 1)
 
@@ -231,7 +241,7 @@ def fetch_with_retry(session, url, *, allow_redirects=True, referer=None, stream
             continue
 
         # 还能再试，且这次是「临时性」失败 -> 关掉响应、退避后重来
-        if r.status_code in TRANSIENT_STATUS and attempt < BACKOFF_TIERS:
+        if r.status_code in TRANSIENT_STATUS and attempt < tiers:
             last_err = f"http_{r.status_code}"
             close_response(r)
             continue
@@ -613,14 +623,14 @@ def should_follow(nxt: str, how: str, cur_url: str, origin_url: str) -> bool:
 
 
 # ==================== 阶段 2：HTTP + 跳转 ====================
-def fetch_chain(session, url, allow_redirects=True, referer=None):
+def fetch_chain(session, url, allow_redirects=True, referer=None, tiers=None):
     """★ 支持传入 Referer；临时性失败会按指数退避重试（见 fetch_with_retry）。"""
     return fetch_with_retry(
-        session, url, allow_redirects=allow_redirects, referer=referer,
+        session, url, allow_redirects=allow_redirects, referer=referer, tiers=tiers,
     )
 
 
-def http_check(item, delay=0.0):
+def http_check(item, delay=0.0, tiers=None):
     # 复检时用：错开每个线程发出的时间，别又攒成一波打过去
     if delay:
         time.sleep(random.uniform(0, delay))
@@ -656,11 +666,11 @@ def http_check(item, delay=0.0):
     err = ""
 
     url = f"https://{a}/"
-    r, err = fetch_chain(session, url, allow_redirects=True)
+    r, err = fetch_chain(session, url, allow_redirects=True, tiers=tiers)
 
     if r is None and err:
         url = f"http://{a}/"
-        r, err = fetch_chain(session, url, allow_redirects=True)
+        r, err = fetch_chain(session, url, allow_redirects=True, tiers=tiers)
         methods.append("http_fallback")
 
     if r is None:
@@ -688,7 +698,7 @@ def http_check(item, delay=0.0):
             break
 
         # ★ 明文跳转时把上一跳当作 Referer
-        r, err = fetch_chain(session, nxt, allow_redirects=True, referer=last_url)
+        r, err = fetch_chain(session, nxt, allow_redirects=True, referer=last_url, tiers=tiers)
         if r is None:
             row["error"] = err
             break
@@ -1288,15 +1298,19 @@ def main():
         max_workers=HTTP_WORKERS, desc="HTTP", chunksize=1,
     )
 
-    # 复检：高并发下被限流 / 网络抖掉的行，用几个线程慢慢再问一遍。
+    # 复检：高并发下被限流 / 网络抖掉的行，慢节奏再问一遍。
     # ★ 为什么需要：这些域名很多挂在同一个停放跳转服务后面，一波打过去会被
     #   限流成 403/412/429 或者直接断连 —— 不复检就会有一批活域名被标成
     #   「打不开」，而且每天的名单还会来回跳。
+    # ★ tiers=0：这一轮**不再退避重试**。逐请求退避已经在阶段 2 用过了，
+    #   在这里再退避三遍是重复的；而这一轮只有几个线程，重复退避会把整个抓取
+    #   拖长一倍（实测 26.8 分钟 -> 44 分钟还没跑完）。
+    #   这一轮的价值是「等风暴过去之后再问一次」，一次干净的单发就够。
     retry_targets = [r for r in http_results if is_transient(r)]
     if retry_targets:
         print(f"\n[阶段 2.5] {len(retry_targets)} 个疑似被限流 / 超时，降并发复检")
         retried = thread_map(
-            lambda it: http_check(it, delay=HTTP_RETRY_JITTER), retry_targets,
+            lambda it: http_check(it, delay=HTTP_RETRY_JITTER, tiers=0), retry_targets,
             max_workers=HTTP_RETRY_WORKERS, desc="HTTP复检", chunksize=1,
         )
         by_ascii = {r["ascii"]: r for r in http_results}

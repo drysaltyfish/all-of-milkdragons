@@ -68,6 +68,56 @@ check("curl_cffi 的 RequestsError 归到 conn_error",
       classify_error(RequestsError("Failed to connect")) == "conn_error")
 
 
+# ==================== fetch_with_retry 的退避级数 ====================
+print("\n[fetch_with_retry] tiers 控制退避级数（阶段 2.5 用 tiers=0）")
+
+
+class FakeResp:
+    def __init__(self, code):
+        self.status_code = code
+        self.closed = False
+
+    def close(self):
+        self.closed = True
+
+
+class FakeSession:
+    def __init__(self, codes):
+        self.codes = list(codes)
+        self.calls = 0
+
+    def get(self, *a, **kw):
+        self.calls += 1
+        return FakeResp(self.codes.pop(0) if self.codes else 200)
+
+
+_orig_sleep = update.sleep_backoff
+update.sleep_backoff = lambda n: None      # 别在单测里真的睡 5+15+30 秒
+try:
+    s = FakeSession([403, 403, 403, 200])
+    r, err = update.fetch_with_retry(s, "http://x/")
+    check("默认会退避重试直到成功（1+3 次）", s.calls == 4 and r.status_code == 200,
+          f"calls={s.calls}")
+
+    s2 = FakeSession([403])
+    r2, _ = update.fetch_with_retry(s2, "http://x/", tiers=0)
+    check("tiers=0 一次都不重试", s2.calls == 1, f"calls={s2.calls}")
+    check("tiers=0 仍然把 403 响应交回调用方（好让它记状态码）",
+          r2 is not None and r2.status_code == 403)
+
+    s3 = FakeSession([403, 403, 403, 403])
+    r3, _ = update.fetch_with_retry(s3, "http://x/", tiers=0)
+    check("tiers=0 即使一直 403 也只发一次", s3.calls == 1, f"calls={s3.calls}")
+
+    # 404 是站点明确说「没有」，不该浪费 50 秒
+    s4 = FakeSession([404])
+    r4, _ = update.fetch_with_retry(s4, "http://x/")
+    check("404 不退避，一次就返回", s4.calls == 1 and r4.status_code == 404,
+          f"calls={s4.calls}")
+finally:
+    update.sleep_backoff = _orig_sleep
+
+
 # ==================== is_up ====================
 print("\n[is_up] 口径必须和前端 statusBadgeOf() 一致")
 check("200 -> 通", is_up({"final_status": 200}) is True)

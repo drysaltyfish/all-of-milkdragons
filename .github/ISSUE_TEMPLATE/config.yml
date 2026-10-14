@@ -1,5 +1,6 @@
+# 关掉空白 issue：投稿必须走「报告新的奶龙域名」表单，
+# 否则正文不是结构化表单，triage 解析不出「域名」字段。
+#
+# 注意这里不要放 contact_links：空白 issue 被禁用之后，
+# 任何指向 `issues/new` 的链接都会落到模板选择页，等于死链。
 blank_issues_enabled: false
-contact_links:
-  - name: 只是想聊聊 / 提别的建议
-    url: https://github.com/drysaltyfish/all-of-milkdragons/issues/new
-    about: 请用空白 issue，并说明来意（不要用它投稿域名，投稿请用「报告新的奶龙域名」表单）

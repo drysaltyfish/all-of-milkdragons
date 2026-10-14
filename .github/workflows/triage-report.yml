@@ -26,9 +26,14 @@ env:
 jobs:
   # ==================== 新投稿：进候选池 ====================
   intake:
-    if: >
-      github.event.action == 'opened' &&
-      contains(github.event.issue.labels.*.name, '投稿')
+    # ★ 这里**不能**靠 issue 模板 front matter 里的 labels 来判断。
+    #   实测：如果仓库里还没有那个标签，GitHub 会**静默丢掉**它 ——
+    #   提交出来的 issue labels 是空的，于是 `contains(..., '投稿')` 为 false，
+    #   整个 job 被判 false 直接 skipped（第一次测试投稿就是这样：
+    #   run 38581740749，intake 和 promote 全是 skipped）。
+    #   改成只按 action 判断，「是不是投稿」由正文里有没有「域名」字段决定 ——
+    #   这样不依赖仓库标签状态，换仓库/重建标签也不会静默失效。
+    if: github.event.action == 'opened'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -41,7 +46,24 @@ jobs:
       - name: Install python dependencies
         run: pip install -r requirements.txt
 
+      - name: 取正文并判断是不是投稿
+        id: parse
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue view ${{ github.event.issue.number }} --json body --jq .body > /tmp/body.md
+          domain=$(python triage_report.py extract --body-file /tmp/body.md)
+          if [ -z "$domain" ]; then
+            echo "正文里没有「域名」字段，不是投稿表单，跳过后续步骤。"
+            echo "is_report=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "解析到域名：[$domain]"
+            echo "is_report=true" >> "$GITHUB_OUTPUT"
+            echo "domain=$domain" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: 确保标签存在
+        if: steps.parse.outputs.is_report == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -60,6 +82,7 @@ jobs:
       #   成本极低（两个 API 调用），但能挡掉绝大多数一次性小号。
       - name: 账号年龄与配额
         id: gate
+        if: steps.parse.outputs.is_report == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPORTER: ${{ github.event.issue.user.login }}
@@ -86,18 +109,14 @@ jobs:
           fi
           echo "ok=true" >> "$GITHUB_OUTPUT"
 
-      - name: 解析并校验域名
+      - name: 校验域名并入池
         id: check
-        if: steps.gate.outputs.ok == 'true'
+        if: steps.parse.outputs.is_report == 'true' && steps.gate.outputs.ok == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
-          gh issue view ${{ github.event.issue.number }} --json body --jq .body > /tmp/body.md
-          domain=$(python triage_report.py extract --body-file /tmp/body.md)
-          echo "解析到域名：[$domain]"
-          echo "domain=$domain" >> "$GITHUB_OUTPUT"
-
+          domain="${{ steps.parse.outputs.domain }}"
           result=$(python triage_report.py accept \
             --domain "$domain" \
             --issue ${{ github.event.issue.number }} \
@@ -118,25 +137,27 @@ jobs:
           if git diff --cached --quiet; then
             echo "名单没变"
           else
-            git commit -m "chore(community): 收录投稿域名 ${{ steps.check.outputs.domain }}"
+            git commit -m "chore(community): 收录投稿域名 ${{ steps.parse.outputs.domain }}"
             git push
             # 名单变了，让抓取尽快把它验证一遍（GITHUB_TOKEN 推的提交不会触发 push 类 workflow）
             gh workflow run refresh-data.yml --ref "${GITHUB_REF_NAME}" || true
           fi
 
       - name: 通过 -> 打标并留言
-        if: steps.check.outcome == 'success'
+        if: steps.parse.outputs.is_report == 'true' && steps.check.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh issue edit ${{ github.event.issue.number }} --add-label 待验证 --remove-label 投稿
           gh issue comment ${{ github.event.issue.number }} --body \
-            "已收到 \`${{ steps.check.outputs.domain }}\`，进入候选池。
+            "已收到 \`${{ steps.parse.outputs.domain }}\`，进入候选池。
 
           下一次抓取会去访问它。**如果它确实跳转到一所学校的官网（.edu.cn / .edu / .ac.uk 这类），会自动收录**；否则会留在这里等人工复核。"
 
       - name: 拒绝 -> 说明原因并关闭
-        if: steps.gate.outputs.ok != 'true' || steps.check.outcome == 'failure'
+        if: >
+          steps.parse.outputs.is_report == 'true' &&
+          (steps.gate.outputs.ok != 'true' || steps.check.outcome == 'failure')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GATE_REASON: ${{ steps.gate.outputs.reason }}
