@@ -123,19 +123,41 @@ function describeError(raw) {
  * 徽章空间有限，所以拆成「短标签 + 详细说明」：
  * 标签进徽章（`HTTP 403`），说明进 title / aria-label。
  */
+/** update.py 里连续失联多少天才真的移除（要和 RETENTION_DAYS 保持一致）。 */
+const RETENTION_DAYS = 3
+
+/**
+ * 「已失联 N 天」。
+ *
+ * update.py 对失联的域名不立刻删：先降级成打不开继续挂着，连着 3 天都回不来
+ * 才从墙上移除。把这件事写进说明里，用户才知道这张卡片为什么还在、
+ * 以及它什么时候会消失。
+ */
+function downInfo(row) {
+  const since = String(row.down_since || '')
+  if (!since) return ''
+  const ms = Date.parse(since)
+  if (!Number.isFinite(ms)) return `自 ${since} 起失联`
+  const days = Math.floor((Date.now() - ms) / 86400000)
+  if (days <= 0) return `今天起失联，连续 ${RETENTION_DAYS} 天不恢复就移除`
+  return `已失联 ${days} 天，满 ${RETENTION_DAYS} 天不恢复就移除`
+}
+
 function statusBadgeOf(row) {
   const raw = String(row.error || '')
   const code = toNumber(row.final_status)
+  const down = downInfo(row)
 
   // ★ 落点是「中间页 / 拦截页」：DNSPod 的域名拦截页、百度首页、IE 下载说明页……
   //   不管 HTTP 状态码是多少，这个奶龙域名都没有指向真正的校园站点，
   //   所以不能算「可访问」，也不该把别人家的标题当成校名。
   //   说明来自 update.py 的 INTERSTITIAL_HOSTS。
   if (row.blocked) {
+    const detail = `没有指向真正的校园站点 —— ${String(row.blocked)}`
     return {
       status: 'offline',
       label: '无有效跳转',
-      detail: `没有指向真正的校园站点 —— ${String(row.blocked)}`,
+      detail: down ? `${detail}（${down}）` : detail,
     }
   }
 
@@ -153,14 +175,20 @@ function statusBadgeOf(row) {
     const extra = describeError(raw)
     // 别写成「HTTP 403 · 拒绝访问（HTTP 403）」
     const suffix = extra && extra !== `HTTP ${code}` ? `（${extra}）` : ''
-    return { status: 'offline', label: `HTTP ${code}`, detail: `HTTP ${code} · ${hint}${suffix}` }
+    const tail = down ? ` · ${down}` : ''
+    return {
+      status: 'offline',
+      label: `HTTP ${code}`,
+      detail: `HTTP ${code} · ${hint}${suffix}${tail}`,
+    }
   }
 
   const label = describeError(raw) || '无响应'
+  const base = raw ? `${label}（没有拿到 HTTP 状态码）` : '请求没有拿到任何响应'
   return {
     status: 'offline',
     label,
-    detail: raw ? `${label}（没有拿到 HTTP 状态码）` : '请求没有拿到任何响应',
+    detail: down ? `${base} · ${down}` : base,
   }
 }
 
@@ -268,6 +296,10 @@ function normalize(row, tones) {
     statusDetail: badge.detail,
     /** 落到中间页 / 拦截页的原因（空串表示没有），前端只用来做说明 */
     blockedReason: row.blocked ? String(row.blocked) : '',
+    /** 第一次失联的日期（空串表示当前可访问）。失联满 RETENTION_DAYS 天会被 update.py 移除 */
+    downSince: row.down_since ? String(row.down_since) : '',
+    /** 最后一次访问成功的日期 */
+    lastOk: row.last_ok ? String(row.last_ok) : '',
     latency: toNumber(row.latency_s),
     ips: String(row.ips || '')
       .split(',')

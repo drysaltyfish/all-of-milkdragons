@@ -1,9 +1,11 @@
 # check_domains.py
+import hashlib
 import json
 import os
 import re
 import threading
 import time
+from datetime import date
 from itertools import product
 from urllib.parse import unquote, urljoin, urlparse
 
@@ -16,6 +18,27 @@ from bs4 import BeautifulSoup
 from tqdm.contrib.concurrent import thread_map
 
 from const import *
+
+# ==================== HTTP 客户端：浏览器 TLS 指纹 ====================
+# ★ 为什么需要：有一批域名（奶蛙大学.com / .website、芜湖奶龙大学.icu、
+#   深圳奶龙大学.com、黑龙江奶龙大学.com、吉林奶蛙大学.com……）用 requests
+#   请求稳定返回 403，可同一时刻用 curl 带**一模一样**的请求头请求就是 200。
+#   对端根本没看请求头 —— 它看的是 TLS 握手指纹（JA3/JA4）：requests 用的是
+#   Python ssl 的默认套件表，一眼就是脚本。curl_cffi 直接复用 Chrome 的
+#   ClientHello，所以能过。
+#
+# ★ 装不上 curl_cffi 也能跑（自动退回 requests），单测和本地环境不必依赖它，
+#   只是上面那批站点仍然会 403。
+try:
+    from curl_cffi import requests as browser_requests
+
+    HAS_BROWSER_FINGERPRINT = True
+except ImportError:  # pragma: no cover
+    browser_requests = None
+    HAS_BROWSER_FINGERPRINT = False
+
+# 伪装成哪个浏览器的指纹。curl_cffi 会持续跟进新版本，用一个稳的即可。
+IMPERSONATE = "chrome"
 
 urllib3.disable_warnings()
 
@@ -56,6 +79,21 @@ HTTP_RETRY_JITTER = 1.5
 # 这些状态码基本都是临时性的（限流 / 人机挑战 / 网关抖动），重试有意义。
 # 404 / 400 这种是站点自己说的「没有」，重试也不会变，不浪费请求。
 TRANSIENT_STATUS = {403, 408, 412, 425, 429, 500, 502, 503, 504, 520, 521, 522, 524}
+
+# ---------- 指数退避 ----------
+# 三级退避：5s -> 15s -> 30s（第三级正好撞到上限）。
+# 封顶 30s 的理由：抓取是几十个线程并行的，单个域名退避太久只会把整个阶段拖长；
+# 而「对端限流」这类问题秒级就能恢复，等更久并没有额外收益。
+BACKOFF_TIERS = 3
+BACKOFF_BASE = 5.0
+BACKOFF_FACTOR = 3.0
+BACKOFF_MAX = 30.0
+BACKOFF_JITTER = 0.25      # ±25% 抖动：多线程一起退避时别又攒成一波
+
+# ---------- 历史数据保留 ----------
+# 一周目抓不到的域名不立刻删：先留着、记下失联时间，连续失联超过这么多天才移除。
+# 这样偶发的网络抖动/限流不会让卡片每天在墙上忽隐忽现。
+RETENTION_DAYS = 3
 
 OUT_JSON = "result.json"
 LOGO_DIR = "logos"
@@ -103,13 +141,104 @@ def get_resolver():
 
 
 def get_session():
-    """★ 用 const.py 里的完整浏览器头初始化 Session。"""
+    """★ 每个线程一个 Session，带完整浏览器请求头 + 浏览器 TLS 指纹。"""
     if not hasattr(_tl, "session"):
-        s = requests.Session()
+        if HAS_BROWSER_FINGERPRINT:
+            s = browser_requests.Session(impersonate=IMPERSONATE)
+        else:
+            s = requests.Session()
         s.headers.update(DEFAULT_HEADERS)   # 完整 UA / Accept / Sec-Fetch-* 等
-        s.max_redirects = MAX_HOPS
+        try:
+            s.max_redirects = MAX_HOPS
+        except Exception:                   # pragma: no cover - 个别版本不让设
+            pass
         _tl.session = s
     return _tl.session
+
+
+# ==================== 指数退避 ====================
+def backoff_delay(attempt: int) -> float:
+    """第 attempt 级退避该等多久（attempt 从 0 开始）。纯函数，方便单测。
+
+    base=5 / factor=3 -> 5s, 15s, 30s（5*3**2=45 被上限截到 30）
+    """
+    return min(BACKOFF_MAX, BACKOFF_BASE * (BACKOFF_FACTOR ** attempt))
+
+
+def sleep_backoff(attempt: int) -> None:
+    """带抖动的退避睡眠。多线程同时退避时，别让它们退避完又同时发出去。"""
+    delay = backoff_delay(attempt)
+    time.sleep(delay * (1.0 + random.uniform(-BACKOFF_JITTER, BACKOFF_JITTER)))
+
+
+def classify_error(exc) -> str:
+    """把不同 HTTP 库的异常归一成我们自己的错误码（requests / curl_cffi 都要认）。"""
+    name = type(exc).__name__.lower()
+    text = str(exc).lower()
+    if "timeout" in name or "timed out" in text:
+        return "timeout"
+    if "redirect" in name:
+        return "too_many_redirects"
+    if "ssl" in name or "certificate" in text:
+        return "ssl_error"
+    return "conn_error"
+
+
+def close_response(resp) -> None:
+    try:
+        resp.close()
+    except Exception:
+        pass
+
+
+def fetch_with_retry(session, url, *, allow_redirects=True, referer=None, stream=False):
+    """带指数退避的 GET，返回 (响应, 错误码)。
+
+    退避只对「可能马上就好」的失败生效：超时、连接被掐、
+    以及 403 / 408 / 412 / 429 / 5xx 这些限流与网关抖动。
+    404 / 400 是站点明确说「没有」，立刻返回，不白等 50 秒。
+    """
+    headers = {"Referer": referer} if referer else None
+    last_err = ""
+
+    for attempt in range(BACKOFF_TIERS + 1):
+        if attempt:
+            sleep_backoff(attempt - 1)
+
+        try:
+            r = session.get(
+                url,
+                timeout=HTTP_TIMEOUT,
+                allow_redirects=allow_redirects,
+                verify=False,
+                headers=headers or None,
+                stream=stream,
+            )
+        except Exception as exc:
+            last_err = classify_error(exc)
+            continue
+
+        # 还能再试，且这次是「临时性」失败 -> 关掉响应、退避后重来
+        if r.status_code in TRANSIENT_STATUS and attempt < BACKOFF_TIERS:
+            last_err = f"http_{r.status_code}"
+            close_response(r)
+            continue
+
+        return r, None
+
+    return None, last_err
+
+
+def body_chunks(resp, size: int = 8192):
+    """统一 requests / curl_cffi 的流式读取。"""
+    if hasattr(resp, "iter_content"):
+        for chunk in resp.iter_content(size):
+            if chunk:
+                yield chunk
+        return
+    data = resp.content or b""          # pragma: no cover - curl_cffi 没有 iter_content 时的兜底
+    for i in range(0, len(data), size):
+        yield data[i:i + size]
 
 
 # ==================== 响应解码 ====================
@@ -473,27 +602,10 @@ def should_follow(nxt: str, how: str, cur_url: str, origin_url: str) -> bool:
 
 # ==================== 阶段 2：HTTP + 跳转 ====================
 def fetch_chain(session, url, allow_redirects=True, referer=None):
-    """★ 支持传入 Referer。"""
-    headers = {}
-    if referer:
-        headers["Referer"] = referer
-    try:
-        r = session.get(
-            url,
-            timeout=HTTP_TIMEOUT,
-            allow_redirects=allow_redirects,
-            verify=False,
-            headers=headers or None,
-        )
-        return r, None
-    except requests.exceptions.Timeout:
-        return None, "timeout"
-    except requests.exceptions.ConnectionError:
-        return None, "conn_error"
-    except requests.exceptions.TooManyRedirects:
-        return None, "too_many_redirects"
-    except Exception as e:
-        return None, type(e).__name__
+    """★ 支持传入 Referer；临时性失败会按指数退避重试（见 fetch_with_retry）。"""
+    return fetch_with_retry(
+        session, url, allow_redirects=allow_redirects, referer=referer,
+    )
 
 
 def http_check(item, delay=0.0):
@@ -630,18 +742,10 @@ def score_image(img) -> int:
 
 
 def extract_title_logo(session, url, referer=None):
-    """返回 (title, logo_url, err)。★ 支持 Referer。"""
-    headers = {"Referer": referer} if referer else None
-    try:
-        r = session.get(
-            url,
-            timeout=HTTP_TIMEOUT,
-            verify=False,
-            allow_redirects=True,
-            headers=headers,
-        )
-    except Exception as e:
-        return "", "", type(e).__name__
+    """返回 (title, logo_url, err)。★ 支持 Referer；临时性失败走指数退避重试。"""
+    r, err = fetch_with_retry(session, url, allow_redirects=True, referer=referer)
+    if r is None:
+        return "", "", err
 
     if r.status_code >= 400:
         return "", "", f"http_{r.status_code}"
@@ -709,27 +813,24 @@ def download_logo(session, url, out_dir, name, referer=None) -> str:
     """下载到 out_dir/name.ext，返回本地路径（失败返回空串）。★ 支持 Referer。"""
     if not url:
         return ""
-    headers = {"Referer": referer} if referer else None
-    try:
-        r = session.get(
-            url,
-            timeout=HTTP_TIMEOUT,
-            verify=False,
-            stream=True,
-            allow_redirects=True,
-            headers=headers,
-        )
-    except Exception:
+
+    r, _err = fetch_with_retry(
+        session, url, allow_redirects=True, referer=referer, stream=True,
+    )
+    if r is None:
         return ""
 
-    # ★ 用 with 保证任何分支都会关掉流式响应。
-    #   早退不关连接会一直占着 urllib3 的连接池，200 个线程很快就全部阻塞在
-    #   session.get() 上，整个抓取看起来像卡死。
-    with r:
+    # ★ 用 try/finally 关响应，注意**不能**写 `with r:`：
+    #   requests 的 Response 支持上下文管理器，curl_cffi 的不支持
+    #   （会直接 TypeError: 'Response' object does not support the context
+    #   manager protocol）。早退不关连接会一直占着连接池，几十个线程很快就
+    #   全部阻塞在 session.get() 上，整个抓取看起来像卡死。
+    path = ""
+    try:
         if r.status_code >= 400:
             return ""
 
-        chunks = r.iter_content(8192)
+        chunks = body_chunks(r)
         try:
             first = next(chunks)
         except StopIteration:
@@ -742,17 +843,17 @@ def download_logo(session, url, out_dir, name, referer=None) -> str:
         if not ext:
             return ""
 
-        filename = f"{name}{ext}"
-        path = os.path.join(out_dir, filename)
-
+        path = os.path.join(out_dir, f"{name}{ext}")
         try:
-            with open(path, "wb") as f:
-                f.write(first)
+            with open(path, "wb") as fh:
+                fh.write(first)
                 for chunk in chunks:
                     if chunk:
-                        f.write(chunk)
+                        fh.write(chunk)
         except Exception:
             return ""
+    finally:
+        close_response(r)
 
     if os.path.getsize(path) < MIN_LOGO_BYTES:
         try:
@@ -762,6 +863,58 @@ def download_logo(session, url, out_dir, name, referer=None) -> str:
         return ""
 
     return path
+
+
+# ==================== 校徽：按「重定向后的域名」去重 ====================
+# ★ 为什么按落地域名而不是奶龙域名命名：
+#   十几个奶龙域名常常指向同一所大学，用奶龙域名当文件名会把**同一张校徽
+#   下载并保存十几遍**（请求数和仓库体积都是白花的）。改成用落地域名
+#   （www.lnu.edu.cn）当 key，一所学校天然只有一份校徽。
+_LOGO_BY_KEY = {}
+_LOGO_LOCKS = {}
+_LOGO_LOCKS_GUARD = threading.Lock()
+
+
+def _key_lock(key: str) -> threading.Lock:
+    with _LOGO_LOCKS_GUARD:
+        lock = _LOGO_LOCKS.get(key)
+        if lock is None:
+            lock = _LOGO_LOCKS[key] = threading.Lock()
+    return lock
+
+
+def logo_key(url: str) -> str:
+    """把落地 URL 变成校徽文件名（也就是落地域名）。
+
+    ★ 必须是纯函数：指向同一所大学的所有奶龙域名都要算出同一个 key，
+      否则「同一个域名不重复保存」就无从谈起。
+    """
+    host = host_of(url)
+    if not host:
+        return ""
+    try:
+        host = idna.encode(host).decode("ascii")
+    except idna.IDNAError:
+        pass
+    safe = re.sub(r"[^a-z0-9.-]", "_", host.lower()).strip(".")
+    if len(safe) > 80:      # 超长域名：截断 + 指纹，保证唯一又不撞文件名长度上限
+        safe = f"{safe[:60]}-{hashlib.sha1(safe.encode()).hexdigest()[:16]}"
+    return safe
+
+
+def resolve_logo(session, url, key, referer=None) -> str:
+    """下载校徽，按落地域名去重：同一个学校只下一次、只存一份。"""
+    if not url or not key:
+        return ""
+    # 同一个落地域名的下载串行化：避免多个线程同时往同一个文件里写
+    with _key_lock(key):
+        cached = _LOGO_BY_KEY.get(key)
+        if cached and os.path.isfile(cached):
+            return cached
+        path = download_logo(session, url, LOGO_DIR, key, referer=referer)
+        if path:
+            _LOGO_BY_KEY[key] = path
+        return path
 
 
 def enrich(item):
@@ -793,9 +946,9 @@ def enrich(item):
     row["logo_url"] = logo_url
 
     if logo_url:
-        # ★ 下载 logo 时用最终页 URL 作 Referer
-        row["logo_path"] = download_logo(
-            session, logo_url, LOGO_DIR, row["ascii"], referer=final_url,
+        # ★ 下载 logo 时用最终页 URL 作 Referer，并按「重定向后的域名」存
+        row["logo_path"] = resolve_logo(
+            session, logo_url, logo_key(final_url), referer=final_url,
         )
 
     row.pop("_hop_count", None)
@@ -809,6 +962,8 @@ JSON_FIELDS = [
     "jump_type", "redirect_chain", "method",
     "first_status", "final_status", "latency_s", "ips", "error",
     "blocked",
+    # 历史保留用：第一次失联的日期 / 最后一次访问成功的日期
+    "down_since", "last_ok",
 ]
 
 
@@ -837,6 +992,109 @@ def load_previous_ips(path):
         if isinstance(row, dict) and row.get("ascii"):
             out[row["ascii"]] = row.get("ips", "")
     return out
+
+
+def load_previous_rows(path):
+    """上一轮 result.json 的全部行，用于历史合并。"""
+    if not os.path.exists(path):
+        return []
+    try:
+        with open(path, encoding="utf-8") as fh:
+            rows = json.load(fh)
+    except Exception:
+        return []
+    return rows if isinstance(rows, list) else []
+
+
+# ==================== 历史保留：失联不立刻删 ====================
+def parse_date(value):
+    """把 'YYYY-MM-DD'（或更长的 ISO 串）解析成 date；解析不了返回 None。"""
+    if not value:
+        return None
+    try:
+        return date.fromisoformat(str(value)[:10])
+    except ValueError:
+        return None
+
+
+def is_up(row) -> bool:
+    """这一轮算不算「访问到了」。
+
+    ★ 口径必须和前端 build-data.mjs 里的 statusBadgeOf() 一致：只看 HTTP 终态码
+      2xx/3xx，且落点不是中间页/拦截页。不一致就会出怪事 ——
+      卡片上写着「可访问」，却因为被判失联而从墙上消失。
+    """
+    if row.get("blocked"):
+        return False
+    code = row.get("final_status")
+    return isinstance(code, int) and 200 <= code < 400
+
+
+def merge_history(rows, previous, today):
+    """把这一轮结果和历史合并：失联不立刻删，连续失联满 RETENTION_DAYS 天才移除。
+
+    ★ 为什么不删：偶发的网络抖动、对端限流、公共 DNS 丢包都会让某天抓不到，
+      直接删的话卡片会每天在墙上忽隐忽现。现在先降级成「打不开」继续挂着，
+      连着几天都回不来才真的移除。
+
+    规则：
+      · 本轮通了   -> 清空 down_since，刷新 last_ok；
+      · 本轮没通   -> 沿用历史里的 down_since（没有就记今天），并把历史里的
+                      title / logo / final_url 带过来：卡片降级但内容不空白；
+      · 从没记录过又没通 -> 直接跳过（否则 5 万多个候选域名会在第一次运行时
+                            被全部写进 result.json）；
+      · 连续失联满 RETENTION_DAYS 天 -> 移除。
+
+    返回 (保留的行, 被移除的域名列表)。
+    """
+    prev = {
+        r["ascii"]: r for r in previous
+        if isinstance(r, dict) and r.get("ascii")
+    }
+    today_s = today.isoformat()
+    kept, retired = [], []
+    seen = set()
+
+    for row in rows:
+        key = row.get("ascii") or ""
+        seen.add(key)
+        old = prev.get(key) or {}
+        row = dict(row)
+
+        if is_up(row):
+            row["down_since"] = ""
+            row["last_ok"] = today_s
+            kept.append(row)
+            continue
+
+        if not old:
+            continue
+
+        row["down_since"] = old.get("down_since") or today_s
+        row["last_ok"] = old.get("last_ok", "")
+        for field in ("title", "logo_url", "logo_path", "final_url"):
+            if not row.get(field):
+                row[field] = old.get(field, "")
+
+        since = parse_date(row["down_since"])
+        if since and (today - since).days >= RETENTION_DAYS:
+            retired.append(row.get("domain") or key)
+            continue
+        kept.append(row)
+
+    # 历史里有、这一轮连候选名单都没进的（词表改过之类）：同样按宽限期处理
+    for key, old in prev.items():
+        if key in seen:
+            continue
+        since = parse_date(old.get("down_since")) or today
+        if (today - since).days >= RETENTION_DAYS:
+            retired.append(old.get("domain") or key)
+            continue
+        carried = dict(old)
+        carried["down_since"] = since.isoformat()
+        kept.append(carried)
+
+    return kept, retired
 
 
 def rescue_dns(item, previous_ips):
@@ -982,7 +1240,19 @@ def main():
     print(f"成功下载 logo 文件      : {n_has_logo_file} / {n_live}"
           f"  （未下载 {n_no_logo_file}）")
 
-    write_json(OUT_JSON, enriched)
+    # ---------- 历史合并：失联不立刻删 ----------
+    previous = load_previous_rows(OUT_JSON)
+    merged, retired = merge_history(enriched + dead, previous, date.today())
+
+    n_down_kept = sum(1 for r in merged if r.get("down_since"))
+    print(f"\n[阶段 4] 历史合并")
+    print(f"收录（含失联未满 {RETENTION_DAYS} 天的历史卡片）: {len(merged)}")
+    print(f"其中失联保留          : {n_down_kept}")
+    if retired:
+        preview = ", ".join(retired[:6]) + (" …" if len(retired) > 6 else "")
+        print(f"连续失联满 {RETENTION_DAYS} 天，移除: {len(retired)} 个（{preview}）")
+
+    write_json(OUT_JSON, merged)
     print(f"\n完成，结果写入 {OUT_JSON}，logo 保存在 {LOGO_DIR}/")
 
 

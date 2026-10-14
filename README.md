@@ -45,7 +45,8 @@ src/components/*.vue 组件层：只吃 props，不碰抓取细节
 ├── requirements.txt        Python 依赖
 ├── tests/                  纯函数回归测试（不联网，CI 里抓取前先跑）
 │   ├── test_jump_rules.py     跳转该不该跟 / 中间页识别 / 地址合法性
-│   └── test_logo_tone.py      校徽明暗判定（位图 + SVG）
+│   ├── test_logo_tone.py      校徽明暗判定（位图 + SVG）
+│   └── test_retention.py      指数退避 / 服务端指纹 / 失联保留 / 校徽去重
 │
 ├── scripts/build-data.mjs  result.json -> src/data/sites.json（Node，无第三方依赖）
 ├── src/
@@ -240,6 +241,72 @@ python3 analyze_logos.py
 随机错峰），把「像是被限流/超时」的行重跑一遍，只有结果更好才替换。
 `TRANSIENT_STATUS` 只放限流/网关抖动那类状态码 —— 404 / 400 是站点自己说的「没有」，
 重试没有意义。
+
+### 有些 403 跟请求头无关，是 TLS 指纹
+
+上面那批 403 降并发之后还是 403，但**同一时刻用 curl 带一模一样的请求头就是 200**。
+对端根本没看请求头 —— 它看的是 TLS 握手指纹（JA3/JA4）：`requests` 用的是 Python ssl
+的默认套件表，一眼就是脚本；`curl` 和真浏览器能过。
+
+对策是全局换成 [`curl_cffi`](https://github.com/lexiforest/curl_cffi)（`impersonate="chrome"`），
+它直接复用 Chrome 的 ClientHello。实测 8 个顽固 403 里救回 3 个
+（深圳奶龙大学.com → 深圳职业技术大学、黑龙江奶龙大学.com → 黑龙江大学、
+新疆奶龙大学.com → 新疆工业学院），剩下的是**真的坏**：奶蛙大学.com 是阿里云 OSS
+返回 `AccessDenied / Anonymous access is forbidden`，奶蛙大学.website 的 HTTPS 证书
+直接握手失败。这些留着 403 才是诚实的。
+
+⚠️ 两个必须注意的兼容性差异：
+
+* **`curl_cffi` 的 `Response` 不支持上下文管理器**，`with r:` 会直接
+  `TypeError: 'Response' object does not support the context manager protocol`。
+  流式下载必须改用 `try / finally: close_response(r)` —— 但「早退必须关响应」
+  这条规律仍然成立，漏了照样会把连接池耗干。
+* `iter_content()` 两边都有，但为保险起见统一走 `body_chunks(resp)`；
+  `response_text()` 里取 `apparent_encoding` 用的是 `getattr(..., None)`，所以不受影响。
+
+装不上 `curl_cffi` 也能跑（`get_session()` 自动退回 `requests`），单测和本地环境
+不必依赖它，只是那批站点仍然 403。
+
+### 指数退避：三级，封顶 30s
+
+`fetch_with_retry()` 包住所有请求（可达性探测、title 抓取、校徽下载），
+失败按 `5s → 15s → 30s` 退避（`backoff_delay()`，第三级 5×3²=45 被上限截到 30），
+每级带 ±25% 抖动，免得几十个线程退避完又同时发出去。
+
+**只有「可能马上就好」的失败才退避**：超时、连接被掐、403/408/412/429/5xx。
+404/400 是站点明确说「没有」，立刻返回 —— 否则每个死域名都要白等 50 秒。
+
+### 失联不立刻删，满 3 天才移除
+
+抓不到就删的话，卡片会每天在墙上忽隐忽现（公共 DNS 丢包、对端限流都会造成单日失败）。
+`merge_history()` 的规则：
+
+| 情况 | 处理 |
+| --- | --- |
+| 本轮通了（2xx/3xx 且不是中间页） | 清空 `down_since`，刷新 `last_ok` |
+| 本轮没通、历史上有 | 沿用历史的 `down_since`（没有就记今天），并沿用历史的 title / 校徽 / 落地地址 —— 卡片降级成「打不开」但内容不空白 |
+| 本轮没通、历史上也没有 | **跳过**。否则第一次运行会把 5 万多个候选域名全写进 `result.json` |
+| 连续失联满 `RETENTION_DAYS`（3）天 | 移除，卡片从墙上消失 |
+
+`down_since` / `last_ok` 会写进 `result.json` 并传给前端，失联卡片的说明里会写
+「已失联 N 天，满 3 天不恢复就移除」。
+
+⚠️ **`is_up()` 的口径必须和 `build-data.mjs` 里的 `statusBadgeOf()` 一致**：
+只看 2xx/3xx 且 `blocked` 为空。不一致就会出现「卡片写着可访问，却因为被判失联
+而从墙上消失」这种自相矛盾。
+
+### 校徽按「重定向后的域名」存，一个学校一份
+
+以前用奶龙域名当文件名，于是一堆指向同一所大学的奶龙域名会把**同一张校徽
+下载并保存十几遍**。实测 `www.bit.edu.cn` 底下挂着 3 个奶龙域名，3 份 7047 字节
+完全相同的 PNG。
+
+现在 `logo_key()` 取**落地域名**（`www.bit.edu.cn`）当文件名，`resolve_logo()`
+再配一层「同一个 key 只下一次」的注册表（带每 key 一把锁，避免多线程同写一个文件）。
+同样那 3 个域名现在只产出 1 份 `www.bit.edu.cn.png`，三张卡片指向同一个文件。
+
+非 ASCII 域名先转 punycode；超过 80 字符的域名截断后接 `sha1` 前 16 位，
+保证唯一又不撞文件名长度上限。改名后旧文件由 `prune_logos.py` 自动清掉。
 
 ## 无障碍
 
