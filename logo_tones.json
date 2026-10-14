@@ -3,10 +3,6 @@
     "aspect": 3.207,
     "tone": "light"
   },
-  "logos/xn--1lq90ic7f9iv6f6w9n.com.png": {
-    "aspect": 3.207,
-    "tone": "light"
-  },
   "logos/xn--1lq90ic7f9iv6f6w9n.fun.png": {
     "aspect": 5.039,
     "tone": "light"
@@ -22,10 +18,6 @@
   "logos/xn--1lqq7iu1f9iv6f088h.cn.png": {
     "aspect": 2.935,
     "tone": "dark"
-  },
-  "logos/xn--1lqq7iu1f9iv6f088h.com.svg": {
-    "aspect": 4.562,
-    "tone": "light"
   },
   "logos/xn--1lqq7iu1f9iv6f6w9n.com.png": {
     "aspect": 3.593,
@@ -47,6 +39,10 @@
     "aspect": 3.587,
     "tone": "light"
   },
+  "logos/xn--6kr28k0gz4e7y6gfld.cn.png": {
+    "aspect": 3.587,
+    "tone": "light"
+  },
   "logos/xn--6kr28k0gz4e7y6gfld.com.png": {
     "aspect": 3.587,
     "tone": "light"
@@ -54,10 +50,6 @@
   "logos/xn--6kr28k0gz4eq33b1t7a.cn.png": {
     "aspect": 3.625,
     "tone": "dark"
-  },
-  "logos/xn--6kr28k0gz4eq33b7r1e.com.png": {
-    "aspect": 3.206,
-    "tone": "light"
   },
   "logos/xn--6kr28k0gz4eq33b7r1e.top.svg": {
     "aspect": 4.262,
@@ -69,6 +61,10 @@
   },
   "logos/xn--6kr28k0gz4evu0b1z3e.com.png": {
     "aspect": 3.778,
+    "tone": "light"
+  },
+  "logos/xn--74qv5ax7l9iv6f0tfyt6m.space.png": {
+    "aspect": 1.0,
     "tone": "light"
   },
   "logos/xn--9kq39it1f9iv6f6w9n.com.png": {
@@ -83,6 +79,10 @@
     "aspect": 1.291,
     "tone": "dark"
   },
+  "logos/xn--djry4l0gz4e7y6gfld.icu.png": {
+    "aspect": 3.71,
+    "tone": "light"
+  },
   "logos/xn--djry4l0gz4eq33b7r1e.com.png": {
     "aspect": 4.011,
     "tone": "light"
@@ -93,6 +93,10 @@
   },
   "logos/xn--djry4l0gz4evu0b1z3e.com.png": {
     "aspect": 3.443,
+    "tone": "light"
+  },
+  "logos/xn--djry4l0gz4evu0bv19a.com.png": {
+    "aspect": 1.105,
     "tone": "light"
   },
   "logos/xn--fes68b0gz4eb62bdf8a.cn.svg": {
@@ -136,8 +140,8 @@
     "tone": "light"
   },
   "logos/xn--fiqs8srwb9iv6f6w9n.net.png": {
-    "aspect": 3.338,
-    "tone": "light"
+    "aspect": 1.0,
+    "tone": "dark"
   },
   "logos/xn--fiqs8srwb9iv6f6w9n.org.png": {
     "aspect": 4.776,
@@ -149,10 +153,6 @@
   },
   "logos/xn--fiqv8jmxf9iv6f6w9n.site.png": {
     "aspect": 3.753,
-    "tone": "light"
-  },
-  "logos/xn--gnry1k0gz4ew58jmfm.com.png": {
-    "aspect": 3.531,
     "tone": "light"
   },
   "logos/xn--pssa0vz4e155inzt.com.png": {
@@ -175,10 +175,6 @@
     "aspect": 4.167,
     "tone": "dark"
   },
-  "logos/xn--psszg58c6d27tt15i.com.png": {
-    "aspect": 3.917,
-    "tone": "light"
-  },
   "logos/xn--psszg58c6d346v9y1a.com.png": {
     "aspect": 5.09,
     "tone": "dark"
@@ -189,6 +185,10 @@
   },
   "logos/xn--psszg58c6dz32ufld.com.png": {
     "aspect": 3.867,
+    "tone": "light"
+  },
+  "logos/xn--psszg58c74sf2trw1d.com.png": {
+    "aspect": 4.35,
     "tone": "light"
   },
   "logos/xn--psszg58c81dj45bdvx.com.png": {
@@ -231,9 +231,9 @@
     "aspect": 4.908,
     "tone": "light"
   },
-  "logos/xn--psszg58cb73ap6a659p.cn.svg": {
-    "aspect": 4.997,
-    "tone": "light"
+  "logos/xn--psszg58ccj875iqr5c.vip.png": {
+    "aspect": 7.901,
+    "tone": "dark"
   },
   "logos/xn--psszg58cf07f.cn.png": {
     "aspect": 4.384,
@@ -343,6 +343,10 @@
     "aspect": 7.048,
     "tone": "light"
   },
+  "logos/xn--psszg58cr55ay9af15g.com.png": {
+    "aspect": 5.958,
+    "tone": "light"
+  },
   "logos/xn--psszg58cr55ay9al75p.cn.png": {
     "aspect": 3.632,
     "tone": "dark"
@@ -391,6 +395,18 @@
     "aspect": 3.562,
     "tone": "light"
   },
+  "logos/xn--psszg58cz1myp5a4lq.com.png": {
+    "aspect": 3.725,
+    "tone": "dark"
+  },
+  "logos/xn--psszg58cz1myp5a4lq.icu.png": {
+    "aspect": 3.979,
+    "tone": "dark"
+  },
+  "logos/xn--psszg58cz1myp5abn1c.com.png": {
+    "aspect": 4.255,
+    "tone": "light"
+  },
   "logos/xn--qvrq5h0gz4e1yak04fbi5e.online.png": {
     "aspect": 3.742,
     "tone": "light"
@@ -407,6 +423,18 @@
     "aspect": 3.908,
     "tone": "light"
   },
+  "logos/xn--tlq19wzg04e6y6gfvl.cn.png": {
+    "aspect": 3.867,
+    "tone": "light"
+  },
+  "logos/xn--tlq19wzg04e6y6gfvl.icu.png": {
+    "aspect": 3.738,
+    "tone": "light"
+  },
+  "logos/xn--tlq19wzg04enx6i9ot.top.png": {
+    "aspect": 3.903,
+    "tone": "light"
+  },
   "logos/xn--v6qr1dq5g9iv6f7z3hqryb.cn.png": {
     "aspect": 2.735,
     "tone": "light"
@@ -414,6 +442,14 @@
   "logos/xn--vcs43c0gz4e619joyl.icu.png": {
     "aspect": 3.531,
     "tone": "light"
+  },
+  "logos/xn--vhq58ftvi7ix6f4w9n.com.svg": {
+    "aspect": 3.767,
+    "tone": "light"
+  },
+  "logos/xn--vhq58ftvi7ix6f4w9n.icu.png": {
+    "aspect": 5.081,
+    "tone": "dark"
   },
   "logos/xn--wbs66c0gz4ecwe320l.cn.png": {
     "aspect": 3.103,
