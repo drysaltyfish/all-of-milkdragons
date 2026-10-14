@@ -1,6 +1,6 @@
 {
   "logos/xn--1lq90ic7f9iv6f088h.com.png": {
-    "aspect": 3.206,
+    "aspect": 3.207,
     "tone": "light"
   },
   "logos/xn--1lq90ic7f9iv6f6w9n.com.png": {
@@ -15,13 +15,21 @@
     "aspect": 1.0,
     "tone": "light"
   },
-  "logos/xn--1lq90ic7f9iv6f6w9n.top.svg": {
+  "logos/xn--1lqq7iu1f9iv6f088h.cn.png": {
+    "aspect": 2.935,
+    "tone": "dark"
+  },
+  "logos/xn--1lqq7iu1f9iv6f088h.com.svg": {
     "aspect": null,
     "tone": "unknown"
   },
-  "logos/xn--1lqq7iu1f9iv6f088h.cn.png": {
-    "aspect": 2.938,
-    "tone": "dark"
+  "logos/xn--1lqq7iu1f9iv6f6w9n.cn.svg": {
+    "aspect": null,
+    "tone": "unknown"
+  },
+  "logos/xn--1lqq7iu1f9iv6f6w9n.com.png": {
+    "aspect": 3.593,
+    "tone": "light"
   },
   "logos/xn--6kr28k0gz4e0t2h9y1a.cn.png": {
     "aspect": 3.587,
@@ -32,6 +40,10 @@
     "tone": "light"
   },
   "logos/xn--6kr28k0gz4e0t2h9y1a.icu.png": {
+    "aspect": 3.587,
+    "tone": "light"
+  },
+  "logos/xn--6kr28k0gz4e0t2h9y1a.org.png": {
     "aspect": 3.587,
     "tone": "light"
   },
@@ -72,11 +84,19 @@
     "tone": "light"
   },
   "logos/xn--djry4l0gz4evu0b1z3e.com.png": {
-    "aspect": 3.444,
+    "aspect": 3.443,
     "tone": "light"
   },
+  "logos/xn--fes68b0gz4eb62bdf8a.cn.svg": {
+    "aspect": null,
+    "tone": "unknown"
+  },
+  "logos/xn--fes68b0gz4eb62bdf8a.com.svg": {
+    "aspect": null,
+    "tone": "unknown"
+  },
   "logos/xn--fhqu4y0gz4ew51b8z8a.com.png": {
-    "aspect": 4.961,
+    "aspect": 4.948,
     "tone": "light"
   },
   "logos/xn--fhqu4y0gz4ew51bfy2e.com.png": {
@@ -91,6 +111,10 @@
     "aspect": 1.0,
     "tone": "light"
   },
+  "logos/xn--fiqs8srwb9iv6f088h.com.png": {
+    "aspect": 4.103,
+    "tone": "light"
+  },
   "logos/xn--fiqs8srwb9iv6f088h.site.png": {
     "aspect": 4.103,
     "tone": "light"
@@ -103,13 +127,9 @@
     "aspect": null,
     "tone": "unknown"
   },
-  "logos/xn--fiqs8srwb9iv6f6w9n.fun.svg": {
-    "aspect": null,
-    "tone": "unknown"
-  },
   "logos/xn--fiqs8srwb9iv6f6w9n.icu.png": {
-    "aspect": 3.231,
-    "tone": "dark"
+    "aspect": 3.232,
+    "tone": "light"
   },
   "logos/xn--fiqs8srwb9iv6f6w9n.net.png": {
     "aspect": 1.0,
@@ -119,16 +139,16 @@
     "aspect": 4.776,
     "tone": "dark"
   },
-  "logos/xn--fiqv8jmxf9iv6f6w9n.site.png": {
-    "aspect": 3.756,
+  "logos/xn--fiqv8jmxf9iv6f6w9n.com.png": {
+    "aspect": 3.817,
     "tone": "light"
   },
-  "logos/xn--pssd5uz4e6t1bbi9a.com.png": {
-    "aspect": 4.456,
-    "tone": "dark"
+  "logos/xn--fiqv8jmxf9iv6f6w9n.site.png": {
+    "aspect": 3.753,
+    "tone": "light"
   },
   "logos/xn--pssd5uz4e6t1bhg3e.com.png": {
-    "aspect": 3.281,
+    "aspect": 3.288,
     "tone": "light"
   },
   "logos/xn--pssd5uz4e6t1bhg3e.top.png": {
@@ -143,13 +163,37 @@
     "aspect": 3.917,
     "tone": "light"
   },
+  "logos/xn--psszg58c6d346v9y1a.com.png": {
+    "aspect": 5.09,
+    "tone": "dark"
+  },
   "logos/xn--psszg58c6dz32ufld.cn.png": {
     "aspect": 4.706,
     "tone": "dark"
   },
-  "logos/xn--psszg58c81dj45bjw8c.com.png": {
-    "aspect": 4.183,
+  "logos/xn--psszg58c6dz32ufld.com.png": {
+    "aspect": 3.867,
     "tone": "light"
+  },
+  "logos/xn--psszg58c81dj45bdvx.com.png": {
+    "aspect": 1.0,
+    "tone": "light"
+  },
+  "logos/xn--psszg58c81dj45bjw8c.cn.png": {
+    "aspect": 3.831,
+    "tone": "light"
+  },
+  "logos/xn--psszg58c81dj45bjw8c.icu.png": {
+    "aspect": 3.642,
+    "tone": "dark"
+  },
+  "logos/xn--psszg58c81dj45bjw8c.org.png": {
+    "aspect": 1.0,
+    "tone": "light"
+  },
+  "logos/xn--psszg58c81dj45bjw8c.top.png": {
+    "aspect": 5.267,
+    "tone": "dark"
   },
   "logos/xn--psszg58c9ct98x9y1a.top.png": {
     "aspect": 4.301,
@@ -163,9 +207,33 @@
     "aspect": 5.039,
     "tone": "light"
   },
-  "logos/xn--psszg58cb73ap6a0z9g.icu.png": {
-    "aspect": 4.923,
+  "logos/xn--psszg58c9cz42hyr3e.cn.jpg": {
+    "aspect": 2.719,
     "tone": "dark"
+  },
+  "logos/xn--psszg58c9vt44nmm9d.icu.png": {
+    "aspect": 5.246,
+    "tone": "light"
+  },
+  "logos/xn--psszg58cb73ap6a0z9g.icu.png": {
+    "aspect": 4.908,
+    "tone": "dark"
+  },
+  "logos/xn--psszg58cb73ap6a659p.cn.svg": {
+    "aspect": null,
+    "tone": "unknown"
+  },
+  "logos/xn--psszg58cf07f.cn.png": {
+    "aspect": 4.384,
+    "tone": "dark"
+  },
+  "logos/xn--psszg58cf07f.fun.png": {
+    "aspect": 4.62,
+    "tone": "light"
+  },
+  "logos/xn--psszg58cf07f.icu.svg": {
+    "aspect": null,
+    "tone": "unknown"
   },
   "logos/xn--psszg58cf07f.org.png": {
     "aspect": 4.384,
@@ -175,21 +243,65 @@
     "aspect": 3.394,
     "tone": "dark"
   },
+  "logos/xn--psszg58cf07f.top.png": {
+    "aspect": 3.753,
+    "tone": "light"
+  },
+  "logos/xn--psszg58cf1d3z4axz1e.com.png": {
+    "aspect": 3.825,
+    "tone": "light"
+  },
+  "logos/xn--psszg58cf1d8u4erdxb.com.svg": {
+    "aspect": null,
+    "tone": "unknown"
+  },
+  "logos/xn--psszg58cf1d8wad17z.cn.png": {
+    "aspect": 1.062,
+    "tone": "dark"
+  },
+  "logos/xn--psszg58cf1d8wad17z.com.png": {
+    "aspect": 4.307,
+    "tone": "light"
+  },
+  "logos/xn--psszg58cf1dt0rh95f.com.svg": {
+    "aspect": null,
+    "tone": "unknown"
+  },
   "logos/xn--psszg58cgv6a4t1cr1l.com.png": {
     "aspect": 4.106,
     "tone": "dark"
   },
   "logos/xn--psszg58ci9aj27nlnk.com.png": {
-    "aspect": 3.325,
+    "aspect": 3.326,
     "tone": "dark"
+  },
+  "logos/xn--psszg58cj45k.com.png": {
+    "aspect": 4.558,
+    "tone": "light"
+  },
+  "logos/xn--psszg58cj45k.fun.png": {
+    "aspect": 3.753,
+    "tone": "light"
+  },
+  "logos/xn--psszg58cj45k.net.png": {
+    "aspect": 3.0,
+    "tone": "light"
+  },
+  "logos/xn--psszg58cj45k.space.png": {
+    "aspect": 5.338,
+    "tone": "light"
+  },
+  "logos/xn--psszg58cj45k.store.svg": {
+    "aspect": null,
+    "tone": "unknown"
+  },
+  "logos/xn--psszg58cj45k.top.png": {
+    "aspect": 3.232,
+    "tone": "light"
   },
   "logos/xn--psszg58cm5ej12gtkr.com.png": {
-    "aspect": 3.181,
+    "aspect": 3.183,
     "tone": "dark"
-  },
-  "logos/xn--psszg58cp4a501kgld.com.png": {
-    "aspect": 3.729,
-    "tone": "light"
   },
   "logos/xn--psszg58cr55a3u1dk8aca.online.png": {
     "aspect": 6.095,
@@ -239,17 +351,9 @@
     "aspect": 4.706,
     "tone": "dark"
   },
-  "logos/xn--psszg58cy52cu6lj57b.cn.png": {
-    "aspect": 4.162,
-    "tone": "light"
-  },
   "logos/xn--psszg58cydsd5672a.cn.png": {
-    "aspect": 3.294,
+    "aspect": 3.292,
     "tone": "light"
-  },
-  "logos/xn--psszg58cydsd5672a.com.png": {
-    "aspect": 3.0,
-    "tone": "dark"
   },
   "logos/xn--psszg58cydsdq780c.com.png": {
     "aspect": 3.315,
@@ -259,9 +363,13 @@
     "aspect": 3.562,
     "tone": "dark"
   },
-  "logos/xn--qvrq5h0gz4e1yak04fbi5e.com.png": {
-    "aspect": 4.295,
+  "logos/xn--psszg58cz39jy6cum.site.png": {
+    "aspect": 7.656,
     "tone": "light"
+  },
+  "logos/xn--qvrq5h0gz4e1yak04fbi5e.online.png": {
+    "aspect": 3.742,
+    "tone": "dark"
   },
   "logos/xn--qvrq5h0gz4e1yak04fbi5e.site.png": {
     "aspect": 4.295,
@@ -276,7 +384,7 @@
     "tone": "light"
   },
   "logos/xn--v6qr1dq5g9iv6f7z3hqryb.cn.png": {
-    "aspect": 2.737,
+    "aspect": 2.735,
     "tone": "light"
   },
   "logos/xn--vcs43c0gz4e619joyl.icu.png": {
@@ -284,12 +392,8 @@
     "tone": "light"
   },
   "logos/xn--wbs66c0gz4ecwe320l.cn.png": {
-    "aspect": 3.1,
+    "aspect": 3.103,
     "tone": "light"
-  },
-  "logos/xn--wbs66c0gz4ecwe320l.com.png": {
-    "aspect": 5.766,
-    "tone": "dark"
   },
   "logos/xn--wbs66c0gz4ecwe320l.top.png": {
     "aspect": 4.657,
@@ -307,9 +411,9 @@
     "aspect": null,
     "tone": "unknown"
   },
-  "logos/xn--xhq02y0gz4eg2f663f.fun.svg": {
-    "aspect": null,
-    "tone": "unknown"
+  "logos/xn--xhq02y0gz4eg2f663f.fun.png": {
+    "aspect": 3.656,
+    "tone": "dark"
   },
   "logos/xn--xhq02y0gz4eg2fdt3k.com.png": {
     "aspect": 1.278,
@@ -321,6 +425,14 @@
   },
   "logos/xn--xhq02y0gz4eg2fdt3k.vip.png": {
     "aspect": 4.371,
+    "tone": "dark"
+  },
+  "logos/xn--xhq44jb2f9iv6f088h.com.jpg": {
+    "aspect": 3.174,
+    "tone": "dark"
+  },
+  "logos/xn--xhq44jb2f9iv6f6w9n.com.png": {
+    "aspect": 3.088,
     "tone": "dark"
   },
   "logos/xn--xhq44jb2f9iv6f6w9n.icu.png": {
