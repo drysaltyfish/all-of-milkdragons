@@ -22,9 +22,26 @@ urllib3.disable_warnings()
 # ---------- 配置 ----------
 DNS_WORKERS = 500
 HTTP_WORKERS = 200
+
+# 单个 DNS 服务器的等待时间 / 一次解析的总预算。
+# ★ 这两个值必须分开：dnspython 的 lifetime 是整次解析的预算，
+#   如果 lifetime == timeout，第一个服务器超时就吃光预算、根本轮不到后面的服务器。
+#   这曾导致 CI（海外 runner，前两跳 DNS 容易抖）稳定丢掉三成域名。
 DNS_TIMEOUT = 3
+DNS_LIFETIME = 9
+DNS_ATTEMPTS = 2          # 一轮失败后换服务器偏移再试一次
 HTTP_TIMEOUT = 30
-DNS_SERVERS = ["8.8.8.8", "114.114.114.115", "1.1.1.1"]
+
+# ★ 只放**从 runner 一定连得上**的解析器。
+#   dnspython 会在 nameservers 之间轮转，一个连不上的服务器每次都要白等满
+#   DNS_TIMEOUT，轮到时还可能把 lifetime 耗光、连后面的好服务器都试不到 ——
+#   这比少配一个服务器糟糕得多。（曾被 223.5.5.5 / 119.29.29.29 坑掉 41 个域名。）
+DNS_SERVERS = ["8.8.8.8", "1.1.1.1"]
+
+# 复检（上一轮有记录、本轮没查到的域名）用的慢节奏参数
+DNS_RESCUE_WORKERS = 60
+DNS_RESCUE_TIMEOUT = 5
+DNS_RESCUE_LIFETIME = 20
 
 OUT_JSON = "result.json"
 LOGO_DIR = "logos"
@@ -64,7 +81,8 @@ _tl = threading.local()
 def get_resolver():
     if not hasattr(_tl, "resolver"):
         r = dns.resolver.Resolver()
-        r.timeout = r.lifetime = DNS_TIMEOUT
+        r.timeout = DNS_TIMEOUT
+        r.lifetime = DNS_LIFETIME
         r.nameservers = DNS_SERVERS
         _tl.resolver = r
     return _tl.resolver
@@ -80,13 +98,60 @@ def get_session():
     return _tl.session
 
 
+# ==================== 响应解码 ====================
+_CT_CHARSET_RE = re.compile(r"charset\s*=\s*['\"]?([\w-]+)", re.I)
+_META_CHARSET_RE = re.compile(
+    r'<meta[^>]+charset\s*=\s*["\']?([\w-]+)', re.I
+)
+
+
+def response_text(resp) -> str:
+    """把响应体解成 str。
+
+    requests 在没有任何 charset 信息时会退回 ISO-8859-1，
+    中文站点就会整页变成乱码（正则也就抓不到跳转地址了）。
+    这里按 HTTP 头 -> <meta charset> -> apparent_encoding -> UTF-8 逐级兜底。
+    """
+    raw = resp.content
+
+    m = _CT_CHARSET_RE.search(resp.headers.get("Content-Type", ""))
+    if m:
+        try:
+            return raw.decode(m.group(1), errors="replace")
+        except LookupError:
+            pass
+
+    head = raw[:4096].decode("ascii", errors="ignore")
+    m = _META_CHARSET_RE.search(head)
+    if m:
+        try:
+            return raw.decode(m.group(1), errors="replace")
+        except LookupError:
+            pass
+
+    enc = getattr(resp, "apparent_encoding", None) or "utf-8"
+    try:
+        return raw.decode(enc, errors="replace")
+    except LookupError:
+        return raw.decode("utf-8", errors="replace")
+
+
 # ==================== 阶段 1：DNS ====================
 def dns_lookup(item):
     u, a = item
-    try:
-        ips = [str(x) for x in get_resolver().resolve(a, "A")]
-    except Exception:
-        ips = []
+    resolver = get_resolver()
+    ips = []
+    for attempt in range(DNS_ATTEMPTS):
+        try:
+            ips = [str(x) for x in resolver.resolve(a, "A")]
+            break
+        except dns.resolver.NXDOMAIN:
+            # 域名确实不存在，重试没有意义
+            break
+        except Exception:
+            ips = []
+            # 换个服务器顺序再试一次（dnspython 不会自己重试失败的那一轮）
+            resolver.nameservers = DNS_SERVERS[attempt + 1:] + DNS_SERVERS[:attempt + 1]
     return {"domain": u, "ascii": a, "ips": ips}
 
 
@@ -133,7 +198,7 @@ META_RE = re.compile(
 
 JS_LOC_RE = re.compile(
     r'(?:window\.)?location'
-    r'(?:\s*\.\s*(?:href|replace)\s*(?:=|\())?'
+    r'(?:\s*\.\s*(?:href|replace|assign)\s*(?:=|\())?'
     r'\s*["\']([^"\']+)["\']',
     re.I,
 )
@@ -142,6 +207,16 @@ SCRIPT_RE = re.compile(r"(?is)<script[^>]*>(.*?)</script>")
 
 JS_CTX_URL_RE = re.compile(
     r'location[^;\n]{0,200}?(https?://[^\s"\'<>()\\]+)',
+    re.I,
+)
+
+# ★ 「配置对象 + location.href = config.url」型模板：
+#   var cfg = { url: 'http://www.example.edu.cn/', ... };
+#   function go() { location.href = config.url; }      <- 这里没有字面量 URL
+#   URL 出现在赋值语句里而不是 location 后面，所以上面两条正则都抓不到。
+JS_CONFIG_RE = re.compile(
+    r'["\']?(?:url|href|target|link|redirect|redirecturl|to|jump|jumpurl|site|home)["\']?'
+    r'\s*[:=]\s*["\'](https?://[^"\']+)["\']',
     re.I,
 )
 
@@ -250,7 +325,19 @@ def extract_next(html: str, base: str):
             if not is_noise_url(u):
                 return u, "js_script"
 
-    # 4) 兜底：HTML body 里出现 .edu.cn 之类的目标域名
+    # 4) 配置对象里的字面量 URL（url: '...' / redirect: '...'）
+    #    跳过指向自己的（很多站点会在 og:url / canonical 里写自身地址）
+    base_host = urlparse(base).netloc.lower()
+    for m in JS_CONFIG_RE.finditer(html):
+        raw = m.group(1)
+        u = urljoin(base, raw)
+        if is_noise_url(u):
+            continue
+        if urlparse(u).netloc.lower() == base_host:
+            continue
+        return u, "js_config"
+
+    # 5) 兜底：HTML body 里出现 .edu.cn 之类的目标域名
     u, how = extract_body_target(html, base)
     if u:
         return u, how
@@ -336,14 +423,15 @@ def http_check(item):
     visited = {last_url}
 
     for _ in range(MAX_HOPS):
-        nxt, how = extract_next(r.text, last_url)
+        nxt, how = extract_next(response_text(r), last_url)
         if not nxt or nxt == last_url or nxt in visited:
             break
 
-        # ★ 关键修复：当前页面已经在 .edu.cn 上时，不再因为 body_target
-        #   继续深入跳转（避免被拖进 IAM / SSO 认证链）。
+        # ★ 关键修复：当前页面已经在 .edu.cn 上时，不再因为 body_target / js_config
+        #   这类"弱信号"继续深入跳转（避免被拖进 IAM / SSO 认证链，
+        #   也避免把真实大学页面里的 url: '...' 当成跳转）。
         #   meta / js_location / js_script 这类"显式跳转"仍允许。
-        if how == "body_target":
+        if how in ("body_target", "js_config"):
             cur_host = urlparse(last_url).netloc.lower()
             if has_target_suffix(cur_host):
                 break
@@ -378,7 +466,7 @@ def http_check(item):
 def jump_type(method_str: str, hop_count: int) -> str:
     """direct / delayed / none"""
     if any(k in method_str for k in (
-        "meta", "js_location", "js_script", "body_target",
+        "meta", "js_location", "js_script", "js_config", "body_target",
     )):
         return "delayed"
     if hop_count > 1:
@@ -422,33 +510,7 @@ def extract_title_logo(session, url, referer=None):
     if r.status_code >= 400:
         return "", "", f"http_{r.status_code}"
 
-    def decode_html(resp) -> str:
-        """尽量按真实编码把 bytes 解成 str。"""
-        raw = resp.content
-
-        ct = resp.headers.get("Content-Type", "")
-        m = re.search(r"charset\s*=\s*['\"]?([\w-]+)", ct, re.I)
-        if m:
-            try:
-                return raw.decode(m.group(1), errors="replace")
-            except LookupError:
-                pass
-
-        head = raw[:4096].decode("ascii", errors="ignore")
-        m = re.search(r'<meta[^>]+charset\s*=\s*["\']?([\w-]+)', head, re.I)
-        if m:
-            try:
-                return raw.decode(m.group(1), errors="replace")
-            except LookupError:
-                pass
-
-        enc = resp.apparent_encoding or "utf-8"
-        try:
-            return raw.decode(enc, errors="replace")
-        except LookupError:
-            return raw.decode("utf-8", errors="replace")
-
-    html = decode_html(r)
+    html = response_text(r)
     if len(html) > MAX_HTML_BODY:
         html = html[:MAX_HTML_BODY]
 
@@ -483,26 +545,28 @@ def extract_title_logo(session, url, referer=None):
     return title, logo_url, ""
 
 
-def ext_from_response(resp, url) -> str:
-    ct = resp.headers.get("Content-Type", "").split(";")[0].strip().lower()
-    mapping = {
-        "image/png": ".png",
-        "image/jpeg": ".jpg",
-        "image/jpg": ".jpg",
-        "image/gif": ".gif",
-        "image/svg+xml": ".svg",
-        "image/webp": ".webp",
-        "image/x-icon": ".ico",
-        "image/vnd.microsoft.icon": ".ico",
-        "image/bmp": ".bmp",
-    }
-    if ct in mapping:
-        return mapping[ct]
-    path = urlparse(url).path.lower()
-    for ext in (".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico", ".bmp"):
-        if path.endswith(ext):
-            return ext
-    return ".img"
+def sniff_image_ext(head: bytes) -> str:
+    """按魔数判断真实图片类型。
+
+    ★ 不能信 Content-Type：很多站点在图片 404/403 时返回一个 200 的 HTML 报错页，
+      按头的类型存下来就会得到一张「内容是 HTML 的 .img 校徽」。
+    """
+    if head.startswith(b"\x89PNG\r\n\x1a\n"):
+        return ".png"
+    if head.startswith(b"\xff\xd8\xff"):
+        return ".jpg"
+    if head[:6] in (b"GIF87a", b"GIF89a"):
+        return ".gif"
+    if head[:4] == b"RIFF" and head[8:12] == b"WEBP":
+        return ".webp"
+    if head[:4] == b"\x00\x00\x01\x00":
+        return ".ico"
+    if head[:2] == b"BM":
+        return ".bmp"
+    stripped = head.lstrip()[:5].lower()
+    if stripped.startswith(b"<svg") or stripped.startswith(b"<?xml"):
+        return ".svg"
+    return ""
 
 
 def download_logo(session, url, out_dir, name, referer=None) -> str:
@@ -522,20 +586,37 @@ def download_logo(session, url, out_dir, name, referer=None) -> str:
     except Exception:
         return ""
 
-    if r.status_code >= 400:
-        return ""
+    # ★ 用 with 保证任何分支都会关掉流式响应。
+    #   早退不关连接会一直占着 urllib3 的连接池，200 个线程很快就全部阻塞在
+    #   session.get() 上，整个抓取看起来像卡死。
+    with r:
+        if r.status_code >= 400:
+            return ""
 
-    ext = ext_from_response(r, r.url)
-    filename = f"{name}{ext}"
-    path = os.path.join(out_dir, filename)
+        chunks = r.iter_content(8192)
+        try:
+            first = next(chunks)
+        except StopIteration:
+            return ""
+        if not first:
+            return ""
 
-    try:
-        with open(path, "wb") as f:
-            for chunk in r.iter_content(8192):
-                if chunk:
-                    f.write(chunk)
-    except Exception:
-        return ""
+        # ★ 按魔数确认这真的是图片；不是就丢掉（见 sniff_image_ext 的说明）
+        ext = sniff_image_ext(bytes(first[:64]))
+        if not ext:
+            return ""
+
+        filename = f"{name}{ext}"
+        path = os.path.join(out_dir, filename)
+
+        try:
+            with open(path, "wb") as f:
+                f.write(first)
+                for chunk in chunks:
+                    if chunk:
+                        f.write(chunk)
+        except Exception:
+            return ""
 
     if os.path.getsize(path) < MIN_LOGO_BYTES:
         try:
@@ -599,6 +680,44 @@ def write_json(path, rows):
         json.dump(out, f, ensure_ascii=False, indent=2)
 
 
+def load_previous_ips(path):
+    """上一轮 result.json 里「域名 -> IP」的对照表。"""
+    if not os.path.exists(path):
+        return {}
+    try:
+        with open(path, encoding="utf-8") as fh:
+            rows = json.load(fh)
+    except Exception:
+        return {}
+    out = {}
+    for row in rows:
+        if isinstance(row, dict) and row.get("ascii"):
+            out[row["ascii"]] = row.get("ips", "")
+    return out
+
+
+def rescue_dns(item, previous_ips):
+    """对「上一轮有记录、这一轮没查到」的域名做一次更有耐心的复检。
+
+    ★ 为什么需要：5 万次查询的高并发会偶发触发公共 DNS 的限流/丢包，
+      而这些域名本身是活的。不复检的话，每天的收录数量会在 120~165 之间来回跳，
+      页面上的卡片会莫名其妙地消失又出现。
+    """
+    u, a = item
+    if not previous_ips.get(a):
+        return {"domain": u, "ascii": a, "ips": []}
+
+    resolver = dns.resolver.Resolver()
+    resolver.nameservers = DNS_SERVERS
+    resolver.timeout = DNS_RESCUE_TIMEOUT
+    resolver.lifetime = DNS_RESCUE_LIFETIME
+    try:
+        ips = [str(x) for x in resolver.resolve(a, "A")]
+    except Exception:
+        ips = []
+    return {"domain": u, "ascii": a, "ips": ips}
+
+
 # ==================== 主流程 ====================
 def main():
     os.makedirs(LOGO_DIR, exist_ok=True)
@@ -614,6 +733,27 @@ def main():
         dns_lookup, targets,
         max_workers=DNS_WORKERS, desc="DNS", chunksize=16,
     )
+
+    # 补救：上一轮活着、本轮没查到的，换个节奏再查一遍
+    previous_ips = load_previous_ips(OUT_JSON)
+    n_dns = len([r for r in dns_results if r["ips"]])
+    rescue_targets = [
+        t for t, r in zip(targets, dns_results)
+        if not r["ips"] and previous_ips.get(t[1])
+    ]
+    if rescue_targets:
+        print(f"\n[阶段 1.5] 上一轮有记录但本轮没查到 {len(rescue_targets)} 个，复检中")
+        rescued = thread_map(
+            lambda t: rescue_dns(t, previous_ips), rescue_targets,
+            max_workers=DNS_RESCUE_WORKERS, desc="DNS复检", chunksize=1,
+        )
+        by_ascii = {r["ascii"]: r for r in dns_results}
+        for r in rescued:
+            if r["ips"]:
+                by_ascii[r["ascii"]]["ips"] = r["ips"]
+        back = len([r for r in dns_results if r["ips"]]) - n_dns
+        print(f"复检救回 {back} / {len(rescue_targets)} 个")
+
     live = [r for r in dns_results if r["ips"]]
     print(f"有 DNS 记录: {len(live)} / {len(targets)}")
 

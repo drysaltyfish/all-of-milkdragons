@@ -104,7 +104,10 @@ DEFAULT_HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,"
               "image/avif,image/webp,image/apng,*/*;q=0.8",
     "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
-    "Accept-Encoding": "gzip, deflate, br",
+    # ★ 故意不要 br：requests/urllib3 只有在装了 brotli 包时才会解压它，
+    #   否则会把压缩字节流当 HTML 交回来 —— 页面变成乱码二进制，
+    #   标题、校徽、跳转地址全部抓不到。gzip/deflate 是内置支持，够用。
+    "Accept-Encoding": "gzip, deflate",
     "Cache-Control": "no-cache",
     "Pragma": "no-cache",
     "Upgrade-Insecure-Requests": "1",

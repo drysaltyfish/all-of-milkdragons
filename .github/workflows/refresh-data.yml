@@ -41,6 +41,10 @@ jobs:
       - name: 阶段 1-3：DNS + HTTP + 标题/校徽抓取
         run: python update.py
 
+      # 去底色 + 裁空白 + 限尺寸。必须在体检之前跑：体检看的是处理后的像素
+      - name: 校徽后处理
+        run: python process_logos.py
+
       - name: 校徽明暗体检
         run: python analyze_logos.py
 

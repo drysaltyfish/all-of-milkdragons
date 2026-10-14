@@ -14,9 +14,12 @@ update.py            DNS 探测 + HTTP 跳转追踪 + 标题/校徽抓取
    ↓                  （每天 03:10 北京时间由 GitHub Actions 跑）
 result.json          ┐
 logos/               ├─ 抓取产物，提交进仓库
-analyze_logos.py     ┘
+   ↓                 ┘
+process_logos.py     校徽后处理：去底色 / 裁空白 / 限尺寸（原地覆盖 logos/）
    ↓
-logo_tones.json      每张校徽的明暗体检结果（白 logo 要换深色底板）
+analyze_logos.py     校徽明暗体检 -> logo_tones.json
+   ↓
+prune_logos.py       删掉不再被引用的校徽，防止仓库无限膨胀
    ↓
 scripts/build-data.mjs   清洗 / 归一化 / 枚举 / 文案映射
    ↓
@@ -33,9 +36,11 @@ src/components/*.vue 组件层：只吃 props，不碰抓取细节
 ```
 ├── update.py               抓取脚本（DNS / HTTP / 标题 / 校徽）
 ├── const.py                域名拼装用的词表与请求头
+├── process_logos.py        校徽去底色 + 裁空白 + 限尺寸
 ├── analyze_logos.py        校徽明暗体检 -> logo_tones.json
+├── prune_logos.py          清理未被引用的校徽
 ├── result.json             抓取结果（每日刷新，入库）
-├── logos/                  校徽原图（每日刷新，入库）
+├── logos/                  校徽（每日刷新，入库）
 ├── logo_tones.json         校徽体检结果（每日刷新，入库）
 ├── requirements.txt        Python 依赖
 │
@@ -112,15 +117,40 @@ BASE_PATH=/ npm run build
 
 * **暖黄配色**：主色蜂蜜金 `#E9A93A`，底色暖奶油 `#FFF6E2`，正文用暖棕而不是纯黑；
   阴影也带暖棕色调。所有颜色集中在 `src/styles/tokens.css` 的三层令牌里，组件里不写死 hex。
-* **校徽用整卡宽的横条托盘**：抓下来的校徽**宽高比中位数 ≈ 3.7**，绝大多数是「校名横排
-  字标」，塞进方形缩略图会小到看不清。
-* **6 成校徽给了深色底板**：抓到的校徽里有 52/86 是「白色 logo + 透明底」（站点导航栏的
-  白色版本），放在白卡片上等于隐形。`analyze_logos.py` 预先体检每张图，`logoLight` 为真
-  的换深暖棕托盘。
-* **打不开的域名不隐藏**：24 个失效域名照样上墙，只是降级成虚线边框 + 灰度校徽 +
+* **校徽用整卡宽的横条区，且不垫任何色块**：抓下来的校徽**宽高比中位数 ≈ 3.7**，
+  绝大多数是「校名横排字标」，塞进方形缩略图会小到看不清；而抓到的校徽里又有六成以上是
+  「白色 logo + 透明底」（站点导航栏上的白色版本），垫深色底板就会让卡片看起来像贴了一堆
+  色块。所以这里不垫底，而是让 `analyze_logos.py` 体检出的这类 logo **整体压暗**成暖深色
+  （`.logo__img--on-light`），白 logo 在浅色卡片上自然成立。
+* **自带实色底的校徽在数据阶段就抠掉**：少数校徽是「白底/深蓝底/紫底的一整块矩形」。
+  `process_logos.py` 沿边缘做容差洪水填充把它们抠成透明。判断时**只看不透明的边缘点**，
+  否则白字透明底的 logo 会被误判成「底色是白」，一洪水填充把字整个吃掉。
+  同时它会按 alpha 边界裁掉四周空白、把最长边压到 640px——抓回来过 8072×1670 的 PNG。
+* **打不开的域名不隐藏**：失效域名照样上墙，只是降级成虚线边框 + 灰度校徽 +
   红色状态徽章，状态徽章写明 `HTTP 403` / `请求超时` 这类具体原因。
 * **一个拉伸链接 + 一个落地链接**：卡片整体指向奶龙域名本身，右下角的小链接直接去它
   最终落地的真实站点；用「拉伸覆盖层」而不是 `<a>` 套 `<a>`。
+
+## 抓取踩过的坑（改 `update.py` 前先看这里）
+
+这四个坑都会表现为「页面明明有跳转，却抓不到」，而且都不报错：
+
+1. **`Accept-Encoding` 里的 `br`**。requests/urllib3 只有在装了 `brotli` 包时才会解压
+   Brotli，否则把压缩字节流原样交回来。之前请求头里写着 `br`，这些站点的 HTML 就变成
+   一堆乱码二进制，标题、校徽、跳转地址全部抓不到。现在请求头只留 `gzip, deflate`。
+2. **编码探测**。响应头没有 charset 时 requests 会退回 ISO-8859-1，中文站点整页乱码。
+   `response_text()` 按 HTTP 头 → `<meta charset>` → `apparent_encoding` → UTF-8 逐级兜底。
+3. **`location.href = config.url` 型模板**。目标地址写在配置对象里（`url: 'http://...'`），
+   `location` 后面并没有字面量 URL，所以「`location.*= "..."`」和「location 附近的 URL」
+   两条正则都抓不到。新增 `JS_CONFIG_RE` 兜住这种写法（并跳过指向自身 host 的
+   `og:url` / canonical）。
+4. **DNS 预算**。`resolver.lifetime` 是整次解析的总预算，原来它和 `timeout` 都设成 3 秒，
+   第一个 DNS 服务器一超时就吃光预算、后面的服务器根本轮不到。海外 runner 上前两跳容易抖，
+   于是稳定丢掉三成域名。现在 `timeout=3 / lifetime=9`，并去掉了对境外查询会拒答的
+   `114.114.114.115`。
+
+另外：`download_logo` 用 `stream=True`，**任何提前 return 都必须关掉响应**（这里用
+`with r:`），否则连接池会被占满，两百个线程一起卡死，整个抓取看起来像挂住。
 
 ## 无障碍
 
