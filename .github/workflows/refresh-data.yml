@@ -28,9 +28,9 @@ jobs:
     timeout-minutes: 120
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
           cache: pip
@@ -68,7 +68,7 @@ jobs:
       # 抓取结果同时留一份 artifact，方便失败时回查
       - name: 上传本次抓取产物
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: crawl-result-${{ github.run_number }}
           path: |
