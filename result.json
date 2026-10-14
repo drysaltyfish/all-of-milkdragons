@@ -11,8 +11,8 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "2.626",
-    "ips": "43.174.247.27,43.174.246.27",
+    "latency_s": "3.658",
+    "ips": "43.174.246.27,43.174.247.27",
     "error": "conn_error"
   },
   {
@@ -27,7 +27,7 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "5.248",
+    "latency_s": "7.443",
     "ips": "172.67.212.128,104.21.93.166",
     "error": ""
   },
@@ -43,7 +43,7 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "2.694",
+    "latency_s": "4.469",
     "ips": "172.67.137.229,104.21.62.175",
     "error": "conn_error"
   },
@@ -59,8 +59,8 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.431",
-    "ips": "172.67.211.36,104.21.83.35",
+    "latency_s": "6.459",
+    "ips": "104.21.83.35,172.67.211.36",
     "error": ""
   },
   {
@@ -75,7 +75,7 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "2.322",
+    "latency_s": "4.913",
     "ips": "104.21.10.58,172.67.162.142",
     "error": ""
   },
@@ -91,7 +91,7 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "11.072",
+    "latency_s": "7.174",
     "ips": "172.67.130.10,104.21.3.18",
     "error": ""
   },
@@ -107,7 +107,7 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "6.066",
+    "latency_s": "6.278",
     "ips": "54.215.31.113",
     "error": ""
   },
@@ -123,8 +123,8 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "3.084",
-    "ips": "207.207.210.50,207.207.210.23,207.207.210.36",
+    "latency_s": "4.561",
+    "ips": "207.207.210.23,207.207.210.50,207.207.210.36",
     "error": ""
   },
   {
@@ -139,7 +139,7 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "6.872",
+    "latency_s": "5.748",
     "ips": "43.167.220.196",
     "error": ""
   },
@@ -155,8 +155,8 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.884",
-    "ips": "104.21.39.20,172.67.142.54",
+    "latency_s": "5.772",
+    "ips": "172.67.142.54,104.21.39.20",
     "error": ""
   },
   {
@@ -171,7 +171,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "6.720",
+    "latency_s": "7.430",
     "ips": "172.67.155.68,104.21.72.213",
     "error": ""
   },
@@ -187,8 +187,8 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "3.848",
-    "ips": "104.21.22.2,172.67.201.169",
+    "latency_s": "4.317",
+    "ips": "172.67.201.169,104.21.22.2",
     "error": ""
   },
   {
@@ -203,8 +203,8 @@
     "method": "requests+js_location",
     "first_status": 200,
     "final_status": 202,
-    "latency_s": "3.773",
-    "ips": "43.174.246.65,43.174.247.65",
+    "latency_s": "5.880",
+    "ips": "43.174.247.65,43.174.246.65",
     "error": ""
   },
   {
@@ -219,8 +219,8 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "3.763",
-    "ips": "185.199.109.153,185.199.108.153",
+    "latency_s": "5.650",
+    "ips": "185.199.108.153,185.199.109.153",
     "error": ""
   },
   {
@@ -235,7 +235,7 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.265",
+    "latency_s": "6.222",
     "ips": "172.67.179.154,104.21.31.192",
     "error": ""
   },
@@ -251,7 +251,7 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "13.100",
+    "latency_s": "6.897",
     "ips": "43.132.105.206",
     "error": ""
   },
@@ -267,8 +267,8 @@
     "method": "requests+js_location",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.368",
-    "ips": "185.199.109.153,185.199.111.153,185.199.110.153,185.199.108.153",
+    "latency_s": "5.014",
+    "ips": "185.199.111.153,185.199.108.153,185.199.110.153,185.199.109.153",
     "error": ""
   },
   {
@@ -283,8 +283,8 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "6.698",
-    "ips": "3.33.251.168,15.197.225.128",
+    "latency_s": "9.298",
+    "ips": "15.197.225.128,3.33.251.168",
     "error": ""
   },
   {
@@ -299,7 +299,7 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.365",
+    "latency_s": "6.402",
     "ips": "75.2.60.5",
     "error": ""
   },
@@ -315,8 +315,8 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 403,
-    "latency_s": "1.894",
-    "ips": "104.21.91.203,172.67.179.86",
+    "latency_s": "4.054",
+    "ips": "172.67.179.86,104.21.91.203",
     "error": "page:http_403"
   },
   {
@@ -331,8 +331,8 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "31.412",
-    "ips": "104.21.89.143,172.67.160.220",
+    "latency_s": "33.862",
+    "ips": "172.67.160.220,104.21.89.143",
     "error": "conn_error"
   },
   {
@@ -347,8 +347,8 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "10.040",
-    "ips": "163.181.66.179,8.25.82.169,155.102.193.200,47.246.20.170,8.45.176.227,47.246.22.173,163.181.246.237,8.48.85.171,47.246.23.135,163.181.145.173,8.38.121.242,155.102.130.138,163.181.60.195",
+    "latency_s": "5.634",
+    "ips": "8.45.176.229,163.181.60.195,155.102.193.200,163.181.145.176,8.25.82.169,47.246.22.172,163.181.246.235,163.181.66.180,47.246.20.171,155.102.130.141,47.246.23.135,8.48.85.169,8.38.121.240",
     "error": ""
   },
   {
@@ -363,7 +363,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "3.239",
+    "latency_s": "5.496",
     "ips": "15.197.162.184",
     "error": ""
   },
@@ -379,7 +379,7 @@
     "method": "",
     "first_status": "",
     "final_status": "",
-    "latency_s": "60.610",
+    "latency_s": "60.258",
     "ips": "10.3.19.2",
     "error": "timeout"
   },
@@ -395,25 +395,25 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "3.916",
+    "latency_s": "7.073",
     "ips": "15.197.162.184",
     "error": ""
   },
   {
     "domain": "北京奶蛙大学.com",
     "ascii": "xn--1lq90ic7f9iv6f088h.com",
-    "final_url": "https://www.bjut.edu.cn/",
-    "title": "北京工业大学|Beijing University of Technology",
-    "logo_path": "logos/xn--1lq90ic7f9iv6f088h.com.png",
-    "logo_url": "https://www.bjut.edu.cn/images/logo-1.png",
-    "jump_type": "delayed",
-    "redirect_chain": "200:https://xn--1lq90ic7f9iv6f088h.com/ -> 200:https://www.bjut.edu.cn/",
-    "method": "requests+meta",
+    "final_url": "https://xn--1lq90ic7f9iv6f088h.com/",
+    "title": "",
+    "logo_path": "",
+    "logo_url": "",
+    "jump_type": "none",
+    "redirect_chain": "200:https://xn--1lq90ic7f9iv6f088h.com/",
+    "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.442",
-    "ips": "216.198.79.1,64.29.17.1",
-    "error": ""
+    "latency_s": "34.605",
+    "ips": "216.198.79.65,64.29.17.65",
+    "error": "timeout"
   },
   {
     "domain": "上海奶龙大学.top",
@@ -427,7 +427,7 @@
     "method": "http_fallback+requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "4.322",
+    "latency_s": "6.556",
     "ips": "103.120.80.6",
     "error": ""
   },
@@ -443,7 +443,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "7.204",
+    "latency_s": "12.860",
     "ips": "104.21.45.156,172.67.216.103",
     "error": ""
   },
@@ -459,7 +459,7 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "4.077",
+    "latency_s": "6.893",
     "ips": "15.197.162.184",
     "error": ""
   },
@@ -475,8 +475,8 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "8.448",
-    "ips": "172.67.153.83,104.21.72.174",
+    "latency_s": "4.724",
+    "ips": "104.21.72.174,172.67.153.83",
     "error": ""
   },
   {
@@ -491,8 +491,8 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "21.381",
-    "ips": "104.21.11.56,172.67.191.68",
+    "latency_s": "5.604",
+    "ips": "172.67.191.68,104.21.11.56",
     "error": ""
   },
   {
@@ -507,7 +507,7 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "7.144",
+    "latency_s": "7.651",
     "ips": "104.21.82.67,172.67.197.115",
     "error": ""
   },
@@ -523,7 +523,7 @@
     "method": "requests",
     "first_status": 404,
     "final_status": 404,
-    "latency_s": "9.760",
+    "latency_s": "3.552",
     "ips": "202.113.64.2",
     "error": "page:http_404"
   },
@@ -539,8 +539,8 @@
     "method": "",
     "first_status": "",
     "final_status": "",
-    "latency_s": "64.652",
-    "ips": "172.67.141.217,104.21.94.242",
+    "latency_s": "68.986",
+    "ips": "104.21.94.242,172.67.141.217",
     "error": "conn_error"
   },
   {
@@ -555,7 +555,7 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "5.307",
+    "latency_s": "5.161",
     "ips": "172.67.182.185,104.21.18.160",
     "error": ""
   },
@@ -571,8 +571,8 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "7.193",
-    "ips": "149.104.21.26,149.104.21.22,149.104.21.25,149.104.21.24,149.104.21.23",
+    "latency_s": "5.499",
+    "ips": "149.104.21.25,149.104.21.22,149.104.21.26,149.104.21.24,149.104.21.23",
     "error": ""
   },
   {
@@ -587,8 +587,8 @@
     "method": "",
     "first_status": "",
     "final_status": "",
-    "latency_s": "64.232",
-    "ips": "104.21.11.81,172.67.165.170",
+    "latency_s": "64.782",
+    "ips": "172.67.165.170,104.21.11.81",
     "error": "conn_error"
   },
   {
@@ -603,9 +603,25 @@
     "method": "requests+meta+js_location",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "11.939",
+    "latency_s": "9.835",
     "ips": "104.21.17.141,172.67.176.211",
     "error": ""
+  },
+  {
+    "domain": "内蒙古奶蛙大学.fun",
+    "ascii": "xn--v6qr1dq5g9iv6f7z3hjkd.fun",
+    "final_url": "https://xn--v6qr1dq5g9iv6f7z3hjkd.fun/",
+    "title": "",
+    "logo_path": "",
+    "logo_url": "",
+    "jump_type": "none",
+    "redirect_chain": "200:https://xn--v6qr1dq5g9iv6f7z3hjkd.fun/",
+    "method": "requests",
+    "first_status": 200,
+    "final_status": 200,
+    "latency_s": "35.490",
+    "ips": "172.67.176.50,104.21.31.100",
+    "error": "conn_error"
   },
   {
     "domain": "辽宁奶龙大学.work",
@@ -619,8 +635,8 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "5.513",
-    "ips": "104.21.60.149,172.67.197.202",
+    "latency_s": "4.564",
+    "ips": "172.67.197.202,104.21.60.149",
     "error": ""
   },
   {
@@ -635,7 +651,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.169",
+    "latency_s": "4.439",
     "ips": "104.21.68.102,172.67.193.230",
     "error": ""
   },
@@ -651,8 +667,8 @@
     "method": "requests+js_location",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "12.497",
-    "ips": "104.21.16.190,172.67.215.142",
+    "latency_s": "6.064",
+    "ips": "172.67.215.142,104.21.16.190",
     "error": ""
   },
   {
@@ -667,7 +683,7 @@
     "method": "http_fallback+requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "1.696",
+    "latency_s": "1.457",
     "ips": "39.107.33.116",
     "error": "page:http_403"
   },
@@ -683,8 +699,8 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.752",
-    "ips": "18.208.88.157,98.84.224.111",
+    "latency_s": "7.560",
+    "ips": "98.84.224.111,18.208.88.157",
     "error": ""
   },
   {
@@ -699,7 +715,7 @@
     "method": "http_fallback+requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "2.292",
+    "latency_s": "3.547",
     "ips": "106.15.9.217",
     "error": "page:http_403"
   },
@@ -715,7 +731,7 @@
     "method": "http_fallback+requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "35.782",
+    "latency_s": "33.662",
     "ips": "18.162.120.134",
     "error": ""
   },
@@ -731,7 +747,7 @@
     "method": "http_fallback+requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "35.702",
+    "latency_s": "33.550",
     "ips": "18.162.120.134",
     "error": ""
   },
@@ -747,7 +763,7 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.393",
+    "latency_s": "6.721",
     "ips": "172.67.201.220,104.21.90.141",
     "error": ""
   },
@@ -763,7 +779,7 @@
     "method": "http_fallback+requests+js_location+js_config",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "7.494",
+    "latency_s": "8.171",
     "ips": "122.51.11.97",
     "error": ""
   },
@@ -779,7 +795,7 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "2.993",
+    "latency_s": "8.514",
     "ips": "192.204.55.175",
     "error": ""
   },
@@ -795,7 +811,7 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "1.864",
+    "latency_s": "2.586",
     "ips": "129.226.13.188",
     "error": ""
   },
@@ -811,7 +827,7 @@
     "method": "requests",
     "first_status": 404,
     "final_status": 404,
-    "latency_s": "3.906",
+    "latency_s": "4.100",
     "ips": "60.190.44.182",
     "error": "page:http_404"
   },
@@ -827,7 +843,7 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "5.141",
+    "latency_s": "6.473",
     "ips": "43.167.235.172",
     "error": ""
   },
@@ -843,8 +859,8 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "8.103",
-    "ips": "104.21.95.17,172.67.169.41",
+    "latency_s": "4.826",
+    "ips": "172.67.169.41,104.21.95.17",
     "error": ""
   },
   {
@@ -859,7 +875,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "15.527",
+    "latency_s": "10.560",
     "ips": "202.107.200.74",
     "error": ""
   },
@@ -875,7 +891,7 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "5.439",
+    "latency_s": "7.338",
     "ips": "104.21.90.247,172.67.163.87",
     "error": ""
   },
@@ -891,23 +907,23 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "3.201",
-    "ips": "104.21.91.152,172.67.223.115",
+    "latency_s": "5.074",
+    "ips": "172.67.223.115,104.21.91.152",
     "error": ""
   },
   {
     "domain": "安徽奶龙大学.com",
     "ascii": "xn--psszg58c6d27tt15i.com",
-    "final_url": "https://www.chnu.edu.cn:443/?appendstate=639275883192241550",
+    "final_url": "https://www.chnu.edu.cn:443/?appendstate=639275916533824386",
     "title": "淮北师范大学",
     "logo_path": "logos/xn--psszg58c6d27tt15i.com.png",
     "logo_url": "https://www.chnu.edu.cn:443/upload/main/site/logo/image/8472e20880114ff5a88d60beaf573f78.png",
     "jump_type": "delayed",
-    "redirect_chain": "301:https://xn--psszg58c6d27tt15i.com/ -> 200:https://www.chnu.edu.cn/ -> 302:https://www.chnu.edu.cn/ForceUserAgent/ForceUserAgent?useragent=phone -> 200:https://www.chnu.edu.cn:443/?appendstate=639275883192241550",
+    "redirect_chain": "301:https://xn--psszg58c6d27tt15i.com/ -> 200:https://www.chnu.edu.cn/ -> 302:https://www.chnu.edu.cn/ForceUserAgent/ForceUserAgent?useragent=phone -> 200:https://www.chnu.edu.cn:443/?appendstate=639275916533824386",
     "method": "requests+js_location",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "7.203",
+    "latency_s": "9.700",
     "ips": "15.197.162.184",
     "error": ""
   },
@@ -923,7 +939,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.157",
+    "latency_s": "5.771",
     "ips": "15.197.162.184",
     "error": ""
   },
@@ -939,7 +955,7 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "1.926",
+    "latency_s": "3.114",
     "ips": "103.30.41.228",
     "error": ""
   },
@@ -955,8 +971,8 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "4.308",
-    "ips": "172.67.137.242,104.21.86.242",
+    "latency_s": "4.862",
+    "ips": "104.21.86.242,172.67.137.242",
     "error": ""
   },
   {
@@ -971,7 +987,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "6.115",
+    "latency_s": "5.125",
     "ips": "172.67.161.19,104.21.90.200",
     "error": ""
   },
@@ -983,12 +999,12 @@
     "logo_path": "logos/xn--xhq02y0gz4ebvbj98t.icu.png",
     "logo_url": "https://www.upc.edu.cn/ximages/f_logo.png",
     "jump_type": "direct",
-    "redirect_chain": "301:https://xn--xhq02y0gz4ebvbj98t.icu/ -> 200:https://www.upc.edu.cn/",
-    "method": "requests",
+    "redirect_chain": "301:http://xn--xhq02y0gz4ebvbj98t.icu/ -> 200:https://www.upc.edu.cn/",
+    "method": "http_fallback+requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "3.544",
-    "ips": "104.21.96.73,172.67.174.69",
+    "latency_s": "24.485",
+    "ips": "172.67.174.69,104.21.96.73",
     "error": ""
   },
   {
@@ -1003,7 +1019,7 @@
     "method": "http_fallback+requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "17.276",
+    "latency_s": "8.622",
     "ips": "103.120.80.6",
     "error": ""
   },
@@ -1019,7 +1035,7 @@
     "method": "requests+js_location",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "8.209",
+    "latency_s": "7.487",
     "ips": "172.67.145.47,104.21.33.128",
     "error": ""
   },
@@ -1035,7 +1051,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "3.284",
+    "latency_s": "8.449",
     "ips": "172.67.169.63,104.21.63.25",
     "error": ""
   },
@@ -1051,7 +1067,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "3.199",
+    "latency_s": "4.725",
     "ips": "104.21.89.74,172.67.156.244",
     "error": ""
   },
@@ -1067,7 +1083,7 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "3.967",
+    "latency_s": "16.604",
     "ips": "156.239.4.167",
     "error": ""
   },
@@ -1083,8 +1099,8 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "7.026",
-    "ips": "104.21.0.232,172.67.128.96",
+    "latency_s": "12.373",
+    "ips": "172.67.128.96,104.21.0.232",
     "error": ""
   },
   {
@@ -1099,8 +1115,8 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "9.861",
-    "ips": "185.199.109.153,185.199.108.153,185.199.110.153,185.199.111.153",
+    "latency_s": "6.824",
+    "ips": "185.199.109.153,185.199.110.153,185.199.108.153,185.199.111.153",
     "error": ""
   },
   {
@@ -1115,8 +1131,8 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "2.671",
-    "ips": "172.67.132.240,104.21.5.40",
+    "latency_s": "5.628",
+    "ips": "104.21.5.40,172.67.132.240",
     "error": ""
   },
   {
@@ -1131,7 +1147,7 @@
     "method": "requests+js_location+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "3.500",
+    "latency_s": "7.315",
     "ips": "185.199.108.153,185.199.109.153,185.199.110.153,185.199.111.153",
     "error": ""
   },
@@ -1147,7 +1163,7 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.716",
+    "latency_s": "7.862",
     "ips": "172.66.3.26,162.159.143.30",
     "error": ""
   },
@@ -1163,8 +1179,8 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "8.654",
-    "ips": "172.67.208.41,104.21.15.228",
+    "latency_s": "6.148",
+    "ips": "104.21.15.228,172.67.208.41",
     "error": ""
   },
   {
@@ -1179,7 +1195,7 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "2.485",
+    "latency_s": "4.726",
     "ips": "172.67.131.55,104.21.3.214",
     "error": "conn_error"
   },
@@ -1195,8 +1211,8 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "3.726",
-    "ips": "104.21.5.202,172.67.133.209",
+    "latency_s": "6.121",
+    "ips": "172.67.133.209,104.21.5.202",
     "error": ""
   },
   {
@@ -1211,7 +1227,7 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "1.658",
+    "latency_s": "1.844",
     "ips": "172.67.130.30,104.21.7.106",
     "error": ""
   },
@@ -1227,8 +1243,8 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "5.493",
-    "ips": "172.67.158.58,104.21.82.133",
+    "latency_s": "4.607",
+    "ips": "104.21.82.133,172.67.158.58",
     "error": ""
   },
   {
@@ -1243,7 +1259,7 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 404,
-    "latency_s": "1.877",
+    "latency_s": "3.857",
     "ips": "172.66.47.54,172.66.44.202",
     "error": "page:http_404"
   },
@@ -1259,8 +1275,8 @@
     "method": "requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "1.382",
-    "ips": "104.21.66.86,172.67.157.254",
+    "latency_s": "2.724",
+    "ips": "172.67.157.254,104.21.66.86",
     "error": "page:http_403"
   },
   {
@@ -1275,7 +1291,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "21.702",
+    "latency_s": "5.957",
     "ips": "104.21.5.206,172.67.133.213",
     "error": ""
   },
@@ -1291,7 +1307,7 @@
     "method": "http_fallback+requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "11.518",
+    "latency_s": "11.040",
     "ips": "103.120.80.6",
     "error": ""
   },
@@ -1307,7 +1323,7 @@
     "method": "requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "0.668",
+    "latency_s": "1.963",
     "ips": "172.67.167.213,104.21.34.28",
     "error": "page:http_403"
   },
@@ -1323,7 +1339,7 @@
     "method": "",
     "first_status": "",
     "final_status": "",
-    "latency_s": "62.873",
+    "latency_s": "65.039",
     "ips": "104.21.95.142,172.67.170.117",
     "error": "conn_error"
   },
@@ -1339,8 +1355,8 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "1.827",
-    "ips": "104.21.21.14,172.67.195.172",
+    "latency_s": "3.986",
+    "ips": "172.67.195.172,104.21.21.14",
     "error": ""
   },
   {
@@ -1355,7 +1371,7 @@
     "method": "requests",
     "first_status": 400,
     "final_status": 400,
-    "latency_s": "1.723",
+    "latency_s": "2.957",
     "ips": "104.21.49.163,172.67.164.247",
     "error": "page:http_400"
   },
@@ -1371,8 +1387,8 @@
     "method": "requests+js_location",
     "first_status": 301,
     "final_status": 404,
-    "latency_s": "4.838",
-    "ips": "104.21.73.5,172.67.136.211",
+    "latency_s": "7.333",
+    "ips": "172.67.136.211,104.21.73.5",
     "error": "page:http_404"
   },
   {
@@ -1387,7 +1403,7 @@
     "method": "requests+js_location",
     "first_status": 301,
     "final_status": 404,
-    "latency_s": "4.771",
+    "latency_s": "6.454",
     "ips": "104.21.82.126,172.67.157.233",
     "error": "page:http_404"
   },
@@ -1403,8 +1419,8 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "1.815",
-    "ips": "172.67.207.144,104.21.22.230",
+    "latency_s": "3.776",
+    "ips": "104.21.22.230,172.67.207.144",
     "error": ""
   },
   {
@@ -1419,7 +1435,7 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "5.870",
+    "latency_s": "8.375",
     "ips": "104.21.12.229,172.67.196.138",
     "error": ""
   },
@@ -1435,24 +1451,24 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "3.588",
+    "latency_s": "5.644",
     "ips": "104.21.23.56,172.67.209.57",
     "error": ""
   },
   {
     "domain": "东北奶龙大学.com",
     "ascii": "xn--xhq44jb2f9iv6f6w9n.com",
-    "final_url": "https://www.baidu.com/s?wd=%E9%93%AD%E8%AE%B0%E2%80%9C%E6%9D%A5%E6%97%B6%E8%B7%AF%E2%80%9D%20%E8%B5%B0%E5%A5%BD%E2%80%9C%E5%BA%B7%E5%BA%84%E9%81%93%E2%80%9D&oq=%E9%93%AD%E8%AE%B0%E2%80%9C%E6%9D%A5%E6%97%B6%E8%B7%AF%E2%80%9D%20%E8%B5%B0%E5%A5%BD%E2%80%9C%E5%BA%B7%E5%BA%84%E9%81%93%E2%80%9D&ie=utf-8&rsv_pq=920e0dfc000899ee&rsv_t=448ajomJESK0XezINtsohAotGgwJPgMFUfE1UYA0of4ZQY9q8V0xDqwZZQE&rqlang=cn&nojs=1&bqid=920e0dfc000899ee",
-    "title": "铭记“来时路” 走好“康庄道”_百度搜索",
-    "logo_path": "logos/xn--xhq44jb2f9iv6f6w9n.com.png",
-    "logo_url": "https://www.baidu.com/img/bd_logo1.png",
+    "final_url": "https://ss1.bdstatic.com/5eN1bjq8AAUYm2zgoY3K/r/www/cache/bdorz/baidu.min.css",
+    "title": "",
+    "logo_path": "",
+    "logo_url": "",
     "jump_type": "delayed",
-    "redirect_chain": "301:https://xn--xhq44jb2f9iv6f6w9n.com/ -> 200:https://www.baidu.com/ -> 200:https://top.baidu.com/board?platform=pc&amp;sa=pcindex_entry -> 200:https://www.baidu.com/s?wd=%E9%93%AD%E8%AE%B0%E2%80%9C%E6%9D%A5%E6%97%B6%E8%B7%AF%E2%80%9D+%E8%B5%B0%E5%A5%BD%E2%80%9C%E5%BA%B7%E5%BA%84%E9%81%93%E2%80%9D&sa=fyb_hp_news&rsv_dl=fyb_hp_news -> 200:https://www.baidu.com/s?wd=%E9%93%AD%E8%AE%B0%E2%80%9C%E6%9D%A5%E6%97%B6%E8%B7%AF%E2%80%9D%20%E8%B5%B0%E5%A5%BD%E2%80%9C%E5%BA%B7%E5%BA%84%E9%81%93%E2%80%9D&oq=%E9%93%AD%E8%AE%B0%E2%80%9C%E6%9D%A5%E6%97%B6%E8%B7%AF%E2%80%9D%20%E8%B5%B0%E5%A5%BD%E2%80%9C%E5%BA%B7%E5%BA%84%E9%81%93%E2%80%9D&ie=utf-8&rsv_pq=920e0dfc000899ee&rsv_t=448ajomJESK0XezINtsohAotGgwJPgMFUfE1UYA0of4ZQY9q8V0xDqwZZQE&rqlang=cn&nojs=1&bqid=920e0dfc000899ee",
-    "method": "requests+js_config+meta",
+    "redirect_chain": "301:https://xn--xhq44jb2f9iv6f6w9n.com/ -> 200:https://www.baidu.com/ -> 200:http://www.baidu.com/baidu.html?from=noscript -> 200:https://ss1.bdstatic.com/5eN1bjq8AAUYm2zgoY3K/r/www/cache/bdorz/baidu.min.css",
+    "method": "requests+meta+js_config",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "6.610",
-    "ips": "111.63.65.247,124.237.177.164,110.242.74.102,111.63.65.103",
+    "latency_s": "8.709",
+    "ips": "110.242.74.102,111.63.65.247,111.63.65.103,124.237.177.164",
     "error": ""
   },
   {
@@ -1467,8 +1483,8 @@
     "method": "requests+js_location",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.766",
-    "ips": "185.199.110.153,185.199.109.153,185.199.111.153,185.199.108.153",
+    "latency_s": "5.417",
+    "ips": "185.199.109.153,185.199.111.153,185.199.110.153,185.199.108.153",
     "error": ""
   },
   {
@@ -1483,7 +1499,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "13.182",
+    "latency_s": "5.293",
     "ips": "172.67.163.238,104.21.50.151",
     "error": ""
   },
@@ -1499,7 +1515,7 @@
     "method": "requests",
     "first_status": 308,
     "final_status": 200,
-    "latency_s": "3.699",
+    "latency_s": "5.571",
     "ips": "172.67.135.222,104.21.26.105",
     "error": ""
   },
@@ -1515,7 +1531,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.294",
+    "latency_s": "6.885",
     "ips": "172.67.150.253,104.21.0.134",
     "error": ""
   },
@@ -1523,17 +1539,17 @@
     "domain": "华中奶龙大学.com",
     "ascii": "xn--fiqv8jmxf9iv6f6w9n.com",
     "final_url": "https://www.ctgu.edu.cn/",
-    "title": "三峡大学",
-    "logo_path": "logos/xn--fiqv8jmxf9iv6f6w9n.com.png",
-    "logo_url": "https://www.ctgu.edu.cn/images/foot-logo.png",
+    "title": "",
+    "logo_path": "",
+    "logo_url": "",
     "jump_type": "direct",
     "redirect_chain": "301:https://xn--fiqv8jmxf9iv6f6w9n.com/ -> 200:https://www.ctgu.edu.cn/",
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "7.992",
-    "ips": "172.67.153.43,104.21.34.15",
-    "error": ""
+    "latency_s": "4.928",
+    "ips": "104.21.34.15,172.67.153.43",
+    "error": "page:ConnectionError"
   },
   {
     "domain": "华南奶龙大学.com",
@@ -1547,7 +1563,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 412,
-    "latency_s": "3.333",
+    "latency_s": "5.493",
     "ips": "15.197.162.184",
     "error": "page:http_412"
   },
@@ -1563,7 +1579,7 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.503",
+    "latency_s": "6.843",
     "ips": "47.79.66.80",
     "error": ""
   },
@@ -1579,8 +1595,8 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.378",
-    "ips": "104.21.16.253,172.67.217.192",
+    "latency_s": "5.592",
+    "ips": "172.67.217.192,104.21.16.253",
     "error": ""
   },
   {
@@ -1595,8 +1611,8 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.552",
-    "ips": "185.199.108.153,185.199.109.153",
+    "latency_s": "6.796",
+    "ips": "185.199.109.153,185.199.108.153",
     "error": ""
   },
   {
@@ -1611,7 +1627,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "7.162",
+    "latency_s": "6.463",
     "ips": "15.197.162.184",
     "error": ""
   },
@@ -1627,7 +1643,7 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.519",
+    "latency_s": "6.869",
     "ips": "47.79.66.80",
     "error": ""
   },
@@ -1643,7 +1659,7 @@
     "method": "requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "3.746",
+    "latency_s": "3.314",
     "ips": "210.27.177.240",
     "error": "page:http_403"
   },
@@ -1659,8 +1675,8 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "1.913",
-    "ips": "104.21.36.208,172.67.199.153",
+    "latency_s": "3.528",
+    "ips": "172.67.199.153,104.21.36.208",
     "error": ""
   },
   {
@@ -1675,7 +1691,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "3.597",
+    "latency_s": "5.360",
     "ips": "54.215.31.113",
     "error": ""
   },
@@ -1691,9 +1707,25 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "3.210",
+    "latency_s": "5.794",
     "ips": "54.215.31.113",
     "error": ""
+  },
+  {
+    "domain": "南方奶龙大学.com",
+    "ascii": "xn--6kr28k0gz4eruv6t8f.com",
+    "final_url": "https://xn--6kr28k0gz4eruv6t8f.com/",
+    "title": "",
+    "logo_path": "",
+    "logo_url": "",
+    "jump_type": "none",
+    "redirect_chain": "403:https://xn--6kr28k0gz4eruv6t8f.com/",
+    "method": "requests",
+    "first_status": 403,
+    "final_status": 403,
+    "latency_s": "3.820",
+    "ips": "219.138.200.30",
+    "error": "page:http_403"
   },
   {
     "domain": "沈阳奶龙大学.com",
@@ -1707,8 +1739,8 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "6.885",
-    "ips": "104.21.58.170,172.67.162.77",
+    "latency_s": "6.879",
+    "ips": "172.67.162.77,104.21.58.170",
     "error": ""
   },
   {
@@ -1723,7 +1755,7 @@
     "method": "requests+js_config",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "2.333",
+    "latency_s": "3.790",
     "ips": "104.21.70.177,172.67.138.12",
     "error": ""
   },
@@ -1739,7 +1771,7 @@
     "method": "requests+js_location",
     "first_status": 200,
     "final_status": 404,
-    "latency_s": "2.310",
+    "latency_s": "2.844",
     "ips": "163.181.214.26",
     "error": "page:http_404"
   },
@@ -1755,7 +1787,7 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "7.719",
+    "latency_s": "4.909",
     "ips": "108.174.57.191",
     "error": ""
   },
@@ -1771,7 +1803,7 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "7.885",
+    "latency_s": "6.822",
     "ips": "47.76.70.126",
     "error": ""
   },
@@ -1787,8 +1819,8 @@
     "method": "requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "1.646",
-    "ips": "104.21.55.144,172.67.149.34",
+    "latency_s": "2.225",
+    "ips": "172.67.149.34,104.21.55.144",
     "error": "page:http_403"
   },
   {
@@ -1803,7 +1835,7 @@
     "method": "requests",
     "first_status": 404,
     "final_status": 404,
-    "latency_s": "6.838",
+    "latency_s": "3.670",
     "ips": "202.119.224.201",
     "error": "page:http_404"
   },
@@ -1819,7 +1851,7 @@
     "method": "http_fallback+requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.757",
+    "latency_s": "5.388",
     "ips": "162.251.93.44",
     "error": ""
   },
@@ -1835,7 +1867,7 @@
     "method": "http_fallback+requests+js_location+js_config",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "7.096",
+    "latency_s": "7.759",
     "ips": "124.220.147.235",
     "error": ""
   },
@@ -1851,7 +1883,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "4.829",
+    "latency_s": "4.370",
     "ips": "172.67.173.252,104.21.96.66",
     "error": ""
   },
@@ -1867,8 +1899,8 @@
     "method": "requests+js_config",
     "first_status": 522,
     "final_status": 200,
-    "latency_s": "21.434",
-    "ips": "172.67.148.97,104.21.95.203",
+    "latency_s": "22.071",
+    "ips": "104.21.95.203,172.67.148.97",
     "error": ""
   },
   {
@@ -1883,7 +1915,7 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "5.554",
+    "latency_s": "4.849",
     "ips": "104.21.33.185,172.67.191.64",
     "error": ""
   },
@@ -1899,25 +1931,25 @@
     "method": "requests+js_config+js_location",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "12.748",
-    "ips": "104.21.64.246,172.67.156.170",
+    "latency_s": "7.482",
+    "ips": "172.67.156.170,104.21.64.246",
     "error": ""
   },
   {
     "domain": "常州奶龙大学.com",
     "ascii": "xn--psszg58cf1d3mp353a.com",
-    "final_url": "https://xn--psszg58cf1d3mp353a.com/",
+    "final_url": "https://pgc-cdn.youku.com/contract/6b0b6be333c01715878999ea08a6638e.png",
     "title": "",
     "logo_path": "",
     "logo_url": "",
-    "jump_type": "none",
-    "redirect_chain": "200:https://xn--psszg58cf1d3mp353a.com/",
-    "method": "requests",
+    "jump_type": "delayed",
+    "redirect_chain": "200:https://xn--psszg58cf1d3mp353a.com/ -> 200:https://pgc-cdn.youku.com/contract/6b0b6be333c01715878999ea08a6638e.png",
+    "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "243.474",
+    "latency_s": "6.652",
     "ips": "172.67.212.111,104.21.23.173",
-    "error": "timeout"
+    "error": ""
   },
   {
     "domain": "苏州奶龙大学.icu",
@@ -1931,7 +1963,7 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.256",
+    "latency_s": "5.944",
     "ips": "104.21.3.24,172.67.130.17",
     "error": ""
   },
@@ -1947,8 +1979,8 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.302",
-    "ips": "43.174.247.64,43.174.246.64",
+    "latency_s": "5.566",
+    "ips": "43.174.246.64,43.174.247.64",
     "error": ""
   },
   {
@@ -1963,7 +1995,7 @@
     "method": "requests+meta",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "4.183",
+    "latency_s": "5.882",
     "ips": "104.21.30.30,172.67.150.115",
     "error": ""
   },
@@ -1979,7 +2011,7 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 412,
-    "latency_s": "5.939",
+    "latency_s": "5.399",
     "ips": "47.79.64.189",
     "error": "page:http_412"
   },
@@ -1995,7 +2027,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.605",
+    "latency_s": "5.103",
     "ips": "104.21.23.152,172.67.211.175",
     "error": ""
   },
@@ -2011,7 +2043,7 @@
     "method": "requests+js_location",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "7.504",
+    "latency_s": "5.353",
     "ips": "185.199.108.153,185.199.109.153,185.199.110.153,185.199.111.153",
     "error": ""
   },
@@ -2027,8 +2059,8 @@
     "method": "requests",
     "first_status": 307,
     "final_status": 200,
-    "latency_s": "10.762",
-    "ips": "104.21.47.41,172.67.144.112",
+    "latency_s": "6.737",
+    "ips": "172.67.144.112,104.21.47.41",
     "error": ""
   },
   {
@@ -2043,7 +2075,7 @@
     "method": "http_fallback+requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "2.306",
+    "latency_s": "2.256",
     "ips": "121.196.221.233",
     "error": "page:http_403"
   },
@@ -2059,9 +2091,9 @@
     "method": "http_fallback+requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "2.020",
+    "latency_s": "2.797",
     "ips": "121.89.90.149",
-    "error": "page:ChunkedEncodingError"
+    "error": "page:http_403"
   },
   {
     "domain": "青岛奶龙大学.top",
@@ -2075,7 +2107,7 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "9.565",
+    "latency_s": "7.189",
     "ips": "172.67.207.200,104.21.53.21",
     "error": "too_many_redirects"
   },
@@ -2091,7 +2123,7 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "5.842",
+    "latency_s": "7.247",
     "ips": "172.67.155.111,104.21.82.86",
     "error": ""
   },
@@ -2107,8 +2139,8 @@
     "method": "requests+meta",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "8.102",
-    "ips": "185.199.110.153,185.199.109.153,185.199.108.153",
+    "latency_s": "7.773",
+    "ips": "185.199.109.153,185.199.110.153,185.199.108.153",
     "error": ""
   },
   {
@@ -2123,25 +2155,25 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "63.538",
+    "latency_s": "63.624",
     "ips": "189.24.68.245",
     "error": "conn_error"
   },
   {
     "domain": "齐鲁奶龙大学.site",
     "ascii": "xn--psszg58cz39jy6cum.site",
-    "final_url": "https://www.qlu.edu.cn/",
-    "title": "齐鲁工业大学",
-    "logo_path": "logos/xn--psszg58cz39jy6cum.site.png",
-    "logo_url": "https://www.qlu.edu.cn/_upload/tpl/09/ea/2538/template2538/images/logo.png",
-    "jump_type": "direct",
-    "redirect_chain": "301:http://xn--psszg58cz39jy6cum.site/ -> 200:https://www.qlu.edu.cn/",
+    "final_url": "http://xn--psszg58cz39jy6cum.site/",
+    "title": "",
+    "logo_path": "",
+    "logo_url": "",
+    "jump_type": "none",
+    "redirect_chain": "403:http://xn--psszg58cz39jy6cum.site/",
     "method": "http_fallback+requests",
-    "first_status": 301,
-    "final_status": 200,
-    "latency_s": "7.884",
+    "first_status": 403,
+    "final_status": 403,
+    "latency_s": "2.538",
     "ips": "120.46.212.0",
-    "error": ""
+    "error": "page:http_403"
   },
   {
     "domain": "武汉奶龙大学.cn",
@@ -2155,8 +2187,8 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.265",
-    "ips": "149.104.21.23,149.104.21.26,149.104.21.22,149.104.21.24,149.104.21.25",
+    "latency_s": "5.859",
+    "ips": "149.104.21.22,149.104.21.23,149.104.21.24,149.104.21.25,149.104.21.26",
     "error": ""
   },
   {
@@ -2167,12 +2199,28 @@
     "logo_path": "logos/xn--psszg58cb73ap6a0z9g.icu.png",
     "logo_url": "https://www.whcp.edu.cn/_upload/tpl/01/12/274/template274/images/logo-b.png",
     "jump_type": "delayed",
-    "redirect_chain": "301:http://xn--psszg58cb73ap6a0z9g.icu/ -> 200:https://xn--psszg58cb73ap6a0z9g.icu/ -> 200:https://www.whcp.edu.cn/",
-    "method": "http_fallback+requests+js_config",
-    "first_status": 301,
+    "redirect_chain": "200:https://xn--psszg58cb73ap6a0z9g.icu/ -> 200:https://www.whcp.edu.cn/",
+    "method": "requests+js_config",
+    "first_status": 200,
     "final_status": 200,
-    "latency_s": "12.820",
+    "latency_s": "8.826",
     "ips": "75.2.60.5",
+    "error": ""
+  },
+  {
+    "domain": "襄阳奶龙大学.icu",
+    "ascii": "xn--psszg58c4v2g9rnrjn.icu",
+    "final_url": "https://www.cloudflare.com/5xx-error-landing/?utm_source=errorcode_522&utm_campaign=xn--psszg58c4v2g9rnrjn.icu",
+    "title": "5xx Error | Cloudflare",
+    "logo_path": "logos/xn--psszg58c4v2g9rnrjn.icu.svg",
+    "logo_url": "https://cf-assets.www.cloudflare.com/dzlvafdwdttg/69wNwfiY5mFmgpd9eQFW6j/d5131c08085a977aa70f19e7aada3fa9/1pixel-down__1_.svg",
+    "jump_type": "delayed",
+    "redirect_chain": "522:https://xn--psszg58c4v2g9rnrjn.icu/ -> 301:https://www.cloudflare.com/5xx-error-landing?utm_source=errorcode_522&utm_campaign=xn--psszg58c4v2g9rnrjn.icu -> 200:https://www.cloudflare.com/5xx-error-landing/?utm_source=errorcode_522&utm_campaign=xn--psszg58c4v2g9rnrjn.icu",
+    "method": "requests+js_config",
+    "first_status": 522,
+    "final_status": 200,
+    "latency_s": "20.765",
+    "ips": "172.67.143.127,104.21.95.71",
     "error": ""
   },
   {
@@ -2187,7 +2235,7 @@
     "method": "http_fallback+requests+js_location+js_config",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "6.961",
+    "latency_s": "5.665",
     "ips": "124.221.136.8",
     "error": ""
   },
@@ -2203,7 +2251,7 @@
     "method": "requests+meta+js_location",
     "first_status": 200,
     "final_status": 404,
-    "latency_s": "8.722",
+    "latency_s": "7.108",
     "ips": "104.21.68.237,172.67.200.66",
     "error": "page:http_404"
   },
@@ -2219,7 +2267,7 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.045",
+    "latency_s": "4.544",
     "ips": "104.21.83.114,172.67.175.140",
     "error": ""
   },
@@ -2235,7 +2283,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "3.369",
+    "latency_s": "3.679",
     "ips": "172.67.198.17,104.21.52.101",
     "error": ""
   },
@@ -2251,7 +2299,7 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.999",
+    "latency_s": "14.378",
     "ips": "104.21.24.24,172.67.216.122",
     "error": ""
   },
@@ -2267,7 +2315,7 @@
     "method": "http_fallback+requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "2.169",
+    "latency_s": "2.520",
     "ips": "47.115.144.129",
     "error": "page:http_403"
   },
@@ -2283,7 +2331,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "3.391",
+    "latency_s": "4.725",
     "ips": "104.21.3.19,172.67.130.11",
     "error": ""
   },
@@ -2299,7 +2347,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "4.304",
+    "latency_s": "4.321",
     "ips": "43.108.20.113",
     "error": ""
   },
@@ -2315,7 +2363,7 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "3.247",
+    "latency_s": "3.210",
     "ips": "104.21.66.76,172.67.157.128",
     "error": ""
   },
@@ -2331,8 +2379,8 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "66.805",
-    "ips": "104.21.7.112,172.67.130.49",
+    "latency_s": "61.503",
+    "ips": "172.67.130.49,104.21.7.112",
     "error": "conn_error"
   },
   {
@@ -2347,9 +2395,25 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "1.410",
+    "latency_s": "0.408",
     "ips": "104.21.93.184,172.67.213.182",
     "error": ""
+  },
+  {
+    "domain": "成都奶龙大学.top",
+    "ascii": "xn--psszg58c53lfp7dgls.top",
+    "final_url": "https://www.cdut.edu.cn/",
+    "title": "",
+    "logo_path": "",
+    "logo_url": "",
+    "jump_type": "delayed",
+    "redirect_chain": "200:https://xn--psszg58c53lfp7dgls.top/ -> 412:https://www.cdut.edu.cn/",
+    "method": "requests+js_config",
+    "first_status": 200,
+    "final_status": 412,
+    "latency_s": "3.151",
+    "ips": "47.82.115.63",
+    "error": "page:http_412"
   },
   {
     "domain": "宜宾奶龙大学.icu",
@@ -2363,8 +2427,8 @@
     "method": "",
     "first_status": "",
     "final_status": "",
-    "latency_s": "65.033",
-    "ips": "104.21.27.222,172.67.143.156",
+    "latency_s": "61.798",
+    "ips": "172.67.143.156,104.21.27.222",
     "error": "conn_error"
   },
   {
@@ -2379,7 +2443,7 @@
     "method": "requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "1.171",
+    "latency_s": "0.815",
     "ips": "104.21.33.170,172.67.165.11",
     "error": "page:http_403"
   },
@@ -2395,7 +2459,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "3.047",
+    "latency_s": "4.127",
     "ips": "54.215.31.113",
     "error": ""
   },
@@ -2411,7 +2475,7 @@
     "method": "requests+js_location",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "5.359",
+    "latency_s": "6.370",
     "ips": "54.215.31.113",
     "error": ""
   },
@@ -2427,7 +2491,7 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "8.172",
+    "latency_s": "8.626",
     "ips": "38.97.254.151",
     "error": ""
   },
@@ -2439,11 +2503,11 @@
     "logo_path": "logos/xn--psszg58c9ct98x9y1a.top.png",
     "logo_url": "https://www.qhit.edu.cn/images/logo.png",
     "jump_type": "direct",
-    "redirect_chain": "301:http://xn--psszg58c9ct98x9y1a.top/ -> 200:https://www.qhit.edu.cn/",
-    "method": "http_fallback+requests",
+    "redirect_chain": "301:https://xn--psszg58c9ct98x9y1a.top/ -> 200:https://www.qhit.edu.cn/",
+    "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "33.838",
+    "latency_s": "3.122",
     "ips": "172.67.150.160,104.21.96.28",
     "error": ""
   },
@@ -2459,7 +2523,7 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "4.815",
+    "latency_s": "3.732",
     "ips": "15.197.162.184",
     "error": ""
   },
@@ -2475,7 +2539,7 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "6.000",
+    "latency_s": "3.545",
     "ips": "172.67.153.167,104.21.58.5",
     "error": ""
   },
@@ -2491,7 +2555,7 @@
     "method": "",
     "first_status": "",
     "final_status": "",
-    "latency_s": "7.046",
+    "latency_s": "3.803",
     "ips": "104.21.72.183,172.67.153.217",
     "error": "conn_error"
   },
@@ -2507,7 +2571,7 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "2.988",
+    "latency_s": "4.590",
     "ips": "75.2.60.5",
     "error": ""
   },
@@ -2523,7 +2587,7 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "3.481",
+    "latency_s": "3.121",
     "ips": "172.67.148.95,104.21.29.44",
     "error": ""
   },
@@ -2535,11 +2599,11 @@
     "logo_path": "logos/xn--psszg58cj45k.top.png",
     "logo_url": "https://cau.edu.cn/static2022/images/logo.png",
     "jump_type": "direct",
-    "redirect_chain": "301:https://xn--psszg58cj45k.top/ -> 307:http://cau.edu.cn/ -> 200:https://cau.edu.cn/",
+    "redirect_chain": "301:https://xn--psszg58cj45k.top/ -> 307:http://cau.edu.cn/ -> 408:https://cau.edu.cn/",
     "method": "requests",
     "first_status": 301,
-    "final_status": 200,
-    "latency_s": "7.610",
+    "final_status": 408,
+    "latency_s": "31.223",
     "ips": "104.21.38.201,172.67.138.79",
     "error": ""
   },
@@ -2555,8 +2619,8 @@
     "method": "",
     "first_status": "",
     "final_status": "",
-    "latency_s": "61.960",
-    "ips": "104.21.9.164,172.67.160.194",
+    "latency_s": "61.626",
+    "ips": "172.67.160.194,104.21.9.164",
     "error": "conn_error"
   },
   {
@@ -2571,7 +2635,7 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "11.766",
+    "latency_s": "11.857",
     "ips": "43.174.246.65,43.174.247.65",
     "error": "conn_error"
   },
@@ -2587,7 +2651,7 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "2.902",
+    "latency_s": "2.870",
     "ips": "15.197.162.184",
     "error": ""
   },
@@ -2603,7 +2667,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "2.711",
+    "latency_s": "5.983",
     "ips": "172.67.155.58,104.21.82.81",
     "error": ""
   },
@@ -2619,7 +2683,7 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "7.116",
+    "latency_s": "4.287",
     "ips": "104.21.2.179,172.67.129.134",
     "error": ""
   },
@@ -2635,7 +2699,7 @@
     "method": "requests+js_location",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "9.457",
+    "latency_s": "7.689",
     "ips": "43.174.246.65,43.174.247.65",
     "error": ""
   },
@@ -2651,7 +2715,7 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "3.992",
+    "latency_s": "3.742",
     "ips": "172.67.174.142,104.21.47.243",
     "error": ""
   },
@@ -2667,23 +2731,23 @@
     "method": "requests+js_location",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "6.062",
-    "ips": "104.21.33.217,172.67.192.216",
+    "latency_s": "6.220",
+    "ips": "172.67.192.216,104.21.33.217",
     "error": ""
   },
   {
     "domain": "奶蛙理工大学.com",
     "ascii": "xn--psszg58c81dj45bdvx.com",
-    "final_url": "https://xn--psszg58c81dj45bdvx.com/",
+    "final_url": "https://www.bit.edu.cn/",
     "title": "北京理工大学",
     "logo_path": "logos/xn--psszg58c81dj45bdvx.com.png",
     "logo_url": "https://www.bit.edu.cn/images/gb20190805/footer_logo.png",
-    "jump_type": "none",
-    "redirect_chain": "429:https://xn--psszg58c81dj45bdvx.com/",
+    "jump_type": "direct",
+    "redirect_chain": "302:https://xn--psszg58c81dj45bdvx.com/ -> 200:https://www.bit.edu.cn/",
     "method": "requests",
-    "first_status": 429,
-    "final_status": 429,
-    "latency_s": "1.160",
+    "first_status": 302,
+    "final_status": 200,
+    "latency_s": "3.430",
     "ips": "15.197.162.184",
     "error": ""
   },
@@ -2699,7 +2763,7 @@
     "method": "http_fallback+requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "8.734",
+    "latency_s": "3.595",
     "ips": "167.71.197.211",
     "error": ""
   },
@@ -2715,7 +2779,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.926",
+    "latency_s": "3.510",
     "ips": "172.67.197.117,104.21.84.223",
     "error": ""
   },
@@ -2731,7 +2795,7 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.092",
+    "latency_s": "2.196",
     "ips": "172.67.193.35,104.21.20.147",
     "error": ""
   },
@@ -2747,8 +2811,8 @@
     "method": "http_fallback+requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "2.855",
-    "ips": "155.102.176.87,155.102.176.82,155.102.176.88,155.102.176.84,155.102.176.86,155.102.176.85,155.102.176.81,155.102.176.83",
+    "latency_s": "1.643",
+    "ips": "155.102.176.81,155.102.176.82,155.102.176.83,155.102.176.84,155.102.176.85,155.102.176.86,155.102.176.87,155.102.176.88",
     "error": "page:http_403"
   },
   {
@@ -2763,8 +2827,8 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "15.363",
-    "ips": "104.21.47.56,172.67.144.218",
+    "latency_s": "5.203",
+    "ips": "172.67.144.218,104.21.47.56",
     "error": ""
   },
   {
@@ -2779,7 +2843,7 @@
     "method": "requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "1.267",
+    "latency_s": "1.719",
     "ips": "47.79.66.80",
     "error": "page:http_403"
   },
@@ -2795,8 +2859,8 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 403,
-    "latency_s": "4.901",
-    "ips": "172.66.44.144,172.66.47.112",
+    "latency_s": "5.576",
+    "ips": "172.66.47.112,172.66.44.144",
     "error": ""
   },
   {
@@ -2807,11 +2871,11 @@
     "logo_path": "logos/xn--psszg58cf07f.org.png",
     "logo_url": "https://www.gdut.edu.cn/images2020/logo.png",
     "jump_type": "direct",
-    "redirect_chain": "302:https://xn--psszg58cf07f.org/ -> 403:https://www.gdut.edu.cn/",
+    "redirect_chain": "302:https://xn--psszg58cf07f.org/ -> 200:https://www.gdut.edu.cn/",
     "method": "requests",
     "first_status": 302,
-    "final_status": 403,
-    "latency_s": "5.151",
+    "final_status": 200,
+    "latency_s": "7.393",
     "ips": "15.197.162.184",
     "error": ""
   }
