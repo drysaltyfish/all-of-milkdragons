@@ -1,58 +1,90 @@
 {
+  "logos/xn--1lq90ic7f9iv6f088h.com.png": {
+    "aspect": 3.206,
+    "tone": "light"
+  },
   "logos/xn--1lq90ic7f9iv6f6w9n.com.png": {
     "aspect": 3.207,
     "tone": "light"
   },
   "logos/xn--1lq90ic7f9iv6f6w9n.fun.png": {
-    "aspect": 5.043,
+    "aspect": 5.039,
     "tone": "light"
   },
   "logos/xn--1lq90ic7f9iv6f6w9n.org.png": {
     "aspect": 1.0,
     "tone": "light"
   },
-  "logos/xn--1lqq7iu1f9iv6f6w9n.com.png": {
+  "logos/xn--1lq90ic7f9iv6f6w9n.top.svg": {
+    "aspect": null,
+    "tone": "unknown"
+  },
+  "logos/xn--1lqq7iu1f9iv6f088h.cn.png": {
+    "aspect": 2.938,
+    "tone": "dark"
+  },
+  "logos/xn--6kr28k0gz4e0t2h9y1a.cn.png": {
     "aspect": 3.587,
     "tone": "light"
   },
-  "logos/xn--6kr28k0gz4e0t2h9y1a.cn.png": {
-    "aspect": 3.594,
+  "logos/xn--6kr28k0gz4e0t2h9y1a.com.png": {
+    "aspect": 1.363,
     "tone": "light"
   },
   "logos/xn--6kr28k0gz4e0t2h9y1a.icu.png": {
-    "aspect": 3.594,
-    "tone": "light"
-  },
-  "logos/xn--6kr28k0gz4e0t2h9y1a.org.png": {
-    "aspect": 3.594,
+    "aspect": 3.587,
     "tone": "light"
   },
   "logos/xn--6kr28k0gz4e7y6gfld.com.png": {
-    "aspect": 3.594,
+    "aspect": 3.587,
     "tone": "light"
   },
+  "logos/xn--6kr28k0gz4eq33b7r1e.com.png": {
+    "aspect": 3.206,
+    "tone": "light"
+  },
+  "logos/xn--6kr28k0gz4eq33b7r1e.top.svg": {
+    "aspect": null,
+    "tone": "unknown"
+  },
   "logos/xn--6kr28k0gz4eruv6t8f.top.png": {
-    "aspect": 5.035,
+    "aspect": 3.791,
     "tone": "dark"
   },
+  "logos/xn--6kr28k0gz4evu0b1z3e.com.png": {
+    "aspect": 3.778,
+    "tone": "light"
+  },
+  "logos/xn--9kq39it1f9iv6f6w9n.com.png": {
+    "aspect": 3.256,
+    "tone": "light"
+  },
   "logos/xn--9pry2j0gz4e1uz8i3f.com.jpg": {
-    "aspect": 2.444,
+    "aspect": 3.174,
+    "tone": "dark"
+  },
+  "logos/xn--djry4l0gz4eq33b7r1e.com.png": {
+    "aspect": 4.011,
     "tone": "dark"
   },
   "logos/xn--djry4l0gz4eruv6t8f.com.png": {
     "aspect": 3.91,
     "tone": "light"
   },
-  "logos/xn--fes68b0gz4eb62bdf8a.com.svg": {
-    "aspect": null,
-    "tone": "unknown"
+  "logos/xn--djry4l0gz4evu0b1z3e.com.png": {
+    "aspect": 3.444,
+    "tone": "light"
+  },
+  "logos/xn--fhqu4y0gz4ew51b8z8a.com.png": {
+    "aspect": 4.961,
+    "tone": "light"
   },
   "logos/xn--fhqu4y0gz4ew51bfy2e.com.png": {
     "aspect": 3.0,
     "tone": "light"
   },
   "logos/xn--fhqu4y0gz4ew51bfy2e.icu.png": {
-    "aspect": 3.236,
+    "aspect": 3.239,
     "tone": "dark"
   },
   "logos/xn--fhqu4y0gz4ew51bfy2e.top.png": {
@@ -60,44 +92,64 @@
     "tone": "light"
   },
   "logos/xn--fiqs8srwb9iv6f088h.site.png": {
-    "aspect": 4.0,
+    "aspect": 4.103,
     "tone": "light"
   },
   "logos/xn--fiqs8srwb9iv6f088h.top.png": {
-    "aspect": 3.804,
+    "aspect": 3.812,
+    "tone": "light"
+  },
+  "logos/xn--fiqs8srwb9iv6f6w9n.com.svg": {
+    "aspect": null,
+    "tone": "unknown"
+  },
+  "logos/xn--fiqs8srwb9iv6f6w9n.fun.svg": {
+    "aspect": null,
+    "tone": "unknown"
+  },
+  "logos/xn--fiqs8srwb9iv6f6w9n.icu.png": {
+    "aspect": 3.231,
+    "tone": "dark"
+  },
+  "logos/xn--fiqs8srwb9iv6f6w9n.net.png": {
+    "aspect": 1.0,
+    "tone": "dark"
+  },
+  "logos/xn--fiqs8srwb9iv6f6w9n.org.png": {
+    "aspect": 4.776,
+    "tone": "dark"
+  },
+  "logos/xn--fiqv8jmxf9iv6f6w9n.site.png": {
+    "aspect": 3.756,
+    "tone": "light"
+  },
+  "logos/xn--pssd5uz4e6t1bbi9a.com.png": {
+    "aspect": 4.456,
+    "tone": "dark"
+  },
+  "logos/xn--pssd5uz4e6t1bhg3e.com.png": {
+    "aspect": 3.281,
     "tone": "light"
   },
   "logos/xn--pssd5uz4e6t1bhg3e.top.png": {
-    "aspect": 4.457,
+    "aspect": 4.444,
     "tone": "light"
   },
   "logos/xn--psszg58c6d27tnq2e.com.jpg": {
-    "aspect": 4.25,
-    "tone": "light"
+    "aspect": 4.167,
+    "tone": "dark"
   },
   "logos/xn--psszg58c6d27tt15i.com.png": {
-    "aspect": 3.571,
+    "aspect": 3.917,
     "tone": "light"
   },
   "logos/xn--psszg58c6dz32ufld.cn.png": {
-    "aspect": 4.699,
+    "aspect": 4.706,
     "tone": "dark"
   },
-  "logos/xn--psszg58c6dz32ufld.com.png": {
-    "aspect": 5.333,
+  "logos/xn--psszg58c81dj45bjw8c.com.png": {
+    "aspect": 4.183,
     "tone": "light"
-  },
-  "logos/xn--psszg58c81dj45bdvx.com.png": {
-    "aspect": 1.0,
-    "tone": "light"
-  },
-  "logos/xn--psszg58c81dj45bjw8c.icu.png": {
-    "aspect": 3.642,
-    "tone": "dark"
-  },
-  "logos/xn--psszg58c81dj45bjw8c.top.png": {
-    "aspect": 5.267,
-    "tone": "dark"
   },
   "logos/xn--psszg58c9ct98x9y1a.top.png": {
     "aspect": 4.301,
@@ -108,71 +160,55 @@
     "tone": "dark"
   },
   "logos/xn--psszg58c9cx251ac5t.work.png": {
-    "aspect": 4.834,
+    "aspect": 5.039,
     "tone": "light"
   },
-  "logos/xn--psszg58cex6ab63a1ms.com.png": {
-    "aspect": 1.459,
+  "logos/xn--psszg58cb73ap6a0z9g.icu.png": {
+    "aspect": 4.923,
     "tone": "dark"
   },
-  "logos/xn--psszg58cf07f.fun.png": {
-    "aspect": 4.62,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cf07f.icu.svg": {
-    "aspect": null,
-    "tone": "unknown"
+  "logos/xn--psszg58cf07f.org.png": {
+    "aspect": 4.384,
+    "tone": "dark"
   },
   "logos/xn--psszg58cf07f.site.png": {
     "aspect": 3.394,
     "tone": "dark"
   },
-  "logos/xn--psszg58cf07f.top.png": {
-    "aspect": 3.753,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cf1d8u4erdxb.com.svg": {
-    "aspect": null,
-    "tone": "unknown"
-  },
   "logos/xn--psszg58cgv6a4t1cr1l.com.png": {
     "aspect": 4.106,
     "tone": "dark"
   },
-  "logos/xn--psszg58cgv6aq83axit.work.png": {
-    "aspect": 2.456,
+  "logos/xn--psszg58ci9aj27nlnk.com.png": {
+    "aspect": 3.325,
     "tone": "dark"
   },
-  "logos/xn--psszg58cj45k.fun.png": {
-    "aspect": 3.753,
+  "logos/xn--psszg58cm5ej12gtkr.com.png": {
+    "aspect": 3.181,
+    "tone": "dark"
+  },
+  "logos/xn--psszg58cp4a501kgld.com.png": {
+    "aspect": 3.729,
     "tone": "light"
   },
-  "logos/xn--psszg58cj45k.net.png": {
-    "aspect": 3.0,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cj45k.space.png": {
-    "aspect": 5.085,
-    "tone": "light"
-  },
-  "logos/xn--psszg58cj45k.top.png": {
-    "aspect": 3.232,
+  "logos/xn--psszg58cr55a3u1dk8aca.online.png": {
+    "aspect": 6.095,
     "tone": "light"
   },
   "logos/xn--psszg58cr55afj7a8y1a.com.png": {
-    "aspect": 1.082,
+    "aspect": 1.067,
     "tone": "dark"
   },
   "logos/xn--psszg58cr55auuzkcf.cn.jpg": {
-    "aspect": 3.382,
+    "aspect": 4.607,
     "tone": "dark"
   },
   "logos/xn--psszg58cr55auuzqd0b.com.png": {
-    "aspect": 3.102,
+    "aspect": 3.244,
     "tone": "light"
   },
   "logos/xn--psszg58cr55auuzqd0b.icu.png": {
-    "aspect": 3.102,
+    "aspect": 3.244,
     "tone": "light"
   },
   "logos/xn--psszg58cr55ay9af15g.cn.png": {
@@ -183,36 +219,124 @@
     "aspect": 5.958,
     "tone": "light"
   },
+  "logos/xn--psszg58cr55ay9al75p.cn.png": {
+    "aspect": 3.632,
+    "tone": "dark"
+  },
   "logos/xn--psszg58cr55ay9al75p.com.png": {
-    "aspect": 4.38,
+    "aspect": 4.507,
     "tone": "light"
   },
   "logos/xn--psszg58cr55ay9al75p.fun.png": {
-    "aspect": 3.493,
+    "aspect": 3.494,
     "tone": "light"
+  },
+  "logos/xn--psszg58ct4eus8e8y1a.com.svg": {
+    "aspect": null,
+    "tone": "unknown"
+  },
+  "logos/xn--psszg58cv22goony8m.com.png": {
+    "aspect": 4.706,
+    "tone": "dark"
+  },
+  "logos/xn--psszg58cy52cu6lj57b.cn.png": {
+    "aspect": 4.162,
+    "tone": "light"
+  },
+  "logos/xn--psszg58cydsd5672a.cn.png": {
+    "aspect": 3.294,
+    "tone": "light"
+  },
+  "logos/xn--psszg58cydsd5672a.com.png": {
+    "aspect": 3.0,
+    "tone": "dark"
+  },
+  "logos/xn--psszg58cydsdq780c.com.png": {
+    "aspect": 3.315,
+    "tone": "dark"
   },
   "logos/xn--psszg58cydsdq780c.site.png": {
     "aspect": 3.562,
     "tone": "dark"
   },
-  "logos/xn--qvrq5h0gz4e1yak04fbi5e.online.png": {
-    "aspect": 3.742,
-    "tone": "dark"
+  "logos/xn--qvrq5h0gz4e1yak04fbi5e.com.png": {
+    "aspect": 4.295,
+    "tone": "light"
+  },
+  "logos/xn--qvrq5h0gz4e1yak04fbi5e.site.png": {
+    "aspect": 4.295,
+    "tone": "light"
   },
   "logos/xn--rhqr3y0gz4ec38cj9v.com.png": {
     "aspect": 3.753,
     "tone": "light"
   },
   "logos/xn--rhqr3y0gz4ec38cpb7c.com.png": {
-    "aspect": 3.164,
+    "aspect": 3.908,
+    "tone": "light"
+  },
+  "logos/xn--v6qr1dq5g9iv6f7z3hqryb.cn.png": {
+    "aspect": 2.737,
     "tone": "light"
   },
   "logos/xn--vcs43c0gz4e619joyl.icu.png": {
-    "aspect": 3.482,
+    "aspect": 3.531,
     "tone": "light"
   },
+  "logos/xn--wbs66c0gz4ecwe320l.cn.png": {
+    "aspect": 3.1,
+    "tone": "light"
+  },
+  "logos/xn--wbs66c0gz4ecwe320l.com.png": {
+    "aspect": 5.766,
+    "tone": "dark"
+  },
+  "logos/xn--wbs66c0gz4ecwe320l.top.png": {
+    "aspect": 4.657,
+    "tone": "light"
+  },
+  "logos/xn--xhq02y0gz4ebvbj98t.cn.png": {
+    "aspect": 4.449,
+    "tone": "light"
+  },
+  "logos/xn--xhq02y0gz4ebvbj98t.icu.png": {
+    "aspect": 4.965,
+    "tone": "light"
+  },
+  "logos/xn--xhq02y0gz4ebvbj98t.top.svg": {
+    "aspect": null,
+    "tone": "unknown"
+  },
+  "logos/xn--xhq02y0gz4eg2f663f.fun.svg": {
+    "aspect": null,
+    "tone": "unknown"
+  },
+  "logos/xn--xhq02y0gz4eg2fdt3k.com.png": {
+    "aspect": 1.278,
+    "tone": "dark"
+  },
+  "logos/xn--xhq02y0gz4eg2fdt3k.top.png": {
+    "aspect": 4.384,
+    "tone": "dark"
+  },
+  "logos/xn--xhq02y0gz4eg2fdt3k.vip.png": {
+    "aspect": 4.371,
+    "tone": "dark"
+  },
+  "logos/xn--xhq44jb2f9iv6f6w9n.icu.png": {
+    "aspect": 1.0,
+    "tone": "light"
+  },
+  "logos/xn--xhq44jb2f9iv6f6w9n.top.png": {
+    "aspect": 3.394,
+    "tone": "dark"
+  },
+  "logos/xn--xhq89jmxf9iv6f088h.com.png": {
+    "aspect": 1.0,
+    "tone": "dark"
+  },
   "logos/xn--xhq89jmxf9iv6f6w9n.com.png": {
-    "aspect": 0.963,
+    "aspect": 0.859,
     "tone": "light"
   }
 }

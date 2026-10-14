@@ -26,7 +26,10 @@ except ImportError:  # pragma: no cover
 
 RESULT_JSON = "result.json"
 
-# 最长边上限。卡片里校徽最大显示宽度约 250 CSS px，640 足够 2 倍屏。
+# 校徽高度上限（px）。卡片里显示高度是 3.25rem ≈ 52px，160 约等于 3 倍屏。
+# 超过就等比缩小；比它矮的小图保持原样（放大只会更糊更占地方）。
+LOGO_HEIGHT = 160
+# 宽度上限：个别字标宽高比到 4.8，统一高度后会横贯整张卡片，这里封顶。
 MAX_EDGE = 640
 # flood fill 的颜色容差（RGBA 四通道差之和），越大抠得越狠
 BG_TOLERANCE = 34
@@ -136,13 +139,23 @@ def trim(img):
 
 
 def limit_size(img):
-    """把最长边压到 MAX_EDGE 以内（不放大）。"""
-    longest = max(img.width, img.height)
-    if longest > MAX_EDGE:
-        scale = MAX_EDGE / longest
-        size = (max(1, round(img.width * scale)), max(1, round(img.height * scale)))
-        img = img.resize(size, Image.LANCZOS)
-    return img
+    """把校徽收敛到统一的显示尺度以内（只缩不放）。
+
+    ★ 抓回来的尺寸非常不齐：有 8072×1670 的巨图，也有 202×63 的小图，
+      宽高比从 0.86 到 4.8 都有。卡片里校徽是按固定高度显示的，
+      所以这里把「高度超过 LOGO_HEIGHT、或宽度超过 MAX_EDGE」的压回来即可 ——
+      显示尺寸由 CSS 统一，源图只负责别太大。
+      **不放大**：把 63px 高的小图插值到 160px 只会让体积翻倍、画质更糊。
+    """
+    if img.height <= 0 or img.width <= 0:
+        return img
+
+    scale = min(1.0, LOGO_HEIGHT / img.height, MAX_EDGE / img.width)
+    if scale >= 1.0:
+        return img
+    width = max(1, round(img.width * scale))
+    height = max(1, round(img.height * scale))
+    return img.resize((width, height), Image.LANCZOS)
 
 
 def remove_background(img):
@@ -231,15 +244,11 @@ def main():
         img.save(buffer, format="PNG", optimize=True)
         data = buffer.getvalue()
 
-        # 缩放/优化后反而变大时保留原文件（去底色和超尺寸图除外，
-        # 那两种情况必须落盘）
-        oversized = max(original_size) > MAX_EDGE
-        if cut or oversized or len(data) <= before_bytes:
-            with open(path, "wb") as fh:
-                fh.write(data)
-            after_bytes = len(data)
-        else:
-            after_bytes = before_bytes
+        # 一律落盘。以前这里有个「新文件更大就保留原图」的省流量分支，
+        # 结果把尺寸统一也一起省掉了 —— 源图高度不一致，卡片顶部的校徽就高低不齐。
+        with open(path, "wb") as fh:
+            fh.write(data)
+        after_bytes = len(data)
 
         stats["cut"] += int(cut)
         stats["bytes_before"] += before_bytes
