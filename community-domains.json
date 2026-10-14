@@ -1,4 +1,16 @@
 {
   "version": 1,
-  "domains": []
+  "domains": [
+    {
+      "domain": "百奶宫.site",
+      "ascii": "xn--yus44ct37b.site",
+      "status": "pending",
+      "source": "issue",
+      "issue": 2,
+      "reported_by": "drysaltyfish",
+      "reported_at": "2026-10-14",
+      "approved_at": "",
+      "note": ""
+    }
+  ]
 }
