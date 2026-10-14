@@ -9,12 +9,14 @@ import SearchBar from './components/SearchBar.vue'
 import FilterChips from './components/FilterChips.vue'
 import SiteGrid from './components/SiteGrid.vue'
 import EmptyState from './components/EmptyState.vue'
-import { meta, sites, statusOptions, jumpOptions } from './data/index.js'
+import ContributeDialog from './components/ContributeDialog.vue'
+import { meta, sites, statusOptions, jumpOptions, contribute } from './data/index.js'
 import { useSiteFilter } from './composables/useSiteFilter.js'
 
 const query = ref('')
 const status = ref('all')
 const jump = ref('all')
+const contributeOpen = ref(false)
 
 const filters = { query, status, jump }
 const { results, isFiltering, keyword } = useSiteFilter(sites, filters)
@@ -45,6 +47,9 @@ function resetAll() {
       :offline="meta.offline"
       :with-logo="meta.withLogo"
       :generated-at="meta.generatedAt"
+      :contribute-label="contribute.buttonLabel"
+      :contribute-hint="contribute.hint"
+      @contribute="contributeOpen = true"
     />
 
     <section class="panel" aria-labelledby="panel-title">
@@ -72,8 +77,17 @@ function resetAll() {
       <p class="foot__note">
         「可访问」只代表抓取当时回到了 2xx/3xx，站点状态随时会变；打不开的域名同样保留在墙上。
       </p>
+      <p class="foot__note">
+        列表里没有你想找的域名？
+        <button type="button" class="foot__link" @click="contributeOpen = true">
+          点这里投稿
+        </button>
+        —— 可以看看它能收录什么样的域名、以及怎么投。
+      </p>
     </footer>
   </div>
+
+  <ContributeDialog v-model:open="contributeOpen" :content="contribute" />
 </template>
 
 <style scoped>
@@ -152,6 +166,23 @@ function resetAll() {
 
 .foot__note {
   opacity: 0.9;
+}
+
+/* 页脚里的投稿入口：做成行内链接的样子，但语义上是 button
+   （它打开的是弹窗，不是导航，用 <a> 会骗读屏和「在新标签打开」的期待） */
+.foot__link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 700;
+  color: var(--color-primary-text);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.foot__link:hover {
+  color: var(--color-primary-strong);
 }
 
 @media (max-width: 40rem) {
