@@ -55,7 +55,7 @@ const STATUSES = [
   { value: 'offline', label: '打不开' },
 ]
 
-/** 抓取失败原因 -> 中文说明。 */
+/** 抓取侧用的错误码 -> 中文说明。 */
 const ERROR_LABELS = {
   conn_error: '无法建立连接',
   timeout: '请求超时',
@@ -63,28 +63,93 @@ const ERROR_LABELS = {
   too_many_redirects: '跳转次数过多',
 }
 
+/** HTTP 状态码 -> 一句话解释。 */
+const HTTP_HINTS = {
+  400: '请求被拒绝',
+  401: '需要登录',
+  403: '拒绝访问',
+  404: '页面不存在',
+  405: '方法不被允许',
+  406: '不接受该请求',
+  412: '前置条件校验失败',
+  429: '请求过于频繁',
+  500: '源站内部错误',
+  502: '网关错误',
+  503: '服务不可用',
+  504: '网关超时',
+  522: '源站连接超时',
+  526: '证书校验失败',
+}
+
+/** Python 侧的 requests 异常名 -> 中文说明（别把 `page:ConnectionError` 直接甩给用户）。 */
+const PAGE_ERROR_LABELS = {
+  ConnectionError: '连接失败',
+  ConnectTimeout: '连接超时',
+  ReadTimeout: '读取超时',
+  Timeout: '请求超时',
+  TooManyRedirects: '跳转次数过多',
+  SSLError: '证书错误',
+  InvalidURL: '地址不合法',
+  MissingSchema: '地址缺少协议',
+  ChunkedEncodingError: '响应传输中断',
+  ContentDecodingError: '内容解码失败',
+}
+
+/** 把 result.json 里的 error 字段翻成人话。 */
+function describeError(raw) {
+  if (!raw) return ''
+  if (ERROR_LABELS[raw]) return ERROR_LABELS[raw]
+
+  const http = String(raw).match(/^page:http_(\d{3})$/)
+  if (http) return `HTTP ${http[1]}`
+
+  const page = String(raw).match(/^page:(.+)$/)
+  if (page) return PAGE_ERROR_LABELS[page[1]] || '详情页抓取异常'
+
+  return String(raw)
+}
+
 /**
- * 状态徽章文案。徽章空间有限，所以拆成「短标签 + 详细说明」：
- * 标签进徽章（`HTTP 403`），说明进 title / aria-label（`HTTP 403 · 拒绝访问`）。
+ * 状态 + 徽章文案的**唯一**来源。
+ *
+ * 判定只看 HTTP 终态码：2xx/3xx 就算可访问。
+ * `error` 字段不能用来判死活 —— 它同时承载了两类完全不同的失败：
+ *   · 「站点自己连不上」（conn_error / timeout / page:http_403 …）
+ *   · 「站点 200 了，但跳转目标或详情页抓取失败」（那 40 个 error 非空、
+ *      final_status=200 的域名就是这么来的）
+ * 早先把 error 当死活的判据，结果 40 张卡片出现「卡片降级成打不开、徽章却写可访问」
+ * 的自相矛盾。现在统一在这里出，标签和 status 不可能再打架。
+ *
+ * 徽章空间有限，所以拆成「短标签 + 详细说明」：
+ * 标签进徽章（`HTTP 403`），说明进 title / aria-label。
  */
 function statusBadgeOf(row) {
   const raw = String(row.error || '')
   const code = toNumber(row.final_status)
 
   if (code && code >= 200 && code < 400) {
-    return { label: '可访问', detail: `抓取时返回 HTTP ${code}` }
+    // 站点本身是通的，但抓详情/跳转目标时出过问题，如实写在说明里
+    const detail = raw
+      ? `HTTP ${code}，但页面详情或跳转目标抓取失败（${describeError(raw)}）`
+      : `抓取时返回 HTTP ${code}`
+    return { status: 'online', label: '可访问', detail }
   }
 
-  const httpMatch = raw.match(/^page:http_(\d{3})$/)
-  if (httpMatch) {
-    const status = Number(httpMatch[1])
-    const hint = HTTP_HINTS[status] || '异常状态码'
-    return { label: `HTTP ${status}`, detail: `HTTP ${status} · ${hint}` }
+  // 有状态码就让状态码说话，比「连接失败」这种笼统说法准确
+  if (code) {
+    const hint = HTTP_HINTS[code] || '异常状态码'
+    const extra = describeError(raw)
+    // 别写成「HTTP 403 · 拒绝访问（HTTP 403）」
+    const suffix = extra && extra !== `HTTP ${code}` ? `（${extra}）` : ''
+    return { status: 'offline', label: `HTTP ${code}`, detail: `HTTP ${code} · ${hint}${suffix}` }
   }
 
-  if (ERROR_LABELS[raw]) return { label: ERROR_LABELS[raw], detail: ERROR_LABELS[raw] }
-  if (!raw) return { label: code ? `HTTP ${code}` : '无响应', detail: code ? `HTTP ${code}` : '请求没有拿到任何响应' }
-  return { label: raw, detail: raw }
+  const label = describeError(raw) || '无响应'
+  return {
+    status: 'offline',
+    label,
+    detail: raw ? `${label}（没有拿到 HTTP 状态码）` : '请求没有拿到任何响应',
+  }
 }
 
 /**
@@ -107,18 +172,6 @@ const NOISE_TITLE_PATTERNS = [
   /^站点未(绑定|找到|开通)/,
   /^域名(未绑定|不存在|已过期|已暂停)/,
 ]
-
-const HTTP_HINTS = {
-  400: '请求被拒绝',
-  401: '需要登录',
-  403: '拒绝访问',
-  404: '页面不存在',
-  412: '前置条件校验失败',
-  500: '源站内部错误',
-  502: '网关错误',
-  522: '源站连接超时',
-  526: '证书校验失败',
-}
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, 'utf8'))
@@ -157,25 +210,19 @@ function cleanTitle(raw) {
   return text
 }
 
-function statusOf(row) {
-  const code = toNumber(row.final_status)
-  if (row.error || !code) return 'offline'
-  return code >= 200 && code < 400 ? 'online' : 'offline'
-}
-
 function normalize(row, tones) {
   const domain = String(row.domain || '').trim()
   const ascii = String(row.ascii || '').trim()
   const pageTitle = cleanTitle(row.title)
   const targetUrl = String(row.final_url || '').trim()
-  const status = statusOf(row)
   const httpStatus = toNumber(row.final_status)
   const logo = row.logo_path ? String(row.logo_path).replace(/^\.?\//, '') : ''
   const tone = tones[logo] || null
   const schoolName = schoolNameFromDomain(domain)
-  const badge = status === 'online'
-    ? { label: '可访问', detail: '' }
-    : statusBadgeOf(row)
+  // ★ 状态与徽章文案必须来自同一个判断，否则会出现「状态=打不开、徽章=可访问」
+  //   这种自相矛盾的卡片：error 字段既记录「站点本身连不上」，也记录
+  //   「站点 200 了但跳转目标/详情页抓取失败」，两者不能混为一谈。
+  const badge = statusBadgeOf(row)
 
   return {
     id: ascii || domain,
@@ -202,7 +249,7 @@ function normalize(row, tones) {
     /** 校徽宽高比，>1 是横排字标 */
     logoAspect: tone?.aspect ?? null,
     jumpType: JUMP_TYPES.some((t) => t.value === row.jump_type) ? row.jump_type : 'none',
-    status,
+    status: badge.status,
     httpStatus,
     statusLabel: badge.label,
     /** 徽章放不下的完整说明，进 title / aria-label */
