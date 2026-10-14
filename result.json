@@ -11,25 +11,27 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "3.658",
+    "latency_s": "1.389",
     "ips": "43.174.246.27,43.174.247.27",
-    "error": "conn_error"
+    "error": "conn_error",
+    "blocked": ""
   },
   {
     "domain": "中国奶龙大学.icu",
     "ascii": "xn--fiqs8srwb9iv6f6w9n.icu",
     "final_url": "https://www.cau.edu.cn/",
-    "title": "中国农业大学",
-    "logo_path": "logos/xn--fiqs8srwb9iv6f6w9n.icu.png",
-    "logo_url": "https://www.cau.edu.cn/static2022/images/logo.png",
+    "title": "",
+    "logo_path": "",
+    "logo_url": "",
     "jump_type": "delayed",
     "redirect_chain": "200:https://xn--fiqs8srwb9iv6f6w9n.icu/ -> 200:https://www.cau.edu.cn/",
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "7.443",
+    "latency_s": "10.660",
     "ips": "172.67.212.128,104.21.93.166",
-    "error": ""
+    "error": "page:ConnectionError",
+    "blocked": ""
   },
   {
     "domain": "中国奶龙大学.fun",
@@ -43,9 +45,10 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.469",
+    "latency_s": "1.406",
     "ips": "172.67.137.229,104.21.62.175",
-    "error": "conn_error"
+    "error": "conn_error",
+    "blocked": ""
   },
   {
     "domain": "中国奶龙大学.com",
@@ -56,28 +59,30 @@
     "logo_url": "https://www.dlut.edu.cn/images/logo.svg",
     "jump_type": "delayed",
     "redirect_chain": "200:https://xn--fiqs8srwb9iv6f6w9n.com/ -> 200:https://www.dlut.edu.cn/",
-    "method": "requests+js_config",
+    "method": "requests+body_target",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.459",
-    "ips": "104.21.83.35,172.67.211.36",
-    "error": ""
+    "latency_s": "2.525",
+    "ips": "172.67.211.36,104.21.83.35",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "中国奶龙大学.net",
     "ascii": "xn--fiqs8srwb9iv6f6w9n.net",
-    "final_url": "https://www.dhu.edu.cn/",
+    "final_url": "https://www.dhu.edu.cn/mainm.htm",
     "title": "东华大学",
     "logo_path": "logos/xn--fiqs8srwb9iv6f6w9n.net.png",
-    "logo_url": "https://www.dhu.edu.cn/_upload/tpl/0b/3f/2879/template2879/image/logo.png",
+    "logo_url": "https://www.dhu.edu.cn/_upload/tpl/0b/3f/2879/template2879/wap_res/image/logo.png",
     "jump_type": "delayed",
-    "redirect_chain": "200:https://xn--fiqs8srwb9iv6f6w9n.net/ -> 200:https://www.dhu.edu.cn/",
-    "method": "requests+js_config",
+    "redirect_chain": "200:https://xn--fiqs8srwb9iv6f6w9n.net/ -> 301:https://www.dhu.edu.cn/ -> 200:https://www.dhu.edu.cn/mainm.htm",
+    "method": "requests+body_target",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.913",
+    "latency_s": "2.264",
     "ips": "104.21.10.58,172.67.162.142",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "中国奶龙大学.org",
@@ -91,9 +96,10 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "7.174",
-    "ips": "172.67.130.10,104.21.3.18",
-    "error": ""
+    "latency_s": "8.769",
+    "ips": "104.21.3.18,172.67.130.10",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "中国奶蛙大学.xyz",
@@ -107,9 +113,10 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "6.278",
+    "latency_s": "2.665",
     "ips": "54.215.31.113",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "中国奶蛙大学.top",
@@ -123,9 +130,10 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "4.561",
-    "ips": "207.207.210.23,207.207.210.50,207.207.210.36",
-    "error": ""
+    "latency_s": "3.966",
+    "ips": "207.207.210.50,207.207.210.36,207.207.210.23",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "中国奶蛙大学.site",
@@ -139,9 +147,10 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "5.748",
+    "latency_s": "2.329",
     "ips": "43.167.220.196",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "中国奶蛙大学.com",
@@ -155,9 +164,10 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "5.772",
-    "ips": "172.67.142.54,104.21.39.20",
-    "error": ""
+    "latency_s": "2.336",
+    "ips": "104.21.39.20,172.67.142.54",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "国际奶龙大学.icu",
@@ -171,9 +181,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "7.430",
+    "latency_s": "3.497",
     "ips": "172.67.155.68,104.21.72.213",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "宇宙奶龙大学.site",
@@ -187,9 +198,10 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "4.317",
-    "ips": "172.67.201.169,104.21.22.2",
-    "error": ""
+    "latency_s": "4.618",
+    "ips": "104.21.22.2,172.67.201.169",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "宇宙奶龙大学.fun",
@@ -203,9 +215,10 @@
     "method": "requests+js_location",
     "first_status": 200,
     "final_status": 202,
-    "latency_s": "5.880",
-    "ips": "43.174.247.65,43.174.246.65",
-    "error": ""
+    "latency_s": "3.157",
+    "ips": "43.174.246.65,43.174.247.65",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "宇宙奶龙大学.com",
@@ -219,9 +232,10 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "5.650",
-    "ips": "185.199.108.153,185.199.109.153",
-    "error": ""
+    "latency_s": "2.541",
+    "ips": "185.199.109.153,185.199.108.153",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "宇宙奶蛙大学.com",
@@ -232,12 +246,13 @@
     "logo_url": "https://dcollege.suat-sz.edu.cn/images/logo.png",
     "jump_type": "delayed",
     "redirect_chain": "200:https://xn--psszg58cydsd5672a.com/ -> 200:https://dcollege.suat-sz.edu.cn/",
-    "method": "requests+js_config",
+    "method": "requests+body_target",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.222",
+    "latency_s": "2.815",
     "ips": "172.67.179.154,104.21.31.192",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "宇宙奶蛙大学.cn",
@@ -248,12 +263,13 @@
     "logo_url": "https://www.nankai.edu.cn/_upload/tpl/02/58/600/template600/images/logo.png",
     "jump_type": "delayed",
     "redirect_chain": "200:https://xn--psszg58cydsd5672a.cn/ -> 200:https://www.nankai.edu.cn/",
-    "method": "requests+js_config",
+    "method": "requests+body_target",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.897",
+    "latency_s": "4.638",
     "ips": "43.132.105.206",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "世界奶龙大学.space",
@@ -267,9 +283,10 @@
     "method": "requests+js_location",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "5.014",
-    "ips": "185.199.111.153,185.199.108.153,185.199.110.153,185.199.109.153",
-    "error": ""
+    "latency_s": "1.568",
+    "ips": "185.199.111.153,185.199.108.153,185.199.109.153,185.199.110.153",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "世界奶龙大学.com",
@@ -283,9 +300,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "9.298",
+    "latency_s": "2.716",
     "ips": "15.197.225.128,3.33.251.168",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "世界奶蛙大学.com",
@@ -299,25 +317,27 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.402",
+    "latency_s": "4.405",
     "ips": "75.2.60.5",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "北京奶龙大学.top",
     "ascii": "xn--1lq90ic7f9iv6f6w9n.top",
-    "final_url": "https://114box.top/",
-    "title": "",
-    "logo_path": "",
-    "logo_url": "",
+    "final_url": "https://www.bigc.edu.cn/",
+    "title": "北京印刷学院",
+    "logo_path": "logos/xn--1lq90ic7f9iv6f6w9n.top.png",
+    "logo_url": "https://www.bigc.edu.cn/web/ROOT/images/2019/logo2.png",
     "jump_type": "delayed",
-    "redirect_chain": "200:https://xn--1lq90ic7f9iv6f6w9n.top/ -> 403:https://114box.top/",
-    "method": "requests+js_config",
+    "redirect_chain": "200:https://xn--1lq90ic7f9iv6f6w9n.top/ -> 200:https://www.bigc.edu.cn/",
+    "method": "requests+body_target",
     "first_status": 200,
-    "final_status": 403,
-    "latency_s": "4.054",
-    "ips": "172.67.179.86,104.21.91.203",
-    "error": "page:http_403"
+    "final_status": 200,
+    "latency_s": "2.305",
+    "ips": "104.21.91.203,172.67.179.86",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "北京奶龙大学.icu",
@@ -331,9 +351,10 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "33.862",
-    "ips": "172.67.160.220,104.21.89.143",
-    "error": "conn_error"
+    "latency_s": "33.017",
+    "ips": "104.21.89.143,172.67.160.220",
+    "error": "conn_error",
+    "blocked": ""
   },
   {
     "domain": "北京奶龙大学.fun",
@@ -347,9 +368,10 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "5.634",
-    "ips": "8.45.176.229,163.181.60.195,155.102.193.200,163.181.145.176,8.25.82.169,47.246.22.172,163.181.246.235,163.181.66.180,47.246.20.171,155.102.130.141,47.246.23.135,8.48.85.169,8.38.121.240",
-    "error": ""
+    "latency_s": "4.760",
+    "ips": "8.25.82.169,47.246.20.172,163.181.66.179,163.181.145.175,8.48.85.169,8.38.121.241,155.102.193.200,47.246.22.173,155.102.130.141,47.246.23.135,8.45.176.229,163.181.60.198,163.181.246.234",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "北京奶龙大学.com",
@@ -363,25 +385,27 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.496",
+    "latency_s": "5.575",
     "ips": "15.197.162.184",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "北京奶龙大学.cn",
     "ascii": "xn--1lq90ic7f9iv6f6w9n.cn",
-    "final_url": "",
+    "final_url": "http://xn--1lq90ic7f9iv6f6w9n.cn/",
     "title": "",
     "logo_path": "",
     "logo_url": "",
     "jump_type": "none",
-    "redirect_chain": "",
-    "method": "",
-    "first_status": "",
-    "final_status": "",
-    "latency_s": "60.258",
+    "redirect_chain": "302:http://xn--1lq90ic7f9iv6f6w9n.cn/ -> 200:https://dnspod.qcloud.com/static/webblock.html?d=xn--1lq90ic7f9iv6f6w9n.cn",
+    "method": "http_fallback+requests",
+    "first_status": 302,
+    "final_status": 302,
+    "latency_s": "2.149",
     "ips": "10.3.19.2",
-    "error": "timeout"
+    "error": "",
+    "blocked": "域名被 DNSPod 拦截（未解析或已封停）"
   },
   {
     "domain": "北京奶龙大学.org",
@@ -395,25 +419,27 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "7.073",
+    "latency_s": "3.550",
     "ips": "15.197.162.184",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "北京奶蛙大学.com",
     "ascii": "xn--1lq90ic7f9iv6f088h.com",
-    "final_url": "https://xn--1lq90ic7f9iv6f088h.com/",
-    "title": "",
-    "logo_path": "",
-    "logo_url": "",
-    "jump_type": "none",
-    "redirect_chain": "200:https://xn--1lq90ic7f9iv6f088h.com/",
-    "method": "requests",
+    "final_url": "https://www.bjut.edu.cn/",
+    "title": "北京工业大学|Beijing University of Technology",
+    "logo_path": "logos/xn--1lq90ic7f9iv6f088h.com.png",
+    "logo_url": "https://www.bjut.edu.cn/images/logo-1.png",
+    "jump_type": "delayed",
+    "redirect_chain": "200:https://xn--1lq90ic7f9iv6f088h.com/ -> 200:https://www.bjut.edu.cn/",
+    "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "34.605",
-    "ips": "216.198.79.65,64.29.17.65",
-    "error": "timeout"
+    "latency_s": "5.289",
+    "ips": "64.29.17.1,216.198.79.1",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "上海奶龙大学.top",
@@ -427,9 +453,10 @@
     "method": "http_fallback+requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "6.556",
+    "latency_s": "4.418",
     "ips": "103.120.80.6",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "上海奶龙大学.icu",
@@ -443,9 +470,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "12.860",
+    "latency_s": "3.588",
     "ips": "104.21.45.156,172.67.216.103",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "上海奶龙大学.com",
@@ -459,9 +487,10 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "6.893",
+    "latency_s": "2.864",
     "ips": "15.197.162.184",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "上海奶蛙大学.com",
@@ -475,9 +504,10 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.724",
+    "latency_s": "2.305",
     "ips": "104.21.72.174,172.67.153.83",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "天津奶龙大学.top",
@@ -491,9 +521,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.604",
-    "ips": "172.67.191.68,104.21.11.56",
-    "error": ""
+    "latency_s": "4.718",
+    "ips": "104.21.11.56,172.67.191.68",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "天津奶龙大学.com",
@@ -507,9 +538,10 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "7.651",
-    "ips": "104.21.82.67,172.67.197.115",
-    "error": ""
+    "latency_s": "3.689",
+    "ips": "172.67.197.115,104.21.82.67",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "天津奶龙大学.cn",
@@ -523,9 +555,10 @@
     "method": "requests",
     "first_status": 404,
     "final_status": 404,
-    "latency_s": "3.552",
+    "latency_s": "1.902",
     "ips": "202.113.64.2",
-    "error": "page:http_404"
+    "error": "page:http_404",
+    "blocked": ""
   },
   {
     "domain": "天津奶蛙大学.com",
@@ -539,9 +572,10 @@
     "method": "",
     "first_status": "",
     "final_status": "",
-    "latency_s": "68.986",
-    "ips": "104.21.94.242,172.67.141.217",
-    "error": "conn_error"
+    "latency_s": "62.676",
+    "ips": "172.67.141.217,104.21.94.242",
+    "error": "conn_error",
+    "blocked": ""
   },
   {
     "domain": "重庆奶龙大学.com",
@@ -555,9 +589,10 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "5.161",
-    "ips": "172.67.182.185,104.21.18.160",
-    "error": ""
+    "latency_s": "2.382",
+    "ips": "104.21.18.160,172.67.182.185",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "河北奶龙大学.com",
@@ -571,9 +606,10 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "5.499",
-    "ips": "149.104.21.25,149.104.21.22,149.104.21.26,149.104.21.24,149.104.21.23",
-    "error": ""
+    "latency_s": "2.883",
+    "ips": "149.104.21.22,149.104.21.24,149.104.21.26,149.104.21.23,149.104.21.25",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "山西奶蛙大学.com",
@@ -587,9 +623,10 @@
     "method": "",
     "first_status": "",
     "final_status": "",
-    "latency_s": "64.782",
-    "ips": "172.67.165.170,104.21.11.81",
-    "error": "conn_error"
+    "latency_s": "63.084",
+    "ips": "104.21.11.81,172.67.165.170",
+    "error": "conn_error",
+    "blocked": ""
   },
   {
     "domain": "内蒙古奶龙大学.cn",
@@ -603,9 +640,10 @@
     "method": "requests+meta+js_location",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "9.835",
-    "ips": "104.21.17.141,172.67.176.211",
-    "error": ""
+    "latency_s": "10.161",
+    "ips": "172.67.176.211,104.21.17.141",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "内蒙古奶蛙大学.fun",
@@ -619,25 +657,27 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "35.490",
+    "latency_s": "30.851",
     "ips": "172.67.176.50,104.21.31.100",
-    "error": "conn_error"
+    "error": "conn_error",
+    "blocked": ""
   },
   {
     "domain": "辽宁奶龙大学.work",
     "ascii": "xn--psszg58c9cx251ac5t.work",
     "final_url": "https://www.lntu.edu.cn/",
-    "title": "辽宁工程技术大学",
-    "logo_path": "logos/xn--psszg58c9cx251ac5t.work.png",
-    "logo_url": "https://www.lntu.edu.cn/images/logo03031.png",
+    "title": "",
+    "logo_path": "",
+    "logo_url": "",
     "jump_type": "direct",
     "redirect_chain": "302:https://xn--psszg58c9cx251ac5t.work/ -> 200:https://www.lntu.edu.cn/",
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "4.564",
+    "latency_s": "10.133",
     "ips": "172.67.197.202,104.21.60.149",
-    "error": ""
+    "error": "page:ConnectionError",
+    "blocked": ""
   },
   {
     "domain": "辽宁奶龙大学.com",
@@ -651,9 +691,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "4.439",
-    "ips": "104.21.68.102,172.67.193.230",
-    "error": ""
+    "latency_s": "2.416",
+    "ips": "172.67.193.230,104.21.68.102",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "吉林奶龙大学.com",
@@ -667,9 +708,10 @@
     "method": "requests+js_location",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "6.064",
+    "latency_s": "3.581",
     "ips": "172.67.215.142,104.21.16.190",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "吉林奶蛙大学.com",
@@ -683,25 +725,27 @@
     "method": "http_fallback+requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "1.457",
+    "latency_s": "0.861",
     "ips": "39.107.33.116",
-    "error": "page:http_403"
+    "error": "page:http_403",
+    "blocked": ""
   },
   {
     "domain": "黑龙江奶龙大学.online",
     "ascii": "xn--psszg58cr55a3u1dk8aca.online",
-    "final_url": "https://www.hljucm.net/index.htm",
+    "final_url": "https://www.hljucm.net/",
     "title": "黑龙江中医药大学",
     "logo_path": "logos/xn--psszg58cr55a3u1dk8aca.online.png",
     "logo_url": "https://www.hljucm.net/images/lg2.png",
     "jump_type": "delayed",
-    "redirect_chain": "200:https://xn--psszg58cr55a3u1dk8aca.online/ -> 200:https://www.hljucm.net/ -> 302:http://cyc.hljucm.net/ -> 200:https://cyc.hljucm.net/index.htm -> 302:http://www.hljucm.net/ -> 200:https://www.hljucm.net/index.htm",
+    "redirect_chain": "200:https://xn--psszg58cr55a3u1dk8aca.online/ -> 200:https://www.hljucm.net/",
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "7.560",
-    "ips": "98.84.224.111,18.208.88.157",
-    "error": ""
+    "latency_s": "1.435",
+    "ips": "52.52.192.191,13.52.188.95",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "黑龙江奶龙大学.com",
@@ -715,9 +759,10 @@
     "method": "http_fallback+requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "3.547",
+    "latency_s": "0.983",
     "ips": "106.15.9.217",
-    "error": "page:http_403"
+    "error": "page:http_403",
+    "blocked": ""
   },
   {
     "domain": "江苏奶龙大学.icu",
@@ -728,12 +773,13 @@
     "logo_url": "https://www.seu.edu.cn/_upload/tpl/0b/59/2905/template2905/images/mlogo.png",
     "jump_type": "delayed",
     "redirect_chain": "200:http://xn--psszg58cr55auuzqd0b.icu/ -> 200:https://www.seu.edu.cn/",
-    "method": "http_fallback+requests+js_config",
+    "method": "http_fallback+requests+body_target",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "33.662",
+    "latency_s": "33.260",
     "ips": "18.162.120.134",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "江苏奶龙大学.com",
@@ -744,12 +790,13 @@
     "logo_url": "https://www.seu.edu.cn/_upload/tpl/0b/59/2905/template2905/images/mlogo.png",
     "jump_type": "delayed",
     "redirect_chain": "200:http://xn--psszg58cr55auuzqd0b.com/ -> 200:https://www.seu.edu.cn/",
-    "method": "http_fallback+requests+js_config",
+    "method": "http_fallback+requests+body_target",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "33.550",
+    "latency_s": "33.252",
     "ips": "18.162.120.134",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "江苏奶龙大学.cn",
@@ -763,41 +810,44 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.721",
+    "latency_s": "2.759",
     "ips": "172.67.201.220,104.21.90.141",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "江苏奶蛙大学.com",
     "ascii": "xn--psszg58cr55auuzkcf.com",
-    "final_url": "https://www.dnspod.cn/outdated-browser",
-    "title": "DNSPod-免费智能DNS解析服务商-电信_网通_教育网,智能DNS-烟台帝思普网络科技有限公司",
+    "final_url": "http://xn--psszg58cr55auuzkcf.com/",
+    "title": "",
     "logo_path": "",
     "logo_url": "",
-    "jump_type": "delayed",
-    "redirect_chain": "302:http://xn--psszg58cr55auuzkcf.com/ -> 200:https://dnspod.qcloud.com/static/webblock.html?d=xn--psszg58cr55auuzkcf.com -> 200:https://dnspod.qcloud.com/outdated-browser -> 200:https://www.dnspod.cn/ -> 200:https://www.dnspod.cn/outdated-browser",
-    "method": "http_fallback+requests+js_location+js_config",
+    "jump_type": "none",
+    "redirect_chain": "302:http://xn--psszg58cr55auuzkcf.com/ -> 200:https://dnspod.qcloud.com/static/webblock.html?d=xn--psszg58cr55auuzkcf.com",
+    "method": "http_fallback+requests",
     "first_status": 302,
-    "final_status": 200,
-    "latency_s": "8.171",
+    "final_status": 302,
+    "latency_s": "2.045",
     "ips": "122.51.11.97",
-    "error": ""
+    "error": "",
+    "blocked": "域名被 DNSPod 拦截（未解析或已封停）"
   },
   {
     "domain": "江苏奶蛙大学.cn",
     "ascii": "xn--psszg58cr55auuzkcf.cn",
     "final_url": "https://www.jou.edu.cn/",
-    "title": "江苏海洋大学",
-    "logo_path": "logos/xn--psszg58cr55auuzkcf.cn.jpg",
-    "logo_url": "https://www.jou.edu.cn/images/logo_03.jpg",
+    "title": "",
+    "logo_path": "",
+    "logo_url": "",
     "jump_type": "delayed",
     "redirect_chain": "200:https://xn--psszg58cr55auuzkcf.cn/ -> 200:https://www.jou.edu.cn/",
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "8.514",
+    "latency_s": "1.606",
     "ips": "192.204.55.175",
-    "error": ""
+    "error": "page:ConnectionError",
+    "blocked": ""
   },
   {
     "domain": "浙江奶龙大学.top",
@@ -811,9 +861,10 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "2.586",
+    "latency_s": "0.577",
     "ips": "129.226.13.188",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "浙江奶龙大学.site",
@@ -827,9 +878,10 @@
     "method": "requests",
     "first_status": 404,
     "final_status": 404,
-    "latency_s": "4.100",
+    "latency_s": "1.711",
     "ips": "60.190.44.182",
-    "error": "page:http_404"
+    "error": "page:http_404",
+    "blocked": ""
   },
   {
     "domain": "浙江奶龙大学.fun",
@@ -843,9 +895,10 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "6.473",
+    "latency_s": "4.329",
     "ips": "43.167.235.172",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "浙江奶龙大学.com",
@@ -859,9 +912,10 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "4.826",
-    "ips": "172.67.169.41,104.21.95.17",
-    "error": ""
+    "latency_s": "3.386",
+    "ips": "104.21.95.17,172.67.169.41",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "浙江奶龙大学.cn",
@@ -875,25 +929,27 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "10.560",
+    "latency_s": "7.824",
     "ips": "202.107.200.74",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "浙江奶蛙大学.com",
     "ascii": "xn--psszg58cr55ay9af15g.com",
     "final_url": "https://www.cuz.edu.cn/",
-    "title": "浙江传媒学院",
-    "logo_path": "logos/xn--psszg58cr55ay9af15g.com.png",
-    "logo_url": "https://www.cuz.edu.cn/images24/logo_foot.png",
+    "title": "",
+    "logo_path": "",
+    "logo_url": "",
     "jump_type": "direct",
     "redirect_chain": "302:https://xn--psszg58cr55ay9af15g.com/ -> 200:https://www.cuz.edu.cn/",
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "7.338",
+    "latency_s": "2.093",
     "ips": "104.21.90.247,172.67.163.87",
-    "error": ""
+    "error": "page:ReadTimeout",
+    "blocked": ""
   },
   {
     "domain": "浙江奶蛙大学.cn",
@@ -907,25 +963,27 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.074",
+    "latency_s": "1.769",
     "ips": "172.67.223.115,104.21.91.152",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "安徽奶龙大学.com",
     "ascii": "xn--psszg58c6d27tt15i.com",
-    "final_url": "https://www.chnu.edu.cn:443/?appendstate=639275916533824386",
+    "final_url": "https://www.chnu.edu.cn/",
     "title": "淮北师范大学",
     "logo_path": "logos/xn--psszg58c6d27tt15i.com.png",
-    "logo_url": "https://www.chnu.edu.cn:443/upload/main/site/logo/image/8472e20880114ff5a88d60beaf573f78.png",
-    "jump_type": "delayed",
-    "redirect_chain": "301:https://xn--psszg58c6d27tt15i.com/ -> 200:https://www.chnu.edu.cn/ -> 302:https://www.chnu.edu.cn/ForceUserAgent/ForceUserAgent?useragent=phone -> 200:https://www.chnu.edu.cn:443/?appendstate=639275916533824386",
-    "method": "requests+js_location",
+    "logo_url": "https://www.chnu.edu.cn/upload/main/site/logo/image/8472e20880114ff5a88d60beaf573f78.png",
+    "jump_type": "direct",
+    "redirect_chain": "301:https://xn--psszg58c6d27tt15i.com/ -> 200:https://www.chnu.edu.cn/",
+    "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "9.700",
+    "latency_s": "2.004",
     "ips": "15.197.162.184",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "安徽奶蛙大学.com",
@@ -939,9 +997,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.771",
+    "latency_s": "1.462",
     "ips": "15.197.162.184",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "福建奶龙大学.com",
@@ -955,9 +1014,10 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "3.114",
+    "latency_s": "0.784",
     "ips": "103.30.41.228",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "江西奶龙大学.com",
@@ -971,9 +1031,10 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "4.862",
+    "latency_s": "3.905",
     "ips": "104.21.86.242,172.67.137.242",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "山东奶龙大学.top",
@@ -987,9 +1048,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.125",
+    "latency_s": "2.102",
     "ips": "172.67.161.19,104.21.90.200",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "山东奶龙大学.icu",
@@ -999,13 +1061,14 @@
     "logo_path": "logos/xn--xhq02y0gz4ebvbj98t.icu.png",
     "logo_url": "https://www.upc.edu.cn/ximages/f_logo.png",
     "jump_type": "direct",
-    "redirect_chain": "301:http://xn--xhq02y0gz4ebvbj98t.icu/ -> 200:https://www.upc.edu.cn/",
-    "method": "http_fallback+requests",
+    "redirect_chain": "301:https://xn--xhq02y0gz4ebvbj98t.icu/ -> 200:https://www.upc.edu.cn/",
+    "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "24.485",
-    "ips": "172.67.174.69,104.21.96.73",
-    "error": ""
+    "latency_s": "1.926",
+    "ips": "104.21.96.73,172.67.174.69",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "山东奶龙大学.cn",
@@ -1019,9 +1082,10 @@
     "method": "http_fallback+requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "8.622",
+    "latency_s": "3.938",
     "ips": "103.120.80.6",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "河南奶龙大学.com",
@@ -1035,9 +1099,10 @@
     "method": "requests+js_location",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "7.487",
+    "latency_s": "12.002",
     "ips": "172.67.145.47,104.21.33.128",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "湖北奶龙大学.com",
@@ -1051,9 +1116,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "8.449",
+    "latency_s": "1.604",
     "ips": "172.67.169.63,104.21.63.25",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "湖南奶龙大学.top",
@@ -1067,9 +1133,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "4.725",
+    "latency_s": "4.131",
     "ips": "104.21.89.74,172.67.156.244",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "湖南奶龙大学.com",
@@ -1083,9 +1150,27 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "16.604",
+    "latency_s": "6.749",
     "ips": "156.239.4.167",
-    "error": ""
+    "error": "",
+    "blocked": ""
+  },
+  {
+    "domain": "湖南奶蛙大学.cn",
+    "ascii": "xn--6kr28k0gz4eq33b1t7a.cn",
+    "final_url": "https://www.usc.edu.cn/",
+    "title": "南华大学",
+    "logo_path": "logos/xn--6kr28k0gz4eq33b1t7a.cn.png",
+    "logo_url": "https://www.usc.edu.cn/images/logo.png",
+    "jump_type": "delayed",
+    "redirect_chain": "200:https://xn--6kr28k0gz4eq33b1t7a.cn/ -> 200:https://www.usc.edu.cn/",
+    "method": "requests+js_config",
+    "first_status": 200,
+    "final_status": 200,
+    "latency_s": "3.050",
+    "ips": "104.21.8.20,172.67.156.180",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "广东奶龙大学.top",
@@ -1099,9 +1184,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "12.373",
+    "latency_s": "2.972",
     "ips": "172.67.128.96,104.21.0.232",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "广东奶龙大学.vip",
@@ -1115,9 +1201,10 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.824",
-    "ips": "185.199.109.153,185.199.110.153,185.199.108.153,185.199.111.153",
-    "error": ""
+    "latency_s": "4.176",
+    "ips": "185.199.109.153,185.199.110.153,185.199.111.153,185.199.108.153",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "广东奶龙大学.com",
@@ -1131,25 +1218,27 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "5.628",
+    "latency_s": "2.230",
     "ips": "104.21.5.40,172.67.132.240",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "广东奶龙大学.cn",
     "ascii": "xn--xhq02y0gz4eg2fdt3k.cn",
-    "final_url": "https://docs.qq.com/doc/DTHFWWU5hUnVnSFNY",
-    "title": "资源汇总",
-    "logo_path": "",
-    "logo_url": "",
+    "final_url": "https://www.gdut.edu.cn/",
+    "title": "广东工业大学",
+    "logo_path": "logos/xn--xhq02y0gz4eg2fdt3k.cn.png",
+    "logo_url": "https://www.gdut.edu.cn/images2020/logo.png",
     "jump_type": "delayed",
-    "redirect_chain": "200:https://xn--xhq02y0gz4eg2fdt3k.cn/ -> 200:https://xn--xhq02y0gz4eg2fdt3k.cn/home.html -> 301:https://moon-ke.github.io/langjian-knowledge-2026/ -> 200:http://xn--xhq02y0gz4eg2fdt3k.cn/langjian-knowledge-2026/ -> 200:https://docs.qq.com/doc/DTHFWWU5hUnVnSFNY",
-    "method": "requests+js_location+js_config",
+    "redirect_chain": "200:https://xn--xhq02y0gz4eg2fdt3k.cn/ -> 200:https://xn--xhq02y0gz4eg2fdt3k.cn/home.html -> 200:https://www.gdut.edu.cn/",
+    "method": "requests+js_location+body_target",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "7.315",
+    "latency_s": "2.748",
     "ips": "185.199.108.153,185.199.109.153,185.199.110.153,185.199.111.153",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "广东奶蛙大学.fun",
@@ -1163,9 +1252,10 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "7.862",
+    "latency_s": "4.742",
     "ips": "172.66.3.26,162.159.143.30",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "广西奶龙大学.com",
@@ -1179,9 +1269,27 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.148",
+    "latency_s": "1.622",
     "ips": "104.21.15.228,172.67.208.41",
-    "error": ""
+    "error": "",
+    "blocked": ""
+  },
+  {
+    "domain": "广西奶蛙大学.com",
+    "ascii": "xn--psszg58ct4e003egld.com",
+    "final_url": "https://www.gxmu.edu.cn/",
+    "title": "广西医科大学（Guangxi Medical University）",
+    "logo_path": "logos/xn--psszg58ct4e003egld.com.png",
+    "logo_url": "https://www.gxmu.edu.cn/images/gxmu_logo.png",
+    "jump_type": "direct",
+    "redirect_chain": "301:https://xn--psszg58ct4e003egld.com/ -> 200:https://www.gxmu.edu.cn/",
+    "method": "requests",
+    "first_status": 301,
+    "final_status": 200,
+    "latency_s": "2.359",
+    "ips": "172.67.169.8,104.21.27.68",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "海南奶龙大学.com",
@@ -1195,9 +1303,10 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.726",
-    "ips": "172.67.131.55,104.21.3.214",
-    "error": "conn_error"
+    "latency_s": "1.177",
+    "ips": "104.21.3.214,172.67.131.55",
+    "error": "conn_error",
+    "blocked": ""
   },
   {
     "domain": "四川奶龙大学.top",
@@ -1208,12 +1317,13 @@
     "logo_url": "https://www.sicnu.edu.cn/images/logo-1.png",
     "jump_type": "delayed",
     "redirect_chain": "200:https://xn--wbs66c0gz4ecwe320l.top/ -> 200:https://www.sicnu.edu.cn/",
-    "method": "requests+js_config",
+    "method": "requests+body_target",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.121",
-    "ips": "172.67.133.209,104.21.5.202",
-    "error": ""
+    "latency_s": "2.587",
+    "ips": "104.21.5.202,172.67.133.209",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "四川奶龙大学.com",
@@ -1227,9 +1337,10 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "1.844",
+    "latency_s": "0.149",
     "ips": "172.67.130.30,104.21.7.106",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "四川奶龙大学.cn",
@@ -1243,25 +1354,27 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.607",
+    "latency_s": "2.302",
     "ips": "104.21.82.133,172.67.158.58",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "四川奶蛙大学.com",
     "ascii": "xn--wbs66c0gz4ecwex88f.com",
-    "final_url": "https://fonts.googleapis.com/",
+    "final_url": "https://www.yibinu.edu.cn/",
     "title": "",
     "logo_path": "",
     "logo_url": "",
     "jump_type": "delayed",
-    "redirect_chain": "200:https://xn--wbs66c0gz4ecwex88f.com/ -> 404:https://fonts.googleapis.com/",
+    "redirect_chain": "200:https://xn--wbs66c0gz4ecwex88f.com/ -> 405:https://www.yibinu.edu.cn/",
     "method": "requests+js_config",
     "first_status": 200,
-    "final_status": 404,
-    "latency_s": "3.857",
+    "final_status": 405,
+    "latency_s": "2.226",
     "ips": "172.66.47.54,172.66.44.202",
-    "error": "page:http_404"
+    "error": "page:http_405",
+    "blocked": ""
   },
   {
     "domain": "云南奶龙大学.top",
@@ -1275,9 +1388,10 @@
     "method": "requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "2.724",
-    "ips": "172.67.157.254,104.21.66.86",
-    "error": "page:http_403"
+    "latency_s": "0.121",
+    "ips": "104.21.66.86,172.67.157.254",
+    "error": "page:http_403",
+    "blocked": ""
   },
   {
     "domain": "云南奶龙大学.com",
@@ -1291,9 +1405,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.957",
+    "latency_s": "2.042",
     "ips": "104.21.5.206,172.67.133.213",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "陕西奶龙大学.com",
@@ -1307,9 +1422,10 @@
     "method": "http_fallback+requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "11.040",
+    "latency_s": "11.010",
     "ips": "103.120.80.6",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "甘肃奶龙大学.com",
@@ -1323,9 +1439,10 @@
     "method": "requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "1.963",
+    "latency_s": "0.126",
     "ips": "172.67.167.213,104.21.34.28",
-    "error": "page:http_403"
+    "error": "page:http_403",
+    "blocked": ""
   },
   {
     "domain": "甘肃奶龙大学.cn",
@@ -1339,25 +1456,27 @@
     "method": "",
     "first_status": "",
     "final_status": "",
-    "latency_s": "65.039",
+    "latency_s": "67.978",
     "ips": "104.21.95.142,172.67.170.117",
-    "error": "conn_error"
+    "error": "conn_error",
+    "blocked": ""
   },
   {
     "domain": "甘肃奶蛙大学.com",
     "ascii": "xn--psszg58cy52cu6ld4i.com",
-    "final_url": "https://cdn.amoe.cc/web-static/public/font/misans/misans.css",
+    "final_url": "https://home.lut.edu.cn/EIP/nonlogin/homePage.htm",
     "title": "",
     "logo_path": "",
     "logo_url": "",
     "jump_type": "delayed",
-    "redirect_chain": "200:https://xn--psszg58cy52cu6ld4i.com/ -> 200:https://cdn.amoe.cc/web-static/public/font/misans/misans.css",
-    "method": "requests+js_config",
+    "redirect_chain": "200:https://xn--psszg58cy52cu6ld4i.com/ -> 301:https://home.lut.edu.cn/ -> 302:https://home.lut.edu.cn/EIP/ -> 302:https://home.lut.edu.cn/EIP/nonlogin/user/index.htm -> 200:https://home.lut.edu.cn/EIP/nonlogin/homePage.htm",
+    "method": "requests+body_target",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "3.986",
-    "ips": "172.67.195.172,104.21.21.14",
-    "error": ""
+    "latency_s": "2.575",
+    "ips": "104.21.21.14,172.67.195.172",
+    "error": "page:ConnectionError",
+    "blocked": ""
   },
   {
     "domain": "新疆奶龙大学.com",
@@ -1371,57 +1490,61 @@
     "method": "requests",
     "first_status": 400,
     "final_status": 400,
-    "latency_s": "2.957",
+    "latency_s": "0.179",
     "ips": "104.21.49.163,172.67.164.247",
-    "error": "page:http_400"
+    "error": "page:http_400",
+    "blocked": ""
   },
   {
     "domain": "香港奶龙大学.top",
     "ascii": "xn--psszg58csy9ayt3cnsh.top",
-    "final_url": "https://www.polyu.edu.hk/:%20%7B%20%20%20%20%20%20%20%20%20%20/",
-    "title": "",
-    "logo_path": "",
-    "logo_url": "",
-    "jump_type": "delayed",
-    "redirect_chain": "301:https://xn--psszg58csy9ayt3cnsh.top/ -> 200:https://www.polyu.edu.hk/ -> 301:https://www.polyu.edu.hk/:%20%7B%20%20%20%20%20%20%20%20%20%20 -> 404:https://www.polyu.edu.hk/:%20%7B%20%20%20%20%20%20%20%20%20%20/",
-    "method": "requests+js_location",
+    "final_url": "https://www.polyu.edu.hk/",
+    "title": "Top Innovative World-Class University in Hong Kong | PolyU",
+    "logo_path": "logos/xn--psszg58csy9ayt3cnsh.top.png",
+    "logo_url": "https://www.polyu.edu.hk/assets/img/main-logo-1x.png",
+    "jump_type": "direct",
+    "redirect_chain": "301:https://xn--psszg58csy9ayt3cnsh.top/ -> 200:https://www.polyu.edu.hk/",
+    "method": "requests",
     "first_status": 301,
-    "final_status": 404,
-    "latency_s": "7.333",
+    "final_status": 200,
+    "latency_s": "3.781",
     "ips": "172.67.136.211,104.21.73.5",
-    "error": "page:http_404"
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "香港奶龙大学.com",
     "ascii": "xn--psszg58csy9ayt3cnsh.com",
-    "final_url": "https://www.polyu.edu.hk/:%20%7B%20%20%20%20%20%20%20%20%20%20/",
-    "title": "",
-    "logo_path": "",
-    "logo_url": "",
-    "jump_type": "delayed",
-    "redirect_chain": "301:https://xn--psszg58csy9ayt3cnsh.com/ -> 200:https://www.polyu.edu.hk/ -> 301:https://www.polyu.edu.hk/:%20%7B%20%20%20%20%20%20%20%20%20%20 -> 404:https://www.polyu.edu.hk/:%20%7B%20%20%20%20%20%20%20%20%20%20/",
-    "method": "requests+js_location",
+    "final_url": "https://www.polyu.edu.hk/",
+    "title": "Top Innovative World-Class University in Hong Kong | PolyU",
+    "logo_path": "logos/xn--psszg58csy9ayt3cnsh.com.png",
+    "logo_url": "https://www.polyu.edu.hk/assets/img/main-logo-1x.png",
+    "jump_type": "direct",
+    "redirect_chain": "301:https://xn--psszg58csy9ayt3cnsh.com/ -> 200:https://www.polyu.edu.hk/",
+    "method": "requests",
     "first_status": 301,
-    "final_status": 404,
-    "latency_s": "6.454",
+    "final_status": 200,
+    "latency_s": "3.285",
     "ips": "104.21.82.126,172.67.157.233",
-    "error": "page:http_404"
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "香港奶蛙大学.com",
     "ascii": "xn--psszg58csy9abg2a1rx.com",
-    "final_url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css",
-    "title": "",
-    "logo_path": "",
-    "logo_url": "",
+    "final_url": "https://cityu-dg.edu.cn/zh/home.html",
+    "title": "香港城市大学（东莞）",
+    "logo_path": "logos/xn--psszg58csy9abg2a1rx.com.png",
+    "logo_url": "https://cityu-dg.edu.cn/static/images/logo.png",
     "jump_type": "delayed",
-    "redirect_chain": "200:https://xn--psszg58csy9abg2a1rx.com/ -> 200:https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css",
-    "method": "requests+js_config",
+    "redirect_chain": "200:https://xn--psszg58csy9abg2a1rx.com/ -> 200:https://cityu-dg.edu.cn/ -> 200:https://cityu-dg.edu.cn/zh/home.html",
+    "method": "requests+js_config+js_location",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "3.776",
+    "latency_s": "1.837",
     "ips": "104.21.22.230,172.67.207.144",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "东北奶龙大学.top",
@@ -1432,12 +1555,13 @@
     "logo_url": "https://www.lnu.edu.cn/images/logo.png",
     "jump_type": "delayed",
     "redirect_chain": "200:https://xn--xhq44jb2f9iv6f6w9n.top/ -> 200:https://www.lnu.edu.cn/",
-    "method": "requests+js_config",
+    "method": "requests+body_target",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "8.375",
+    "latency_s": "1.674",
     "ips": "104.21.12.229,172.67.196.138",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "东北奶龙大学.icu",
@@ -1451,25 +1575,27 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.644",
-    "ips": "104.21.23.56,172.67.209.57",
-    "error": ""
+    "latency_s": "2.996",
+    "ips": "172.67.209.57,104.21.23.56",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "东北奶龙大学.com",
     "ascii": "xn--xhq44jb2f9iv6f6w9n.com",
-    "final_url": "https://ss1.bdstatic.com/5eN1bjq8AAUYm2zgoY3K/r/www/cache/bdorz/baidu.min.css",
+    "final_url": "https://xn--xhq44jb2f9iv6f6w9n.com/",
     "title": "",
     "logo_path": "",
     "logo_url": "",
-    "jump_type": "delayed",
-    "redirect_chain": "301:https://xn--xhq44jb2f9iv6f6w9n.com/ -> 200:https://www.baidu.com/ -> 200:http://www.baidu.com/baidu.html?from=noscript -> 200:https://ss1.bdstatic.com/5eN1bjq8AAUYm2zgoY3K/r/www/cache/bdorz/baidu.min.css",
-    "method": "requests+meta+js_config",
+    "jump_type": "none",
+    "redirect_chain": "301:https://xn--xhq44jb2f9iv6f6w9n.com/ -> 200:https://www.baidu.com/",
+    "method": "requests",
     "first_status": 301,
-    "final_status": 200,
-    "latency_s": "8.709",
-    "ips": "110.242.74.102,111.63.65.247,111.63.65.103,124.237.177.164",
-    "error": ""
+    "final_status": 301,
+    "latency_s": "4.337",
+    "ips": "111.63.65.103,124.237.177.164,110.242.74.102,111.63.65.247",
+    "error": "",
+    "blocked": "域名被停放，跳到了百度"
   },
   {
     "domain": "东北奶蛙大学.com",
@@ -1483,9 +1609,10 @@
     "method": "requests+js_location",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "5.417",
-    "ips": "185.199.109.153,185.199.111.153,185.199.110.153,185.199.108.153",
-    "error": ""
+    "latency_s": "3.143",
+    "ips": "185.199.108.153,185.199.109.153,185.199.110.153,185.199.111.153",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "华东奶龙大学.com",
@@ -1499,9 +1626,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.293",
-    "ips": "172.67.163.238,104.21.50.151",
-    "error": ""
+    "latency_s": "4.376",
+    "ips": "104.21.50.151,172.67.163.238",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "华东奶蛙大学.com",
@@ -1515,9 +1643,10 @@
     "method": "requests",
     "first_status": 308,
     "final_status": 200,
-    "latency_s": "5.571",
-    "ips": "172.67.135.222,104.21.26.105",
-    "error": ""
+    "latency_s": "2.018",
+    "ips": "104.21.26.105,172.67.135.222",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "华中奶龙大学.site",
@@ -1531,25 +1660,27 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "6.885",
+    "latency_s": "1.778",
     "ips": "172.67.150.253,104.21.0.134",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "华中奶龙大学.com",
     "ascii": "xn--fiqv8jmxf9iv6f6w9n.com",
     "final_url": "https://www.ctgu.edu.cn/",
-    "title": "",
-    "logo_path": "",
-    "logo_url": "",
+    "title": "三峡大学",
+    "logo_path": "logos/xn--fiqv8jmxf9iv6f6w9n.com.png",
+    "logo_url": "https://www.ctgu.edu.cn/images/foot-logo.png",
     "jump_type": "direct",
     "redirect_chain": "301:https://xn--fiqv8jmxf9iv6f6w9n.com/ -> 200:https://www.ctgu.edu.cn/",
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "4.928",
+    "latency_s": "10.093",
     "ips": "104.21.34.15,172.67.153.43",
-    "error": "page:ConnectionError"
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "华南奶龙大学.com",
@@ -1563,9 +1694,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 412,
-    "latency_s": "5.493",
+    "latency_s": "1.497",
     "ips": "15.197.162.184",
-    "error": "page:http_412"
+    "error": "page:http_412",
+    "blocked": ""
   },
   {
     "domain": "西南奶龙大学.icu",
@@ -1576,12 +1708,13 @@
     "logo_url": "https://www.swu.edu.cn/images/logo0603.png",
     "jump_type": "delayed",
     "redirect_chain": "200:https://xn--6kr28k0gz4e0t2h9y1a.icu/ -> 200:https://www.swu.edu.cn/",
-    "method": "requests+js_config",
+    "method": "requests+body_target",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.843",
+    "latency_s": "3.695",
     "ips": "47.79.66.80",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "西南奶龙大学.com",
@@ -1595,9 +1728,10 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "5.592",
-    "ips": "172.67.217.192,104.21.16.253",
-    "error": ""
+    "latency_s": "2.784",
+    "ips": "104.21.16.253,172.67.217.192",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "西南奶龙大学.cn",
@@ -1611,9 +1745,10 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.796",
+    "latency_s": "3.556",
     "ips": "185.199.109.153,185.199.108.153",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "西南奶龙大学.org",
@@ -1627,9 +1762,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "6.463",
+    "latency_s": "3.221",
     "ips": "15.197.162.184",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "西南奶蛙大学.com",
@@ -1640,12 +1776,13 @@
     "logo_url": "https://www.swu.edu.cn/images/logo0603.png",
     "jump_type": "delayed",
     "redirect_chain": "200:https://xn--6kr28k0gz4e7y6gfld.com/ -> 200:https://www.swu.edu.cn/",
-    "method": "requests+js_config",
+    "method": "requests+body_target",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.869",
+    "latency_s": "4.617",
     "ips": "47.79.66.80",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "西北奶龙大学.tech",
@@ -1659,25 +1796,27 @@
     "method": "requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "3.314",
+    "latency_s": "1.642",
     "ips": "210.27.177.240",
-    "error": "page:http_403"
+    "error": "page:http_403",
+    "blocked": ""
   },
   {
     "domain": "西北奶蛙大学.com",
     "ascii": "xn--djry4l0gz4e7y6gfld.com",
-    "final_url": "https://cdn.amoe.cc/web-static/public/font/misans/misans.css",
-    "title": "",
-    "logo_path": "",
-    "logo_url": "",
+    "final_url": "https://www.xbmu.edu.cn/",
+    "title": "西北民族大学",
+    "logo_path": "logos/xn--djry4l0gz4e7y6gfld.com.png",
+    "logo_url": "https://www.xbmu.edu.cn/images/logo0508.png",
     "jump_type": "delayed",
-    "redirect_chain": "200:https://xn--djry4l0gz4e7y6gfld.com/ -> 200:https://cdn.amoe.cc/web-static/public/font/misans/misans.css",
-    "method": "requests+js_config",
+    "redirect_chain": "200:https://xn--djry4l0gz4e7y6gfld.com/ -> 200:https://www.xbmu.edu.cn/",
+    "method": "requests+body_target",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "3.528",
+    "latency_s": "4.087",
     "ips": "172.67.199.153,104.21.36.208",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "北方奶龙大学.com",
@@ -1691,9 +1830,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.360",
+    "latency_s": "2.063",
     "ips": "54.215.31.113",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "南方奶龙大学.top",
@@ -1707,25 +1847,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.794",
+    "latency_s": "4.058",
     "ips": "54.215.31.113",
-    "error": ""
-  },
-  {
-    "domain": "南方奶龙大学.com",
-    "ascii": "xn--6kr28k0gz4eruv6t8f.com",
-    "final_url": "https://xn--6kr28k0gz4eruv6t8f.com/",
-    "title": "",
-    "logo_path": "",
-    "logo_url": "",
-    "jump_type": "none",
-    "redirect_chain": "403:https://xn--6kr28k0gz4eruv6t8f.com/",
-    "method": "requests",
-    "first_status": 403,
-    "final_status": 403,
-    "latency_s": "3.820",
-    "ips": "219.138.200.30",
-    "error": "page:http_403"
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "沈阳奶龙大学.com",
@@ -1739,41 +1864,44 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "6.879",
-    "ips": "172.67.162.77,104.21.58.170",
-    "error": ""
+    "latency_s": "5.178",
+    "ips": "104.21.58.170,172.67.162.77",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "沈阳奶蛙大学.work",
     "ascii": "xn--psszg58cgv6aq83axit.work",
-    "final_url": "https://support.microsoft.com/zh-cn/internet-explorer/internet-explorer-help",
-    "title": "Internet Explorer 帮助 | Microsoft Learn",
-    "logo_path": "",
-    "logo_url": "",
-    "jump_type": "delayed",
-    "redirect_chain": "301:https://xn--psszg58cgv6aq83axit.work/ -> 200:http://111.117.146.166/eams/loginExt.action -> 301:https://support.microsoft.com/zh-cn/help/17621/internet-explorer-downloads -> 301:https://support.microsoft.com/zh-cn/windows/internet-explorer-%E4%B8%8B%E8%BD%BD-d49e1f0d-571c-9a7b-d97e-be248806ca70 -> 200:https://support.microsoft.com/zh-cn/internet-explorer/internet-explorer-help",
-    "method": "requests+js_config",
+    "final_url": "http://111.117.146.166/eams/loginExt.action",
+    "title": "沈阳建筑大学教学管理系统",
+    "logo_path": "logos/xn--psszg58cgv6aq83axit.work.png",
+    "logo_url": "http://111.117.146.166/eams/static/images/education-logo.png",
+    "jump_type": "direct",
+    "redirect_chain": "301:https://xn--psszg58cgv6aq83axit.work/ -> 200:http://111.117.146.166/eams/loginExt.action",
+    "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "3.790",
-    "ips": "104.21.70.177,172.67.138.12",
-    "error": ""
+    "latency_s": "0.700",
+    "ips": "172.67.138.12,104.21.70.177",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "大连奶龙大学.com",
     "ascii": "xn--pssa0vz4e155inzt.com",
-    "final_url": "https://xn--pssa0vz4e155inzt.com/%3E%3Cspan%20class=",
-    "title": "",
-    "logo_path": "",
-    "logo_url": "",
+    "final_url": "https://www.neusoft.edu.cn/",
+    "title": "大连东软信息学院 - Dalian Neusoft University of Information",
+    "logo_path": "logos/xn--pssa0vz4e155inzt.com.png",
+    "logo_url": "https://www.neusoft.edu.cn/skin/school/core/header/images/logo.png",
     "jump_type": "delayed",
-    "redirect_chain": "200:https://xn--pssa0vz4e155inzt.com/ -> 404:https://xn--pssa0vz4e155inzt.com/%3E%3Cspan%20class=",
-    "method": "requests+js_location",
+    "redirect_chain": "200:https://xn--pssa0vz4e155inzt.com/ -> 200:https://www.neusoft.edu.cn/",
+    "method": "requests+body_target",
     "first_status": 200,
-    "final_status": 404,
-    "latency_s": "2.844",
+    "final_status": 200,
+    "latency_s": "3.352",
     "ips": "163.181.214.26",
-    "error": "page:http_404"
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "哈尔滨奶龙大学.online",
@@ -1787,9 +1915,10 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.909",
+    "latency_s": "7.846",
     "ips": "108.174.57.191",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "哈尔滨奶龙大学.site",
@@ -1800,12 +1929,13 @@
     "logo_url": "https://www.hit.edu.cn/_upload/site/00/ee/238/logo.png",
     "jump_type": "delayed",
     "redirect_chain": "200:https://xn--qvrq5h0gz4e1yak04fbi5e.site/ -> 200:https://www.hit.edu.cn/",
-    "method": "requests+js_config",
+    "method": "requests+body_target",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.822",
+    "latency_s": "4.106",
     "ips": "47.76.70.126",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "哈尔滨奶龙大学.com",
@@ -1819,9 +1949,10 @@
     "method": "requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "2.225",
+    "latency_s": "0.125",
     "ips": "172.67.149.34,104.21.55.144",
-    "error": "page:http_403"
+    "error": "page:http_403",
+    "blocked": ""
   },
   {
     "domain": "南京奶龙大学.site",
@@ -1835,9 +1966,10 @@
     "method": "requests",
     "first_status": 404,
     "final_status": 404,
-    "latency_s": "3.670",
+    "latency_s": "3.810",
     "ips": "202.119.224.201",
-    "error": "page:http_404"
+    "error": "page:http_404",
+    "blocked": ""
   },
   {
     "domain": "南京奶龙大学.icu",
@@ -1851,25 +1983,27 @@
     "method": "http_fallback+requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "5.388",
+    "latency_s": "3.855",
     "ips": "162.251.93.44",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "南京奶龙大学.fun",
     "ascii": "xn--1lqq7iu1f9iv6f6w9n.fun",
-    "final_url": "https://www.dnspod.cn/outdated-browser",
-    "title": "DNSPod-免费智能DNS解析服务商-电信_网通_教育网,智能DNS-烟台帝思普网络科技有限公司",
+    "final_url": "http://xn--1lqq7iu1f9iv6f6w9n.fun/",
+    "title": "",
     "logo_path": "",
     "logo_url": "",
-    "jump_type": "delayed",
-    "redirect_chain": "302:http://xn--1lqq7iu1f9iv6f6w9n.fun/ -> 200:https://dnspod.qcloud.com/static/webblock.html?d=xn--1lqq7iu1f9iv6f6w9n.fun -> 200:https://dnspod.qcloud.com/outdated-browser -> 200:https://www.dnspod.cn/ -> 200:https://www.dnspod.cn/outdated-browser",
-    "method": "http_fallback+requests+js_location+js_config",
+    "jump_type": "none",
+    "redirect_chain": "302:http://xn--1lqq7iu1f9iv6f6w9n.fun/ -> 200:https://dnspod.qcloud.com/static/webblock.html?d=xn--1lqq7iu1f9iv6f6w9n.fun",
+    "method": "http_fallback+requests",
     "first_status": 302,
-    "final_status": 200,
-    "latency_s": "7.759",
+    "final_status": 302,
+    "latency_s": "1.236",
     "ips": "124.220.147.235",
-    "error": ""
+    "error": "",
+    "blocked": "域名被 DNSPod 拦截（未解析或已封停）"
   },
   {
     "domain": "南京奶龙大学.com",
@@ -1883,25 +2017,27 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "4.370",
+    "latency_s": "1.944",
     "ips": "172.67.173.252,104.21.96.66",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "南京奶龙大学.cn",
     "ascii": "xn--1lqq7iu1f9iv6f6w9n.cn",
-    "final_url": "https://www.cloudflare.com/5xx-error-landing/?utm_source=errorcode_522&utm_campaign=xn--1lqq7iu1f9iv6f6w9n.cn",
-    "title": "5xx Error | Cloudflare",
-    "logo_path": "logos/xn--1lqq7iu1f9iv6f6w9n.cn.svg",
-    "logo_url": "https://cf-assets.www.cloudflare.com/dzlvafdwdttg/69wNwfiY5mFmgpd9eQFW6j/d5131c08085a977aa70f19e7aada3fa9/1pixel-down__1_.svg",
-    "jump_type": "delayed",
-    "redirect_chain": "522:https://xn--1lqq7iu1f9iv6f6w9n.cn/ -> 301:https://www.cloudflare.com/5xx-error-landing?utm_source=errorcode_522&utm_campaign=xn--1lqq7iu1f9iv6f6w9n.cn -> 200:https://www.cloudflare.com/5xx-error-landing/?utm_source=errorcode_522&utm_campaign=xn--1lqq7iu1f9iv6f6w9n.cn",
-    "method": "requests+js_config",
+    "final_url": "https://xn--1lqq7iu1f9iv6f6w9n.cn/",
+    "title": "",
+    "logo_path": "",
+    "logo_url": "",
+    "jump_type": "none",
+    "redirect_chain": "522:https://xn--1lqq7iu1f9iv6f6w9n.cn/",
+    "method": "requests",
     "first_status": 522,
-    "final_status": 200,
-    "latency_s": "22.071",
+    "final_status": 522,
+    "latency_s": "19.662",
     "ips": "104.21.95.203,172.67.148.97",
-    "error": ""
+    "error": "page:http_522",
+    "blocked": ""
   },
   {
     "domain": "南京奶蛙大学.com",
@@ -1912,44 +2048,47 @@
     "logo_url": "https://www.njau.edu.cn/_upload/tpl/00/3c/60/template60/images/logo.svg",
     "jump_type": "delayed",
     "redirect_chain": "200:https://xn--1lqq7iu1f9iv6f088h.com/ -> 200:https://www.njau.edu.cn/",
-    "method": "requests+js_config",
+    "method": "requests+body_target",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.849",
-    "ips": "104.21.33.185,172.67.191.64",
-    "error": ""
+    "latency_s": "4.816",
+    "ips": "172.67.191.64,104.21.33.185",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "南京奶蛙大学.cn",
     "ascii": "xn--1lqq7iu1f9iv6f088h.cn",
-    "final_url": "https://www.njtech.edu.cn/",
+    "final_url": "https://www.njtech.edu.cn/index.htm",
     "title": "南京工业大学",
     "logo_path": "logos/xn--1lqq7iu1f9iv6f088h.cn.png",
     "logo_url": "https://www.njtech.edu.cn/dfiles/14435/public/home/image/f9e37ed3934a07b32103be32dbd94348_logo.jpg",
     "jump_type": "delayed",
-    "redirect_chain": "200:https://xn--1lqq7iu1f9iv6f088h.cn/ -> 200:https://www.njtech.edu.cn/index.htm -> 404:https://www.njtech.edu.cn/Mobile -> 200:https://www.njtech.edu.cn/",
-    "method": "requests+js_config+js_location",
+    "redirect_chain": "200:https://xn--1lqq7iu1f9iv6f088h.cn/ -> 200:https://www.njtech.edu.cn/index.htm",
+    "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "7.482",
+    "latency_s": "2.031",
     "ips": "172.67.156.170,104.21.64.246",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "常州奶龙大学.com",
     "ascii": "xn--psszg58cf1d3mp353a.com",
-    "final_url": "https://pgc-cdn.youku.com/contract/6b0b6be333c01715878999ea08a6638e.png",
-    "title": "",
-    "logo_path": "",
-    "logo_url": "",
+    "final_url": "https://www.czit.edu.cn/",
+    "title": "常州信息职业技术大学",
+    "logo_path": "logos/xn--psszg58cf1d3mp353a.com.png",
+    "logo_url": "https://www.czit.edu.cn/images/logo.png",
     "jump_type": "delayed",
-    "redirect_chain": "200:https://xn--psszg58cf1d3mp353a.com/ -> 200:https://pgc-cdn.youku.com/contract/6b0b6be333c01715878999ea08a6638e.png",
+    "redirect_chain": "200:https://xn--psszg58cf1d3mp353a.com/ -> 200:https://www.czit.edu.cn/",
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "6.652",
+    "latency_s": "4.747",
     "ips": "172.67.212.111,104.21.23.173",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "苏州奶龙大学.icu",
@@ -1963,9 +2102,10 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "5.944",
+    "latency_s": "2.552",
     "ips": "104.21.3.24,172.67.130.17",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "苏州奶龙大学.com",
@@ -1979,9 +2119,10 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "5.566",
-    "ips": "43.174.246.64,43.174.247.64",
-    "error": ""
+    "latency_s": "2.961",
+    "ips": "43.174.247.64,43.174.246.64",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "苏州奶龙大学.cn",
@@ -1995,9 +2136,10 @@
     "method": "requests+meta",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.882",
-    "ips": "104.21.30.30,172.67.150.115",
-    "error": ""
+    "latency_s": "1.790",
+    "ips": "172.67.150.115,104.21.30.30",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "扬州奶龙大学.com",
@@ -2011,9 +2153,10 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 412,
-    "latency_s": "5.399",
+    "latency_s": "2.957",
     "ips": "47.79.64.189",
-    "error": "page:http_412"
+    "error": "page:http_412",
+    "blocked": ""
   },
   {
     "domain": "杭州奶龙大学.com",
@@ -2027,9 +2170,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.103",
+    "latency_s": "3.248",
     "ips": "104.21.23.152,172.67.211.175",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "宁波奶龙大学.cn",
@@ -2043,9 +2187,10 @@
     "method": "requests+js_location",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "5.353",
-    "ips": "185.199.108.153,185.199.109.153,185.199.110.153,185.199.111.153",
-    "error": ""
+    "latency_s": "2.826",
+    "ips": "185.199.111.153,185.199.110.153,185.199.109.153,185.199.108.153",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "温州奶龙大学.com",
@@ -2059,9 +2204,10 @@
     "method": "requests",
     "first_status": 307,
     "final_status": 200,
-    "latency_s": "6.737",
+    "latency_s": "4.580",
     "ips": "172.67.144.112,104.21.47.41",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "芜湖奶龙大学.icu",
@@ -2075,25 +2221,27 @@
     "method": "http_fallback+requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "2.256",
+    "latency_s": "2.296",
     "ips": "121.196.221.233",
-    "error": "page:http_403"
+    "error": "page:http_403",
+    "blocked": ""
   },
   {
     "domain": "厦门奶龙大学.com",
     "ascii": "xn--gnry1k0gz4ew58jmfm.com",
-    "final_url": "http://xn--gnry1k0gz4ew58jmfm.com/",
-    "title": "",
-    "logo_path": "",
-    "logo_url": "",
-    "jump_type": "none",
-    "redirect_chain": "403:http://xn--gnry1k0gz4ew58jmfm.com/",
-    "method": "http_fallback+requests",
-    "first_status": 403,
-    "final_status": 403,
-    "latency_s": "2.797",
+    "final_url": "https://www.xmu.edu.cn/",
+    "title": "厦门大学",
+    "logo_path": "logos/xn--gnry1k0gz4ew58jmfm.com.png",
+    "logo_url": "https://www.xmu.edu.cn/images/logo.png",
+    "jump_type": "delayed",
+    "redirect_chain": "200:http://xn--gnry1k0gz4ew58jmfm.com/ -> 200:https://www.xmu.edu.cn/",
+    "method": "http_fallback+requests+body_target",
+    "first_status": 200,
+    "final_status": 200,
+    "latency_s": "3.256",
     "ips": "121.89.90.149",
-    "error": "page:http_403"
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "青岛奶龙大学.top",
@@ -2107,9 +2255,10 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "7.189",
-    "ips": "172.67.207.200,104.21.53.21",
-    "error": "too_many_redirects"
+    "latency_s": "8.165",
+    "ips": "104.21.53.21,172.67.207.200",
+    "error": "too_many_redirects",
+    "blocked": ""
   },
   {
     "domain": "青岛奶龙大学.com",
@@ -2123,9 +2272,10 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "7.247",
+    "latency_s": "4.034",
     "ips": "172.67.155.111,104.21.82.86",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "日照奶龙大学.icu",
@@ -2139,9 +2289,10 @@
     "method": "requests+meta",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "7.773",
-    "ips": "185.199.109.153,185.199.110.153,185.199.108.153",
-    "error": ""
+    "latency_s": "4.388",
+    "ips": "185.199.108.153,185.199.109.153,185.199.110.153",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "临沂奶龙大学.top",
@@ -2155,9 +2306,10 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "63.624",
+    "latency_s": "62.752",
     "ips": "189.24.68.245",
-    "error": "conn_error"
+    "error": "conn_error",
+    "blocked": ""
   },
   {
     "domain": "齐鲁奶龙大学.site",
@@ -2171,9 +2323,10 @@
     "method": "http_fallback+requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "2.538",
+    "latency_s": "1.531",
     "ips": "120.46.212.0",
-    "error": "page:http_403"
+    "error": "page:http_403",
+    "blocked": ""
   },
   {
     "domain": "武汉奶龙大学.cn",
@@ -2183,13 +2336,14 @@
     "logo_path": "logos/xn--psszg58cb73ap6a659p.cn.svg",
     "logo_url": "https://www.whut.edu.cn/material/images/logo.svg",
     "jump_type": "delayed",
-    "redirect_chain": "200:https://xn--psszg58cb73ap6a659p.cn/ -> 200:https://www.whut.edu.cn/",
+    "redirect_chain": "200:https://xn--psszg58cb73ap6a659p.cn/ -> 403:https://www.whut.edu.cn/",
     "method": "requests+js_config",
     "first_status": 200,
-    "final_status": 200,
-    "latency_s": "5.859",
-    "ips": "149.104.21.22,149.104.21.23,149.104.21.24,149.104.21.25,149.104.21.26",
-    "error": ""
+    "final_status": 403,
+    "latency_s": "4.932",
+    "ips": "149.104.21.23,149.104.21.22,149.104.21.24,149.104.21.26,149.104.21.25",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "武汉奶蛙大学.icu",
@@ -2200,60 +2354,64 @@
     "logo_url": "https://www.whcp.edu.cn/_upload/tpl/01/12/274/template274/images/logo-b.png",
     "jump_type": "delayed",
     "redirect_chain": "200:https://xn--psszg58cb73ap6a0z9g.icu/ -> 200:https://www.whcp.edu.cn/",
-    "method": "requests+js_config",
+    "method": "requests+body_target",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "8.826",
+    "latency_s": "6.589",
     "ips": "75.2.60.5",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "襄阳奶龙大学.icu",
     "ascii": "xn--psszg58c4v2g9rnrjn.icu",
-    "final_url": "https://www.cloudflare.com/5xx-error-landing/?utm_source=errorcode_522&utm_campaign=xn--psszg58c4v2g9rnrjn.icu",
-    "title": "5xx Error | Cloudflare",
-    "logo_path": "logos/xn--psszg58c4v2g9rnrjn.icu.svg",
-    "logo_url": "https://cf-assets.www.cloudflare.com/dzlvafdwdttg/69wNwfiY5mFmgpd9eQFW6j/d5131c08085a977aa70f19e7aada3fa9/1pixel-down__1_.svg",
-    "jump_type": "delayed",
-    "redirect_chain": "522:https://xn--psszg58c4v2g9rnrjn.icu/ -> 301:https://www.cloudflare.com/5xx-error-landing?utm_source=errorcode_522&utm_campaign=xn--psszg58c4v2g9rnrjn.icu -> 200:https://www.cloudflare.com/5xx-error-landing/?utm_source=errorcode_522&utm_campaign=xn--psszg58c4v2g9rnrjn.icu",
-    "method": "requests+js_config",
-    "first_status": 522,
+    "final_url": "https://www.hbxytc.cn/",
+    "title": "襄阳职业技术大学",
+    "logo_path": "logos/xn--psszg58c4v2g9rnrjn.icu.png",
+    "logo_url": "https://www.hbxytc.cn/images/logo-20260510.png",
+    "jump_type": "direct",
+    "redirect_chain": "302:https://xn--psszg58c4v2g9rnrjn.icu/ -> 200:https://www.hbxytc.cn/",
+    "method": "requests",
+    "first_status": 302,
     "final_status": 200,
-    "latency_s": "20.765",
-    "ips": "172.67.143.127,104.21.95.71",
-    "error": ""
+    "latency_s": "1.924",
+    "ips": "104.21.95.71,172.67.143.127",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "长沙奶蛙大学.com",
     "ascii": "xn--psszg58cex6ab63a1ms.com",
-    "final_url": "https://www.dnspod.cn/outdated-browser",
-    "title": "DNSPod-免费智能DNS解析服务商-电信_网通_教育网,智能DNS-烟台帝思普网络科技有限公司",
+    "final_url": "http://xn--psszg58cex6ab63a1ms.com/",
+    "title": "",
     "logo_path": "",
     "logo_url": "",
-    "jump_type": "delayed",
-    "redirect_chain": "302:http://xn--psszg58cex6ab63a1ms.com/ -> 200:https://dnspod.qcloud.com/static/webblock.html?d=xn--psszg58cex6ab63a1ms.com -> 200:https://dnspod.qcloud.com/outdated-browser -> 200:https://www.dnspod.cn/ -> 200:https://www.dnspod.cn/outdated-browser",
-    "method": "http_fallback+requests+js_location+js_config",
+    "jump_type": "none",
+    "redirect_chain": "302:http://xn--psszg58cex6ab63a1ms.com/ -> 200:https://dnspod.qcloud.com/static/webblock.html?d=xn--psszg58cex6ab63a1ms.com",
+    "method": "http_fallback+requests",
     "first_status": 302,
-    "final_status": 200,
-    "latency_s": "5.665",
+    "final_status": 302,
+    "latency_s": "2.271",
     "ips": "124.221.136.8",
-    "error": ""
+    "error": "",
+    "blocked": "域名被 DNSPod 拦截（未解析或已封停）"
   },
   {
     "domain": "广州奶龙大学.online",
     "ascii": "xn--psszg58cf1d8wad17z.online",
-    "final_url": "https://www.hkust-gz.edu.cn/%3ELocation%3C/a%3E%3C/%3ELocation%3C/a%3E%3C/%3ELocation%3C/a%3E%3C/li%3E%3Cli%20id=",
-    "title": "",
-    "logo_path": "",
-    "logo_url": "",
+    "final_url": "https://www.hkust-gz.edu.cn/",
+    "title": "The Hong Kong University of Science and Technology (Guangzhou)",
+    "logo_path": "logos/xn--psszg58cf1d8wad17z.online.png",
+    "logo_url": "https://www.hkust-gz.edu.cn/wp-content/themes/hkust-gz-official-0827/images/logo-e-white-2x.png",
     "jump_type": "delayed",
-    "redirect_chain": "200:https://xn--psszg58cf1d8wad17z.online/ -> 200:https://www.hkust-gz.edu.cn/ -> 404:https://www.hkust-gz.edu.cn/%3ELocation%3C/a%3E%3C/li%3E%3Cli%20id= -> 404:https://www.hkust-gz.edu.cn/%3ELocation%3C/a%3E%3C/%3ELocation%3C/a%3E%3C/li%3E%3Cli%20id= -> 404:https://www.hkust-gz.edu.cn/%3ELocation%3C/a%3E%3C/%3ELocation%3C/a%3E%3C/%3ELocation%3C/a%3E%3C/li%3E%3Cli%20id=",
-    "method": "requests+meta+js_location",
+    "redirect_chain": "200:https://xn--psszg58cf1d8wad17z.online/ -> 200:https://www.hkust-gz.edu.cn/",
+    "method": "requests+meta",
     "first_status": 200,
-    "final_status": 404,
-    "latency_s": "7.108",
+    "final_status": 200,
+    "latency_s": "2.894",
     "ips": "104.21.68.237,172.67.200.66",
-    "error": "page:http_404"
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "广州奶龙大学.com",
@@ -2267,9 +2425,10 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.544",
-    "ips": "104.21.83.114,172.67.175.140",
-    "error": ""
+    "latency_s": "2.766",
+    "ips": "172.67.175.140,104.21.83.114",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "广州奶龙大学.cn",
@@ -2283,25 +2442,27 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "3.679",
-    "ips": "172.67.198.17,104.21.52.101",
-    "error": ""
+    "latency_s": "2.602",
+    "ips": "104.21.52.101,172.67.198.17",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "广州奶蛙大学.com",
     "ascii": "xn--psszg58cf1d8wa648o.com",
-    "final_url": "https://s2-www.huxiucdn.com/_nuxt/entry.DsZn3VD3mAWC.css",
-    "title": "",
+    "final_url": "https://xn--psszg58cf1d8wa648o.com/",
+    "title": "广东奶蛙大学 · 绷不住，就传下去",
     "logo_path": "",
     "logo_url": "",
-    "jump_type": "delayed",
-    "redirect_chain": "200:https://xn--psszg58cf1d8wa648o.com/ -> 200:https://www.huxiu.com/article/4895021.html -> 200:https://s2-www.huxiucdn.com/_nuxt/entry.DsZn3VD3mAWC.css",
-    "method": "requests+js_config",
+    "jump_type": "none",
+    "redirect_chain": "200:https://xn--psszg58cf1d8wa648o.com/",
+    "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "14.378",
+    "latency_s": "0.265",
     "ips": "104.21.24.24,172.67.216.122",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "深圳奶龙大学.com",
@@ -2315,9 +2476,10 @@
     "method": "http_fallback+requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "2.520",
+    "latency_s": "1.497",
     "ips": "47.115.144.129",
-    "error": "page:http_403"
+    "error": "page:http_403",
+    "blocked": ""
   },
   {
     "domain": "深圳奶龙大学.cn",
@@ -2331,9 +2493,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "4.725",
-    "ips": "104.21.3.19,172.67.130.11",
-    "error": ""
+    "latency_s": "2.011",
+    "ips": "172.67.130.11,104.21.3.19",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "深圳奶蛙大学.com",
@@ -2347,9 +2510,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "4.321",
+    "latency_s": "3.201",
     "ips": "43.108.20.113",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "深圳奶蛙大学.cn",
@@ -2363,9 +2527,10 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "3.210",
-    "ips": "104.21.66.76,172.67.157.128",
-    "error": ""
+    "latency_s": "1.837",
+    "ips": "172.67.157.128,104.21.66.76",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "湛江奶龙大学.icu",
@@ -2379,9 +2544,10 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "61.503",
+    "latency_s": "60.894",
     "ips": "172.67.130.49,104.21.7.112",
-    "error": "conn_error"
+    "error": "conn_error",
+    "blocked": ""
   },
   {
     "domain": "东莞奶龙大学.com",
@@ -2395,9 +2561,10 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "0.408",
-    "ips": "104.21.93.184,172.67.213.182",
-    "error": ""
+    "latency_s": "0.249",
+    "ips": "172.67.213.182,104.21.93.184",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "成都奶龙大学.top",
@@ -2408,12 +2575,13 @@
     "logo_url": "",
     "jump_type": "delayed",
     "redirect_chain": "200:https://xn--psszg58c53lfp7dgls.top/ -> 412:https://www.cdut.edu.cn/",
-    "method": "requests+js_config",
+    "method": "requests+body_target",
     "first_status": 200,
     "final_status": 412,
-    "latency_s": "3.151",
+    "latency_s": "2.553",
     "ips": "47.82.115.63",
-    "error": "page:http_412"
+    "error": "page:http_412",
+    "blocked": ""
   },
   {
     "domain": "宜宾奶龙大学.icu",
@@ -2427,9 +2595,10 @@
     "method": "",
     "first_status": "",
     "final_status": "",
-    "latency_s": "61.798",
-    "ips": "172.67.143.156,104.21.27.222",
-    "error": "conn_error"
+    "latency_s": "60.829",
+    "ips": "104.21.27.222,172.67.143.156",
+    "error": "conn_error",
+    "blocked": ""
   },
   {
     "domain": "西安奶龙大学.work",
@@ -2443,9 +2612,10 @@
     "method": "requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "0.815",
-    "ips": "104.21.33.170,172.67.165.11",
-    "error": "page:http_403"
+    "latency_s": "0.182",
+    "ips": "172.67.165.11,104.21.33.170",
+    "error": "page:http_403",
+    "blocked": ""
   },
   {
     "domain": "西安奶龙大学.com",
@@ -2459,9 +2629,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "4.127",
+    "latency_s": "1.755",
     "ips": "54.215.31.113",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "西安奶蛙大学.com",
@@ -2475,9 +2646,10 @@
     "method": "requests+js_location",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "6.370",
+    "latency_s": "4.441",
     "ips": "54.215.31.113",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "西安奶蛙大学.cn",
@@ -2491,9 +2663,10 @@
     "method": "requests+meta",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "8.626",
+    "latency_s": "2.376",
     "ips": "38.97.254.151",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "西宁奶龙大学.top",
@@ -2507,9 +2680,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "3.122",
-    "ips": "172.67.150.160,104.21.96.28",
-    "error": ""
+    "latency_s": "4.382",
+    "ips": "104.21.96.28,172.67.150.160",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "奶龙理工大学.top",
@@ -2523,9 +2697,10 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "3.732",
+    "latency_s": "2.144",
     "ips": "15.197.162.184",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "奶龙理工大学.icu",
@@ -2539,9 +2714,10 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "3.545",
+    "latency_s": "1.780",
     "ips": "172.67.153.167,104.21.58.5",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "奶龙理工大学.com",
@@ -2555,9 +2731,10 @@
     "method": "",
     "first_status": "",
     "final_status": "",
-    "latency_s": "3.803",
+    "latency_s": "3.364",
     "ips": "104.21.72.183,172.67.153.217",
-    "error": "conn_error"
+    "error": "conn_error",
+    "blocked": ""
   },
   {
     "domain": "奶龙理工大学.cn",
@@ -2571,9 +2748,10 @@
     "method": "requests+js_config",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "4.590",
+    "latency_s": "3.853",
     "ips": "75.2.60.5",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "奶龙理工大学.org",
@@ -2587,25 +2765,27 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "3.121",
-    "ips": "172.67.148.95,104.21.29.44",
-    "error": ""
+    "latency_s": "1.175",
+    "ips": "104.21.29.44,172.67.148.95",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "奶龙大学.top",
     "ascii": "xn--psszg58cj45k.top",
     "final_url": "https://cau.edu.cn/",
-    "title": "中国农业大学",
-    "logo_path": "logos/xn--psszg58cj45k.top.png",
-    "logo_url": "https://cau.edu.cn/static2022/images/logo.png",
+    "title": "",
+    "logo_path": "",
+    "logo_url": "",
     "jump_type": "direct",
-    "redirect_chain": "301:https://xn--psszg58cj45k.top/ -> 307:http://cau.edu.cn/ -> 408:https://cau.edu.cn/",
+    "redirect_chain": "301:https://xn--psszg58cj45k.top/ -> 307:http://cau.edu.cn/ -> 200:https://cau.edu.cn/",
     "method": "requests",
     "first_status": 301,
-    "final_status": 408,
-    "latency_s": "31.223",
+    "final_status": 200,
+    "latency_s": "4.960",
     "ips": "104.21.38.201,172.67.138.79",
-    "error": ""
+    "error": "page:ConnectTimeout",
+    "blocked": ""
   },
   {
     "domain": "奶龙大学.site",
@@ -2619,9 +2799,10 @@
     "method": "",
     "first_status": "",
     "final_status": "",
-    "latency_s": "61.626",
-    "ips": "172.67.160.194,104.21.9.164",
-    "error": "conn_error"
+    "latency_s": "60.829",
+    "ips": "104.21.9.164,172.67.160.194",
+    "error": "conn_error",
+    "blocked": ""
   },
   {
     "domain": "奶龙大学.icu",
@@ -2635,9 +2816,10 @@
     "method": "requests",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "11.857",
-    "ips": "43.174.246.65,43.174.247.65",
-    "error": "conn_error"
+    "latency_s": "10.998",
+    "ips": "43.174.247.65,43.174.246.65",
+    "error": "conn_error",
+    "blocked": ""
   },
   {
     "domain": "奶龙大学.store",
@@ -2651,9 +2833,10 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "2.870",
+    "latency_s": "1.836",
     "ips": "15.197.162.184",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "奶龙大学.space",
@@ -2667,9 +2850,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.983",
-    "ips": "172.67.155.58,104.21.82.81",
-    "error": ""
+    "latency_s": "3.898",
+    "ips": "104.21.82.81,172.67.155.58",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "奶龙大学.fun",
@@ -2683,9 +2867,10 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "4.287",
+    "latency_s": "5.206",
     "ips": "104.21.2.179,172.67.129.134",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "奶龙大学.com",
@@ -2699,9 +2884,10 @@
     "method": "requests+js_location",
     "first_status": 200,
     "final_status": 200,
-    "latency_s": "7.689",
+    "latency_s": "9.779",
     "ips": "43.174.246.65,43.174.247.65",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "奶龙大学.net",
@@ -2715,9 +2901,10 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "3.742",
-    "ips": "172.67.174.142,104.21.47.243",
-    "error": ""
+    "latency_s": "2.010",
+    "ips": "104.21.47.243,172.67.174.142",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "奶龙大学.org",
@@ -2731,9 +2918,10 @@
     "method": "requests+js_location",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "6.220",
-    "ips": "172.67.192.216,104.21.33.217",
-    "error": ""
+    "latency_s": "4.952",
+    "ips": "104.21.33.217,172.67.192.216",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "奶蛙理工大学.com",
@@ -2747,9 +2935,10 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "3.430",
+    "latency_s": "1.055",
     "ips": "15.197.162.184",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "奶蛙大学.top",
@@ -2763,9 +2952,10 @@
     "method": "http_fallback+requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "3.595",
+    "latency_s": "4.051",
     "ips": "167.71.197.211",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "奶蛙大学.site",
@@ -2779,9 +2969,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "3.510",
-    "ips": "172.67.197.117,104.21.84.223",
-    "error": ""
+    "latency_s": "2.255",
+    "ips": "104.21.84.223,172.67.197.117",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "奶蛙大学.icu",
@@ -2795,9 +2986,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "2.196",
-    "ips": "172.67.193.35,104.21.20.147",
-    "error": ""
+    "latency_s": "2.013",
+    "ips": "104.21.20.147,172.67.193.35",
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "奶蛙大学.website",
@@ -2811,9 +3003,10 @@
     "method": "http_fallback+requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "1.643",
-    "ips": "155.102.176.81,155.102.176.82,155.102.176.83,155.102.176.84,155.102.176.85,155.102.176.86,155.102.176.87,155.102.176.88",
-    "error": "page:http_403"
+    "latency_s": "1.356",
+    "ips": "155.102.176.84,155.102.176.85,155.102.176.83,155.102.176.88,155.102.176.81,155.102.176.82,155.102.176.87,155.102.176.86",
+    "error": "page:http_403",
+    "blocked": ""
   },
   {
     "domain": "奶蛙大学.fun",
@@ -2827,9 +3020,10 @@
     "method": "requests",
     "first_status": 301,
     "final_status": 200,
-    "latency_s": "5.203",
+    "latency_s": "4.214",
     "ips": "172.67.144.218,104.21.47.56",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "奶蛙大学.com",
@@ -2843,9 +3037,10 @@
     "method": "requests",
     "first_status": 403,
     "final_status": 403,
-    "latency_s": "1.719",
+    "latency_s": "0.924",
     "ips": "47.79.66.80",
-    "error": "page:http_403"
+    "error": "page:http_403",
+    "blocked": ""
   },
   {
     "domain": "奶蛙大学.cn",
@@ -2855,13 +3050,14 @@
     "logo_path": "logos/xn--psszg58cf07f.cn.png",
     "logo_url": "https://www.gdut.cn/images2020/logo.png",
     "jump_type": "delayed",
-    "redirect_chain": "200:https://xn--psszg58cf07f.cn/ -> 403:https://www.gdut.cn/",
+    "redirect_chain": "200:https://xn--psszg58cf07f.cn/ -> 200:https://www.gdut.cn/",
     "method": "requests+meta",
     "first_status": 200,
-    "final_status": 403,
-    "latency_s": "5.576",
+    "final_status": 200,
+    "latency_s": "4.548",
     "ips": "172.66.47.112,172.66.44.144",
-    "error": ""
+    "error": "",
+    "blocked": ""
   },
   {
     "domain": "奶蛙大学.org",
@@ -2875,8 +3071,9 @@
     "method": "requests",
     "first_status": 302,
     "final_status": 200,
-    "latency_s": "7.393",
+    "latency_s": "2.439",
     "ips": "15.197.162.184",
-    "error": ""
+    "error": "",
+    "blocked": ""
   }
 ]
