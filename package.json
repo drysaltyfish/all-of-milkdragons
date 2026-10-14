@@ -1,0 +1,20 @@
+{
+  "name": "all-of-milkdragons",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "奶龙大学域名导航页 —— Vue 3 + Vite 卡片式导航",
+  "scripts": {
+    "data": "node scripts/build-data.mjs",
+    "dev": "npm run data && vite",
+    "build": "npm run data && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^6.0.7"
+  }
+}

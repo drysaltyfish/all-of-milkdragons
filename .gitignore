@@ -1,0 +1,19 @@
+# 抓取脚本的虚拟环境
+.venv
+__pycache__/
+
+# 前端
+node_modules/
+dist/
+.npm-cache/
+.tmp/
+
+# 生成物：由 `npm run data` 从 result.json + logos/ 复现，不入库
+src/data/sites.json
+public/logos/
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

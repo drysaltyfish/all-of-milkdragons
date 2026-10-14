@@ -1,0 +1,105 @@
+/* ============================================================
+   设计令牌 —— 「暖黄 / 蜂蜜」主题
+   所有颜色集中在三层：palette -> semantic -> component。
+   组件里只允许出现语义令牌，不写死 hex。
+   ============================================================ */
+
+:root {
+  /* ---------- 1. 原始色阶（暖黄主调 + 暖棕中性色） ---------- */
+  --honey-50: #fffcf3;
+  --honey-100: #fff6e2;
+  --honey-200: #fdebcd;
+  --honey-300: #f9dda6;
+  --honey-400: #f3c871;
+  --honey-500: #e9a93a; /* 主色：蜂蜜金 */
+  --honey-600: #d18f18;
+  --honey-700: #a96a0c;
+  --honey-800: #7a4a08;
+  --honey-900: #4a2c08;
+
+  --cocoa-500: #7a6448; /* 次级文字 */
+  --cocoa-700: #55442e; /* 正文 */
+  --cocoa-900: #3b2a12; /* 标题 */
+
+  --leaf-600: #3f7a22;
+  --leaf-100: #eaf4df;
+  --brick-600: #a93226;
+  --brick-100: #fbece7;
+
+  /* ---------- 2. 语义令牌 ---------- */
+  --color-bg: var(--honey-100);
+  --color-bg-deep: var(--honey-200);
+  --color-surface: #fffdf8;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: var(--honey-50);
+
+  --color-text: var(--cocoa-700);
+  --color-text-strong: var(--cocoa-900);
+  --color-text-soft: var(--cocoa-500);
+  --color-text-on-primary: var(--honey-900);
+
+  --color-border: #f2e0bb;
+  --color-border-strong: #e5ca92;
+
+  --color-primary: var(--honey-500);
+  --color-primary-soft: var(--honey-200);
+  --color-primary-strong: var(--honey-700);
+  --color-primary-text: #8a560a; /* 浅底上的主色文字，对比度 5.7:1 */
+
+  --color-success: var(--leaf-600);
+  --color-success-bg: var(--leaf-100);
+  --color-danger: var(--brick-600);
+  --color-danger-bg: var(--brick-100);
+
+  --color-focus: #b45309;
+
+  /* ---------- 3. 字体 ---------- */
+  --font-display: 'Fredoka', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    'Noto Sans SC', system-ui, sans-serif;
+  --font-body: 'Nunito', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    'Noto Sans SC', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', 'JetBrains Mono', Menlo, Consolas,
+    'Liberation Mono', monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-lg: 1.0625rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.625rem;
+  --text-3xl: clamp(2rem, 1.4rem + 2.4vw, 2.875rem);
+
+  /* ---------- 4. 间距：4/8 节奏 ---------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* ---------- 5. 圆角 / 阴影（阴影带暖棕色调，不用纯黑） ---------- */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.125rem;
+  --radius-xl: 1.5rem;
+  --radius-pill: 999px;
+
+  --shadow-xs: 0 1px 2px rgba(122, 74, 8, 0.06);
+  --shadow-sm: 0 1px 2px rgba(122, 74, 8, 0.06), 0 2px 8px rgba(122, 74, 8, 0.05);
+  --shadow-md: 0 2px 6px rgba(122, 74, 8, 0.07), 0 12px 26px rgba(122, 74, 8, 0.08);
+  --shadow-lg: 0 6px 16px rgba(122, 74, 8, 0.1), 0 24px 48px rgba(122, 74, 8, 0.12);
+
+  /* ---------- 6. 动效 ---------- */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --dur-fast: 140ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+
+  /* ---------- 7. 布局 ---------- */
+  --shell-max: 78rem;
+  --shell-pad: clamp(1rem, 0.6rem + 2vw, 2.5rem);
+  --card-min: 17.5rem;
+}

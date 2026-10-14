@@ -1,0 +1,10 @@
+# update.py（每日抓取）的依赖
+beautifulsoup4==4.15.0
+dnspython==2.9.0
+idna==3.20
+requests==2.34.2
+tqdm==4.70.1
+urllib3==2.8.0
+
+# analyze_logos.py（校徽明暗体检）的依赖
+pillow>=11.0,<13

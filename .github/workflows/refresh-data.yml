@@ -1,0 +1,77 @@
+name: Refresh data
+
+# 数据不是静态的：每天跑一次 update.py 重新探测全部奶龙大学域名，
+# 把 result.json / logos/ / logo_tones.json 的变化提交回仓库。
+#
+# ⚠️ 为什么最后要手动 `gh workflow run deploy.yml`：
+#    用 GITHUB_TOKEN 推上来的提交**不会**再触发 push 类 workflow（GitHub 防递归），
+#    所以刷新数据这一步必须显式地把部署点起来。
+
+on:
+  schedule:
+    # UTC 19:10 == 北京时间次日 03:10，躲开整点排队
+    - cron: '10 19 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write # 提交抓取结果
+  actions: write # 手动触发部署 workflow
+
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    # 域名多的时候全量探测可能要几十分钟，给足余量
+    timeout-minutes: 120
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install python dependencies
+        run: pip install -r requirements.txt
+
+      - name: 阶段 1-3：DNS + HTTP + 标题/校徽抓取
+        run: python update.py
+
+      - name: 校徽明暗体检
+        run: python analyze_logos.py
+
+      - name: 提交数据变更
+        id: commit
+        run: |
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A result.json logos logo_tones.json
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "本次抓取结果与上次一致，无需提交。"
+          else
+            git commit -m "chore(data): $(date -u +%F) 自动刷新奶龙大学域名数据"
+            git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 触发 GitHub Pages 部署
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run deploy.yml --ref "${GITHUB_REF_NAME}"
+
+      # 抓取结果同时留一份 artifact，方便失败时回查
+      - name: 上传本次抓取产物
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: crawl-result-${{ github.run_number }}
+          path: |
+            result.json
+            logo_tones.json
+          retention-days: 14
