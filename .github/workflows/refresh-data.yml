@@ -44,6 +44,10 @@ jobs:
       - name: 校徽明暗体检
         run: python analyze_logos.py
 
+      # update.py 只写不删，不清理的话 logos/ 会随日报无限膨胀
+      - name: 清理未被引用的校徽
+        run: python prune_logos.py
+
       - name: 提交数据变更
         id: commit
         run: |
