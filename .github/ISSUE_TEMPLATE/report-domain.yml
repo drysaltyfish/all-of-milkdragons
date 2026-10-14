@@ -1,0 +1,46 @@
+name: 报告新的奶龙域名
+description: 提交一个不在自动收录范围里的奶龙 / 奶蛙域名（例如 百奶宫.site）
+title: "[投稿] "
+labels: ["投稿"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        自动收录只覆盖「**前缀 + 奶龙/奶蛙 + 大学 + 后缀**」这个模板能拼出来的域名。
+        像 `百奶宫.site` 这种拼不出来的，请在这里投稿。
+
+        **只填域名本身**，不要带 `https://`、路径或空格。
+
+        提交后会发生什么：
+
+        1. 机器人先做一轮检查（域名是否合法、是否已经在收录范围里、最近投稿是否太频繁）；
+        2. 通过后进入候选池，下一次抓取会去访问它；
+        3. 如果它**确实跳转到一所学校的官网**，会自动收录；否则会等人复核。
+
+        往页面灌垃圾没有意义：域名必须真的落到学校官网才可能出现在列表里。
+
+  - type: input
+    id: domain
+    attributes:
+      label: 域名
+      description: 只要域名本身
+      placeholder: 百奶宫.site
+    validations:
+      required: true
+
+  - type: textarea
+    id: note
+    attributes:
+      label: 说明（可选）
+      description: 比如它跳到哪所学校、你是怎么发现的
+      placeholder: 跳转到苏州大学
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 确认
+      options:
+        - label: 我确认这个域名会跳转到一所真实学校的官网
+          required: true

@@ -300,6 +300,8 @@ function normalize(row, tones) {
     downSince: row.down_since ? String(row.down_since) : '',
     /** 最后一次访问成功的日期 */
     lastOk: row.last_ok ? String(row.last_ok) : '',
+    /** 来源：'' = 模板域名，'community' = 网友投稿（卡片上会标出来） */
+    isCommunity: row.source === 'community',
     latency: toNumber(row.latency_s),
     ips: String(row.ips || '')
       .split(',')

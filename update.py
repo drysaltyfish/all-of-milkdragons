@@ -6,7 +6,7 @@ import re
 import threading
 import time
 from datetime import date
-from itertools import product
+from itertools import chain, product
 from urllib.parse import unquote, urljoin, urlparse
 
 import random
@@ -18,6 +18,13 @@ from bs4 import BeautifulSoup
 from tqdm.contrib.concurrent import thread_map
 
 from const import *
+from community import (
+    STORE_PATH as COMMUNITY_JSON,
+    classify_landing,
+    load as load_community,
+    save as save_community,
+    target_domains as community_target_domains,
+)
 
 # ==================== HTTP 客户端：浏览器 TLS 指纹 ====================
 # ★ 为什么需要：有一批域名（奶蛙大学.com / .website、芜湖奶龙大学.icu、
@@ -102,6 +109,11 @@ MAX_HOPS = 5
 MAX_HTML = 300_000_000_000
 MAX_HTML_BODY = 2_000_000_000     # title/logo 解析用，可稍大
 MIN_LOGO_BYTES = 64           # 太小的当失败
+# ★ 校徽体积上限。以前只查了下界，配上 process_logos.py 里为了处理
+#   8072×1670 大图而放开的解压炸弹保护（Image.MAX_IMAGE_PIXELS = None），
+#   一个超大图就能把 CI 的内存或磁盘打爆。模板域名基本是同一个人的，
+#   这是理论问题；一旦开放投稿，它就是现成的 DoS 口子。
+MAX_LOGO_BYTES = 4 * 1024 * 1024
 
 
 # ==================== 域名构造 ====================
@@ -844,14 +856,29 @@ def download_logo(session, url, out_dir, name, referer=None) -> str:
             return ""
 
         path = os.path.join(out_dir, f"{name}{ext}")
-        try:
-            with open(path, "wb") as fh:
-                fh.write(first)
-                for chunk in chunks:
-                    if chunk:
-                        fh.write(chunk)
-        except Exception:
+        written = 0
+        too_big = False
+        with open(path, "wb") as fh:
+            for chunk in chain((first,), chunks):
+                if not chunk:
+                    continue
+                written += len(chunk)
+                if written > MAX_LOGO_BYTES:
+                    too_big = True
+                    break
+                fh.write(chunk)
+        if too_big:
+            os.remove(path)
             return ""
+    except Exception:
+        # 半截文件不能留：prune_logos 只按 result.json 引用与否来清，
+        # 这里不主动删的话会留下一个坏图。
+        if path and os.path.exists(path):
+            try:
+                os.remove(path)
+            except OSError:
+                pass
+        return ""
     finally:
         close_response(r)
 
@@ -964,6 +991,8 @@ JSON_FIELDS = [
     "blocked",
     # 历史保留用：第一次失联的日期 / 最后一次访问成功的日期
     "down_since", "last_ok",
+    # 来源：空串=模板域名，community=网友投稿（会带一个「网友投稿」徽章）
+    "source",
 ]
 
 
@@ -1028,6 +1057,75 @@ def is_up(row) -> bool:
         return False
     code = row.get("final_status")
     return isinstance(code, int) and 200 <= code < 400
+
+
+# ==================== 网友投稿的审核落地 ====================
+def _reject_reason(row) -> str:
+    if row.get("blocked"):
+        return f"落到了中间页 / 拦截页：{row['blocked']}"
+    status = row.get("final_status")
+    if isinstance(status, int):
+        return f"HTTP {status}，拿不到有效落点"
+    return f"抓取失败：{row.get('error') or '没有任何响应'}"
+
+
+def apply_reviews(rows, store, today):
+    """用抓取结果更新投稿状态，并且**只保留已通过的投稿行**。
+
+    ★ 为什么必须等抓完才判：投稿那一刻根本不知道这个域名会跳到哪儿。
+      判据见 community.classify_landing —— 只有落点在**受限教育域名**上才自动
+      通过（.edu.cn / .edu / .ac.uk 这类是注册受管制的，投毒者买不到）；
+      落点不是教育的保持 pending 等人工加 approved 标签，而不是自动拒 ——
+      因为 www.gdut.cn 这种真实大学也用非教育域名。
+
+    ★ 未通过的行会被丢掉，于是 result.json 里不再引用它，
+      prune_logos.py 下一轮就会顺手删掉它的校徽 —— 没通过审核的投稿
+      不会把图片留在仓库里。
+
+    返回 (留下的行, 更新后的 store, 状态变化列表)。
+    """
+    entries = {e.get("ascii"): e for e in store.get("domains", [])}
+    changes, kept = [], []
+
+    for row in rows:
+        ascii_ = row.get("ascii") or ""
+        entry = entries.get(ascii_)
+
+        # 模板域名：原样保留
+        if entry is None:
+            kept.append(row)
+            continue
+
+        row = dict(row)
+        row["source"] = "community"      # 前端据此显示「网友投稿」徽章
+        status = entry.get("status")
+
+        if status == "approved":
+            # 已经通过的：保持通过；真失联了交给 merge_history 的 3 天宽限期
+            kept.append(row)
+        elif status == "rejected":
+            # 已经否掉的：不该再出现在这一轮里（除非有人手改了 JSON）
+            continue
+        else:
+            decision = classify_landing(row, entry.get("reported_at"), today)
+            if decision == "approve":
+                entry["status"] = "approved"
+                entry["approved_at"] = today.isoformat()
+                entry["note"] = "落点在受限教育域名上，自动通过"
+                changes.append((ascii_, "approved", entry["note"]))
+                kept.append(row)
+            elif decision == "reject":
+                entry["status"] = "rejected"
+                entry["note"] = _reject_reason(row)
+                changes.append((ascii_, "rejected", entry["note"]))
+                # 不保留：result.json 不再引用它，prune_logos.py 下一轮清掉校徽
+            else:
+                changes.append((
+                    ascii_, "pending",
+                    f"还没有效落点（HTTP {row.get('final_status') or '—'}），等下一轮",
+                ))
+
+    return kept, store, changes
 
 
 def merge_history(rows, previous, today):
@@ -1141,7 +1239,19 @@ def main():
         build_targets(NAME_TREE_1, CN_TLDS, EN_TLDS)
         + build_targets(NAME_TREE_2, CN_TLDS, EN_TLDS)
     )
-    print(f"共 {len(targets)} 个域名")
+
+    # ---------- 并上网友投稿的「非模板域名」 ----------
+    # ★ 投稿只是**候选**：这里只是把它塞进和其他 5 万多个域名完全一样的
+    #   DNS → HTTP → 跳转解析流水线，不为它开任何后门。
+    #   pending 的也要抓 —— 不抓就永远判不出落点，也就永远没法自动通过。
+    store = load_community(COMMUNITY_JSON)
+    template_ascii = {a for _u, a in targets}
+    community_targets = [
+        (u, a) for u, a in community_target_domains(store)
+        if a not in template_ascii        # 模板已经覆盖的不用重复抓
+    ]
+    targets = targets + community_targets
+    print(f"共 {len(targets)} 个域名（其中网友投稿 {len(community_targets)} 个）")
 
     print("\n[阶段 1] DNS 解析")
     dns_results = thread_map(
@@ -1240,13 +1350,26 @@ def main():
     print(f"成功下载 logo 文件      : {n_has_logo_file} / {n_live}"
           f"  （未下载 {n_no_logo_file}）")
 
+    # ---------- 网友投稿审核：pending 的按落点自动升/拒 ----------
+    reviewed, store, review_changes = apply_reviews(
+        enriched + dead, store, date.today(),
+    )
+    if review_changes:
+        print("\n[阶段 3.5] 网友投稿审核")
+        for ascii_, status, note in review_changes:
+            print(f"  {ascii_} -> {status}：{note}")
+    if community_targets:
+        save_community(COMMUNITY_JSON, store)
+
     # ---------- 历史合并：失联不立刻删 ----------
     previous = load_previous_rows(OUT_JSON)
-    merged, retired = merge_history(enriched + dead, previous, date.today())
+    merged, retired = merge_history(reviewed, previous, date.today())
 
     n_down_kept = sum(1 for r in merged if r.get("down_since"))
+    n_community = sum(1 for r in merged if r.get("source") == "community")
     print(f"\n[阶段 4] 历史合并")
     print(f"收录（含失联未满 {RETENTION_DAYS} 天的历史卡片）: {len(merged)}")
+    print(f"其中网友投稿          : {n_community}")
     print(f"其中失联保留          : {n_down_kept}")
     if retired:
         preview = ", ".join(retired[:6]) + (" …" if len(retired) > 6 else "")

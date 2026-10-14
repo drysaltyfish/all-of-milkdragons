@@ -132,6 +132,17 @@ button {
   color: var(--color-danger);
 }
 
+/* 网友投稿：刻意做得比另外两枚「轻」——它是来源说明，不是状态。
+   三条徽章同时出现时，`.card__foot` 的 min-content 会更大，
+   所以 SiteGrid 里那两处 min-width: 0 更不能去掉了。 */
+.badge--community {
+  background: transparent;
+  border-color: var(--color-border-strong);
+  border-style: dashed;
+  color: var(--color-text-soft);
+  font-weight: 600;
+}
+
 mark {
   padding: 0 0.1em;
   border-radius: 0.25em;

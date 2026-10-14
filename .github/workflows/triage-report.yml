@@ -1,0 +1,184 @@
+name: Triage domain report
+
+# 网友投稿的分诊。这一层只决定「能不能进候选池」，
+# 能不能上墙由 update.py 抓完按落点判定（见 community.py）。
+#
+# ⚠️ 防自触发：本 workflow 自己会给 issue 加/换标签，而 labeled 事件会再次
+#    触发自己。所以每个 job 的 if 都写死了「只在特定标签上动手」，
+#    且我们添加的标签（待验证 / 已收录 / 已否决）不在任何 job 的触发条件里。
+
+on:
+  issues:
+    types: [opened, labeled]
+
+permissions:
+  contents: write   # 提交 community-domains.json
+  issues: write     # 评论 / 打标签 / 关 issue
+  actions: write    # 名单变了之后把 refresh-data.yml 点起来
+
+concurrency:
+  group: triage-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+env:
+  STORE: community-domains.json
+
+jobs:
+  # ==================== 新投稿：进候选池 ====================
+  intake:
+    if: >
+      github.event.action == 'opened' &&
+      contains(github.event.issue.labels.*.name, '投稿')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install python dependencies
+        run: pip install -r requirements.txt
+
+      - name: 确保标签存在
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 「投稿」由 Issue 模板的 labels 字段自动创建；其余在这里补齐。
+          # ★ approved 是维护者的手动放行开关（落点不是教育域名、但确认是真实大学的，
+          #   比如 www.gdut.cn），promote job 就监听这个标签，所以它必须存在。
+          for spec in "待验证:fbca04:机器人已收到，等待抓取验证" \
+                      "已收录:0e8a16:已经出现在页面上" \
+                      "已否决:6e7781:没有通过验证" \
+                      "approved:1d76db:维护者放行（落点非教育域名但确认是真实大学）"; do
+            IFS=: read -r name color desc <<< "$spec"
+            gh label create "$name" --color "$color" --description "$desc" --force >/dev/null
+          done
+
+      # ★ 第一道反滥用门：账号年龄 + 当日投稿配额。
+      #   成本极低（两个 API 调用），但能挡掉绝大多数一次性小号。
+      - name: 账号年龄与配额
+        id: gate
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPORTER: ${{ github.event.issue.user.login }}
+        run: |
+          set -e
+          created=$(gh api "users/$REPORTER" --jq .created_at)
+          age=$(( ( $(date -u +%s) - $(date -u -d "$created" +%s) ) / 86400 ))
+          echo "投稿人 $REPORTER 账号年龄 $age 天"
+          if [ "$age" -lt 30 ]; then
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "reason=投稿账号太新（${age} 天），为了避免小号灌水，请使用注册满 30 天的账号" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          since=$(date -u -d '24 hours ago' +%Y-%m-%d)
+          n=$(gh api -X GET search/issues \
+                -f q="repo:${GITHUB_REPOSITORY} is:issue label:投稿 author:${REPORTER} created:>=${since}" \
+                --jq .total_count)
+          echo "最近 24 小时投稿 $n 条"
+          if [ "$n" -gt 5 ]; then
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "reason=你最近 24 小时已经投了 ${n} 条，超过每日上限 5 条" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "ok=true" >> "$GITHUB_OUTPUT"
+
+      - name: 解析并校验域名
+        id: check
+        if: steps.gate.outputs.ok == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          gh issue view ${{ github.event.issue.number }} --json body --jq .body > /tmp/body.md
+          domain=$(python triage_report.py extract --body-file /tmp/body.md)
+          echo "解析到域名：[$domain]"
+          echo "domain=$domain" >> "$GITHUB_OUTPUT"
+
+          result=$(python triage_report.py accept \
+            --domain "$domain" \
+            --issue ${{ github.event.issue.number }} \
+            --reporter "${{ github.event.issue.user.login }}")
+          echo "校验结果：$result"
+          echo "$result" | python -c 'import json,sys; d=json.load(sys.stdin); sys.exit(0 if d.get("ok") else 1)'
+          echo "ascii=$(echo "$result" | python -c 'import json,sys;print(json.load(sys.stdin)["ascii"])')" >> "$GITHUB_OUTPUT"
+
+      - name: 提交候选名单
+        if: steps.check.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$STORE"
+          if git diff --cached --quiet; then
+            echo "名单没变"
+          else
+            git commit -m "chore(community): 收录投稿域名 ${{ steps.check.outputs.domain }}"
+            git push
+            # 名单变了，让抓取尽快把它验证一遍（GITHUB_TOKEN 推的提交不会触发 push 类 workflow）
+            gh workflow run refresh-data.yml --ref "${GITHUB_REF_NAME}" || true
+          fi
+
+      - name: 通过 -> 打标并留言
+        if: steps.check.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue edit ${{ github.event.issue.number }} --add-label 待验证 --remove-label 投稿
+          gh issue comment ${{ github.event.issue.number }} --body \
+            "已收到 \`${{ steps.check.outputs.domain }}\`，进入候选池。
+
+          下一次抓取会去访问它。**如果它确实跳转到一所学校的官网（.edu.cn / .edu / .ac.uk 这类），会自动收录**；否则会留在这里等人工复核。"
+
+      - name: 拒绝 -> 说明原因并关闭
+        if: steps.gate.outputs.ok != 'true' || steps.check.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GATE_REASON: ${{ steps.gate.outputs.reason }}
+        run: |
+          reason="${GATE_REASON:-域名没有通过校验（可能不是合法域名、已经在收录范围里、或命中黑名单）}"
+          gh issue comment ${{ github.event.issue.number }} --body "这条投稿没有通过：${reason}"
+          gh issue edit ${{ github.event.issue.number }} --add-label 已否决 --remove-label 投稿
+          gh issue close ${{ github.event.issue.number }}
+
+  # ==================== 维护者放行 ====================
+  # 落点不是教育域名、但确认是真实大学的（例如 www.gdut.cn），
+  # 由维护者加 approved 标签手动放行。
+  promote:
+    if: >
+      github.event.action == 'labeled' &&
+      github.event.label.name == 'approved'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - name: 放行并提交
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          gh issue view ${{ github.event.issue.number }} --json body --jq .body > /tmp/body.md
+          domain=$(python triage_report.py extract --body-file /tmp/body.md)
+          python triage_report.py approve --domain "$domain" --note "维护者手动放行"
+
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$STORE"
+          git diff --cached --quiet || git commit -m "chore(community): 人工放行 $domain"
+          git diff --cached --quiet || git push
+          gh workflow run refresh-data.yml --ref "${GITHUB_REF_NAME}" || true
+
+          gh issue edit ${{ github.event.issue.number }} --add-label 已收录
+          gh issue comment ${{ github.event.issue.number }} --body \
+            "已人工放行 \`$domain\`，下一次抓取后会出现在页面上。"
+          gh issue close ${{ github.event.issue.number }}

@@ -17,6 +17,16 @@ const jumpHint = computed(() => jumpTypeDescriptions[props.site.jumpType] || '')
 
 <template>
   <div class="badges">
+    <!-- 网友投稿的域名单独标出来：模板域名的「打不开」本身是有信息量的
+         （域名注册了但停放着），投稿域名则只有真的跳到学校才有价值。
+         标出来也让人一眼能判断哪些不是机器人扫出来的。 -->
+    <span
+      v-if="site.isCommunity"
+      class="badge badge--community"
+      title="这个域名是网友投稿的，不是自动扫描收录的"
+    >
+      网友投稿
+    </span>
     <span class="badge badge--jump" :title="`跳转方式：${jumpHint}`">
       {{ jumpLabel }}
     </span>

@@ -43,10 +43,14 @@ src/components/*.vue 组件层：只吃 props，不碰抓取细节
 ├── logos/                  校徽（每日刷新，入库）
 ├── logo_tones.json         校徽体检结果（每日刷新，入库）
 ├── requirements.txt        Python 依赖
+├── community.py            网友投稿的规则 / 黑名单 / 落点判定 / 存储
+├── community-domains.json  投稿名单（pending / approved / rejected，入库）
+├── triage_report.py        投稿分诊（解析 Issue 表单 -> 校验 -> 进候选池）
 ├── tests/                  纯函数回归测试（不联网，CI 里抓取前先跑）
 │   ├── test_jump_rules.py     跳转该不该跟 / 中间页识别 / 地址合法性
 │   ├── test_logo_tone.py      校徽明暗判定（位图 + SVG）
-│   └── test_retention.py      指数退避 / 服务端指纹 / 失联保留 / 校徽去重
+│   ├── test_retention.py      指数退避 / 服务端指纹 / 失联保留 / 校徽去重
+│   └── test_community.py      投稿规则 / 配额 / 落点判定 / 表单解析
 │
 ├── scripts/build-data.mjs  result.json -> src/data/sites.json（Node，无第三方依赖）
 ├── src/
@@ -58,9 +62,12 @@ src/components/*.vue 组件层：只吃 props，不碰抓取细节
 │   └── main.js
 ├── public/fonts/           自托管 Fredoka / Nunito（latin 子集，不依赖外部 CDN）
 │
-└── .github/workflows/
-    ├── refresh-data.yml    每日抓取数据并提交
-    └── deploy.yml          构建并发布到 GitHub Pages
+└── .github/
+    ├── ISSUE_TEMPLATE/     投稿表单（report-domain.yml）+ 关闭空白 issue
+    └── workflows/
+        ├── refresh-data.yml  每日抓取数据并提交
+        ├── triage-report.yml 投稿分诊（Issue -> 候选池 / 人工放行）
+        └── deploy.yml        构建并发布到 GitHub Pages
 ```
 
 ## component 与 data 是分开的
@@ -307,6 +314,79 @@ python3 analyze_logos.py
 
 非 ASCII 域名先转 punycode；超过 80 字符的域名截断后接 `sha1` 前 16 位，
 保证唯一又不撞文件名长度上限。改名后旧文件由 `prune_logos.py` 自动清掉。
+
+## 网友投稿（非模板域名）
+
+自动收录只覆盖 `NAME_TREE` × TLD 能拼出来的 51,870 个域名，而实际存在
+「百奶宫.site」这种拼不出来的。这部分靠网友投稿。
+
+### 流程
+
+```
+访客提交 GitHub Issue 表单（只填一个域名）
+  └─ triage-report.yml
+       · 账号年龄 ≥ 30 天、24 小时内投稿 ≤ 5 条      ← 反滥用门
+       · 域名合法性 / 是否已被模板覆盖 / 黑名单 / 重复
+       · 通过 -> community-domains.json 里 status=pending，打「待验证」标签
+  └─ update.py（每日 19:10 UTC 或名单一变就手动触发）
+       · 候选池 = 模板 51,870 个 ∪ 投稿域名（pending 也抓 —— 不抓就判不出落点）
+       · 抓完按落点判定：落点在受限教育域名上 -> 自动 approved
+                         落点不是             -> 保持 pending，等人加 approved 标签
+                         落到拦截页 / 404      -> rejected
+       · 只有 approved 的行才写进 result.json，进而上墙
+  └─ 回评 + 关 issue
+```
+
+**核心不变量：投稿只是「候选域名」，它提供的标题 / 链接 / 校徽一概不采信**，
+全部由爬虫重新抓。所以投毒最多浪费一次抓取，不可能把内容直接写进页面。
+
+### 为什么「落点在受限教育域名」可以当自动通过的判据
+
+因为 `.edu.cn` / `.edu` / `.ac.uk` 这些后缀是**注册受管制**的
+（`.edu.cn` 要 CNNIC 实名 + 办学资质，`.edu` 要 CHEA 认证），投毒者买不到。
+一个域名真要跳到某所大学的官网，它自己也就成了这个站收录的那类域名。
+
+⚠️ 但**不能**把「落点 .edu.cn」当成整个数据集的判据：实测 191 个有落点的行里
+只有 143 个在 `.edu.cn`，其余是 `www.gdut.cn`、`www.polyu.edu.hk`、
+裸 IP 教务系统这些。所以非教育后缀的合法投稿走**人工 `approved` 标签**，
+而不是自动拒。
+
+### 反投毒分层
+
+| 层 | 手段 | 挡住什么 |
+| --- | --- | --- |
+| 1 | 投稿域名只当候选，标题/链接/校徽全部重抓 | 直接注入内容 |
+| 2 | 语法 + punycode + 已在 51,870 模板里 + 黑名单 + 重复 → 自动拒 | 垃圾、重复、蹭模板 |
+| 3 | 上游 DNS 检查（`triage_report.py accept`） | 空域名刷量 |
+| 4 | 账号年龄 ≥ 30 天；每号 24h ≤ 5 条；pending 总数 ≤ 50 | 小号轰炸 |
+| 5 | 总条数上限 500；pending 满 7 天没结果就判拒 | 无限堆积 |
+| 6 | **只有 approved 才进 `result.json`** | 未通过的永远不会上墙 |
+| 7 | `approved` 标签是人工开关；git 历史 = 审计，`git revert` = 回滚 | 坏批次整批回退 |
+
+未通过的投稿行不会被写进 `result.json`，于是 `prune_logos.py` 下一轮会顺手
+删掉它的校徽 —— **没通过审核的投稿不会把图片留在仓库里**。
+
+### 两个踩过的坑
+
+* **黑名单关键词不能按子串匹配**。`bet` 是 `bethel` 的子串，用子串会把
+  `bethel.edu.cn` 这种完全正常的教育域名误杀。现在 ASCII 关键词按**整段标签**
+  匹配（允许后面跟数字，`casino888` 照样拒），中文关键词才用子串。
+  宁可漏掉几个明显的赌博域名 —— 反正它们也过不了「落点必须是受限教育域名」那关。
+* **`triage_report.py approve` 要接受 `--domain` 而不是只接受 `--ascii`**。
+  最早 workflow 里用 `python -c` 内联做 punycode 转换，那段代码缩进比 YAML
+  块标量浅，直接把 `run: |` 截断了，workflow 文件根本解析不了。
+  把归一化收进 CLI 里，顺带被单测覆盖。
+
+### 校徽与体积上限
+
+投稿域名的校徽和模板域名一样会被镜像进仓库。这带来两个必须堵的口子：
+
+* `download_logo()` 原来**只查下界不查上界**，配上 `process_logos.py` 里为了
+  处理 8072×1670 大图而放开的 `Image.MAX_IMAGE_PIXELS = None`，
+  一个超大图就能把 CI 打爆。现在流式写入时累计字节数，超过 4 MB 直接中断丢弃，
+  半截文件也会删掉（否则会留下一个坏图）。这条对**所有**域名生效，不是给投稿开小灶。
+* 图片内容本身无法自动审核。`process_logos.py` 会做去底色 / 裁空白 / 限尺寸，
+  但没有内容审核 —— 这是选择「镜像投稿校徽」时接受的风险。
 
 ## 无障碍
 

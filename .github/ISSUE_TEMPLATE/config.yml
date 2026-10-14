@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 只是想聊聊 / 提别的建议
+    url: https://github.com/drysaltyfish/all-of-milkdragons/issues/new
+    about: 请用空白 issue，并说明来意（不要用它投稿域名，投稿请用「报告新的奶龙域名」表单）
