@@ -3,7 +3,7 @@
 把 `result.json` 里抓到的「奶龙大学 / 奶蛙大学」系列仿冒域名渲染成一面**暖黄色卡片墙**，
 支持按**网址**和**学校名称**搜索，部署在 GitHub Pages 上，**数据每天自动刷新一次**。
 
-线上地址：<https://null-bytepointer.github.io/all-of-milkdragons/>
+线上地址：<https://drysaltyfish.github.io/all-of-milkdragons/>
 
 ---
 
