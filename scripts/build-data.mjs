@@ -338,7 +338,10 @@ function main() {
   for (const site of sites) {
     if (!site.logo) continue
     const from = join(ROOT, site.logo)
-    if (!existsSync(from)) {
+    // SVG 校徽是 update.py 直接落盘的终态（process_logos.py 用 Pillow 处理不了
+    // SVG，会原样跳过），不存在「被覆盖成半成品」的可能，不需要 existsSync 兜底。
+    // 其余位图仍要确认真的在：process_logos.py 会原地覆盖，缺文件说明上一步出错。
+    if (!site.logo.endsWith('.svg') && !existsSync(from)) {
       site.logo = ''
       continue
     }

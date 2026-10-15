@@ -42,21 +42,22 @@ AREA_NAME = [
 ]
 
 NAME_TREE_1 = [
-    ["中国","国际","宇宙", "世界","皇家", "巧克力"] + AREA_NAME,
+    ["中国","国际","宇宙", "世界","皇家", "巧克力" , "海洋"] + AREA_NAME,
     ["奶龙","奶蛙"],
     ["大学"]
 ]
 
 NAME_TREE_2 = [
     ["奶龙","奶蛙"],
-    ["交通","农业","科技","理工",""],
+    ["交通","农业","科技","理工","教育",""],
     ["大学"]
 ]
 
 # const.py
 
 # ---------- 中文 TLD ----------
-CN_TLDS = [
+CN_TLDS = []
+NO_TLDS = [
     "公司", "网络", "网址", "商城", "网店",
     "在线", "中文网", "集团", "企业", "信息",
     "招聘", "购物", "娱乐", "游戏", "我爱你", "广东", "佛山",
@@ -104,9 +105,12 @@ DEFAULT_HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,"
               "image/avif,image/webp,image/apng,*/*;q=0.8",
     "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
-    # ★ 故意不要 br：requests/urllib3 只有在装了 brotli 包时才会解压它，
-    #   否则会把压缩字节流当 HTML 交回来 —— 页面变成乱码二进制，
-    #   标题、校徽、跳转地址全部抓不到。gzip/deflate 是内置支持，够用。
+    # ★ Accept-Encoding 故意只写 gzip, deflate，不写 br。
+    #   这是**会话默认头**：requests 路径（curl_cffi 装不上时的兜底）会原样带上它，
+    #   而 urllib3 只有装了 brotli 才会解压 br —— 没装的话压缩字节流会被当 HTML
+    #   交回来，标题/校徽/跳转全丢（真踩过的坑）。
+    #   curl_cffi 路径不受这个限制：它在请求时会覆盖 Accept-Encoding 并自己解 br，
+    #   走 TLS 指纹的那条链路依然能吃到 br 的好处。
     "Accept-Encoding": "gzip, deflate",
     "Cache-Control": "no-cache",
     "Pragma": "no-cache",

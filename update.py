@@ -10,11 +10,13 @@ from itertools import chain, product
 from urllib.parse import unquote, urljoin, urlparse
 
 import random
+import warnings
 import idna
 import dns.resolver
 import requests
 import urllib3
 from bs4 import BeautifulSoup
+from concurrent.futures import ThreadPoolExecutor
 from tqdm.contrib.concurrent import thread_map
 
 from const import *
@@ -46,6 +48,10 @@ except ImportError:  # pragma: no cover
 
 # 伪装成哪个浏览器的指纹。curl_cffi 会持续跟进新版本，用一个稳的即可。
 IMPERSONATE = "chrome"
+# ★ 阶段 2.5 复检用的具体版本：`chrome` 这个别名跟的是「当前最新 Chrome」，
+#   每次升级 curl_cffi 都可能悄悄换掉指纹；复检的价值恰恰是「换一副手套再来一次」，
+#   所以这里钉死一个具体大版本，和会话默认的指纹错开。
+IMPERSONATE_RETRY = "chrome131"
 
 urllib3.disable_warnings()
 
@@ -67,7 +73,10 @@ HTTP_WORKERS = 48
 DNS_TIMEOUT = 3
 DNS_LIFETIME = 9
 DNS_ATTEMPTS = 2          # 一轮失败后换服务器偏移再试一次
-HTTP_TIMEOUT = 30
+# ★ 30 -> 12：抓取跑在几十个线程里，单个域名等满 30s 意味着最坏情况下
+#   整个阶段被一个死域名拖住半分钟（阶段 2 的 p99 就是 344s，全是这类长尾）。
+#   12s 足够绝大多数教育站点响应，真慢的还有退避重试和阶段 2.5 复检兜着。
+HTTP_TIMEOUT = 12
 
 # ★ 只放**从 runner 一定连得上**的解析器。
 #   dnspython 会在 nameservers 之间轮转，一个连不上的服务器每次都要白等满
@@ -83,18 +92,23 @@ DNS_RESCUE_LIFETIME = 20
 # HTTP 复检：把「像是被限流 / 超时」的行换个慢节奏重跑一遍。
 # ★ 8 而不是 4：这一轮不再退避（见 tiers=0），纯串行等待没有意义，
 #   稍微给点并发既快又不会重新制造一次突发。
-HTTP_RETRY_WORKERS = 8
+# ★ 8 -> 12：阶段 2 的单请求超时从 30s 降到 12s 后，「疑似临时失败」的行
+#   会略多（更多域名走满退避才放弃），复检队列变长；这一轮是单发请求，
+#   12 并发不会重新制造限流风暴，只是把队列消化得更快。
+HTTP_RETRY_WORKERS = 12
 HTTP_RETRY_JITTER = 1.5
 # 这些状态码基本都是临时性的（限流 / 人机挑战 / 网关抖动），重试有意义。
 # 404 / 400 这种是站点自己说的「没有」，重试也不会变，不浪费请求。
 TRANSIENT_STATUS = {403, 408, 412, 425, 429, 500, 502, 503, 504, 520, 521, 522, 524}
 
 # ---------- 指数退避 ----------
-# 三级退避：5s -> 15s -> 30s（第三级正好撞到上限）。
-# 封顶 30s 的理由：抓取是几十个线程并行的，单个域名退避太久只会把整个阶段拖长；
+# 三级退避：3s -> 9s -> 27s（第三级正好撞到上限）。
+# 封顶 30s 以内的理由：抓取是几十个线程并行的，单个域名退避太久只会把整个阶段拖长；
 # 而「对端限流」这类问题秒级就能恢复，等更久并没有额外收益。
+# ★ base 从 5 降到 3：限流恢复本来就是秒级事件，第一跳多等 2s 换不来多少成功率，
+#   但 170 个域名 × 三级退避 × 并发拖尾，省下来的是实打实的总时长。
 BACKOFF_TIERS = 3
-BACKOFF_BASE = 5.0
+BACKOFF_BASE = 3.0
 BACKOFF_FACTOR = 3.0
 BACKOFF_MAX = 30.0
 BACKOFF_JITTER = 0.25      # ±25% 抖动：多线程一起退避时别又攒成一波
@@ -108,8 +122,13 @@ OUT_JSON = "result.json"
 LOGO_DIR = "logos"
 
 MAX_HOPS = 5
-MAX_HTML = 300_000_000_000
-MAX_HTML_BODY = 2_000_000_000     # title/logo 解析用，可稍大
+# ★ 原来是 300_000_000_000（约 300GB）和 2_000_000_000（2GB）——
+#   这两个常量名字叫 MAX，实际上永远不会截断任何响应，等于没有。
+#   它们唯一的「作用」是给 extract_* 的切片兜底；真响应到不了这个量级。
+#   保守但有意义的上限：单页最多读 8MB（校徽页 HTML 极少超过几百 KB），
+#   省得个别超大门户页拖慢解析、占着内存。
+MAX_HTML = 8_000_000        # 跳转解析用的 HTML 上限
+MAX_HTML_BODY = 16_000_000  # title/logo 解析用，可稍大
 MIN_LOGO_BYTES = 64           # 太小的当失败
 # ★ 校徽体积上限。以前只查了下界，配上 process_logos.py 里为了处理
 #   8072×1670 大图而放开的解压炸弹保护（Image.MAX_IMAGE_PIXELS = None），
@@ -206,7 +225,7 @@ def close_response(resp) -> None:
 
 
 def fetch_with_retry(session, url, *, allow_redirects=True, referer=None, stream=False,
-                     tiers=None):
+                     tiers=None, impersonate=None):
     """带指数退避的 GET，返回 (响应, 错误码)。
 
     退避只对「可能马上就好」的失败生效：超时、连接被掐、
@@ -218,6 +237,10 @@ def fetch_with_retry(session, url, *, allow_redirects=True, referer=None, stream
     ★ 这是个真踩过的坑：加了逐请求退避之后忘了收口复检那一轮，于是每个失败域名
       被退避两次，而那一轮只有 4 个线程 —— update.py 从 26.8 分钟涨到 44 分钟
       还没跑完。
+
+    `impersonate` 只在 curl_cffi 会话上有意义：阶段 2.5 复检用它换一个具体
+    Chrome 版本的 TLS 指纹，对「按指纹限流」的站点等于换了一副手套再来一次。
+    requests 会话直接忽略这个参数（requests.Session.get 不认识它）。
     """
     tiers = BACKOFF_TIERS if tiers is None else tiers
     headers = {"Referer": referer} if referer else None
@@ -228,14 +251,16 @@ def fetch_with_retry(session, url, *, allow_redirects=True, referer=None, stream
             sleep_backoff(attempt - 1)
 
         try:
-            r = session.get(
-                url,
+            kwargs = dict(
                 timeout=HTTP_TIMEOUT,
                 allow_redirects=allow_redirects,
                 verify=False,
                 headers=headers or None,
                 stream=stream,
             )
+            if impersonate and HAS_BROWSER_FINGERPRINT:
+                kwargs["impersonate"] = impersonate
+            r = session.get(url, **kwargs)
         except Exception as exc:
             last_err = classify_error(exc)
             continue
@@ -623,14 +648,16 @@ def should_follow(nxt: str, how: str, cur_url: str, origin_url: str) -> bool:
 
 
 # ==================== 阶段 2：HTTP + 跳转 ====================
-def fetch_chain(session, url, allow_redirects=True, referer=None, tiers=None):
+def fetch_chain(session, url, allow_redirects=True, referer=None, tiers=None,
+                impersonate=None):
     """★ 支持传入 Referer；临时性失败会按指数退避重试（见 fetch_with_retry）。"""
     return fetch_with_retry(
-        session, url, allow_redirects=allow_redirects, referer=referer, tiers=tiers,
+        session, url, allow_redirects=allow_redirects, referer=referer,
+        tiers=tiers, impersonate=impersonate,
     )
 
 
-def http_check(item, delay=0.0, tiers=None):
+def http_check(item, delay=0.0, tiers=None, impersonate=None):
     # 复检时用：错开每个线程发出的时间，别又攒成一波打过去
     if delay:
         time.sleep(random.uniform(0, delay))
@@ -666,11 +693,13 @@ def http_check(item, delay=0.0, tiers=None):
     err = ""
 
     url = f"https://{a}/"
-    r, err = fetch_chain(session, url, allow_redirects=True, tiers=tiers)
+    r, err = fetch_chain(session, url, allow_redirects=True, tiers=tiers,
+                         impersonate=impersonate)
 
     if r is None and err:
         url = f"http://{a}/"
-        r, err = fetch_chain(session, url, allow_redirects=True, tiers=tiers)
+        r, err = fetch_chain(session, url, allow_redirects=True, tiers=tiers,
+                             impersonate=impersonate)
         methods.append("http_fallback")
 
     if r is None:
@@ -688,7 +717,11 @@ def http_check(item, delay=0.0, tiers=None):
     origin_url = hops[0][1]
 
     for _ in range(MAX_HOPS):
-        nxt, how = extract_next(response_text(r), last_url)
+        try:
+            html = response_text(r)
+        except Exception:
+            break
+        nxt, how = extract_next(html, last_url)
         if not nxt or nxt == last_url or nxt in visited:
             break
 
@@ -698,9 +731,12 @@ def http_check(item, delay=0.0, tiers=None):
             break
 
         # ★ 明文跳转时把上一跳当作 Referer
-        r, err = fetch_chain(session, nxt, allow_redirects=True, referer=last_url, tiers=tiers)
+        prev = r
+        r, err = fetch_chain(session, nxt, allow_redirects=True, referer=last_url,
+                             tiers=tiers, impersonate=impersonate)
         if r is None:
             row["error"] = err
+            r = prev        # 拿下一跳失败时，退回上一个成功响应（标题/校徽还能从它抓）
             break
 
         for h in r.history:
@@ -721,7 +757,15 @@ def http_check(item, delay=0.0, tiers=None):
     reason = interstitial_reason(hops[-1][1])
     if reason:
         row["blocked"] = reason
-        hops = [(st, u) for st, u in hops if not interstitial_reason(u)]
+        # ★ 已经知道落点是别人家的页面，没必要再 GET 一次 final_url 抓标题/校徽
+        #   （那是百度搜索结果 / DNSPod 广告，抓回来也是废数据），提前返回。
+        row["first_status"] = hops[0][0] if hops else ""
+        row["final_url"] = hops[-1][1] if hops else ""
+        row["final_status"] = hops[-1][0] if hops else ""
+        row["method"] = "+".join(dict.fromkeys(methods))
+        row["latency_s"] = f"{time.perf_counter() - start:.3f}"
+        row["_hop_count"] = len(hops)
+        return row
 
     if hops:
         row["first_status"] = hops[0][0]
@@ -730,6 +774,29 @@ def http_check(item, delay=0.0, tiers=None):
     row["method"] = "+".join(dict.fromkeys(methods))
     row["latency_s"] = f"{time.perf_counter() - start:.3f}"
     row["_hop_count"] = len(hops)
+
+    # ---------- [阶段 3 合并] 就地解析最终页，把标题/校徽结论一并带回去 ----------
+    # 旧流程这里返回后，阶段 3 会**再 GET 一次 final_url** 抓标题和校徽 ——
+    # 170 个活域名就是 170 次多余往返（还多一批超时）。现在直接复用手里这个响应。
+    # 只有 2xx/3xx 才值得解析；4xx/5xx 维持旧行为（不抓标题、阶段 3 也不再请求）。
+    if isinstance(row["final_status"], int) and 200 <= row["final_status"] < 400 and r is not None:
+        try:
+            html = response_text(r)
+        except Exception:
+            html = ""
+        if html:
+            title, logo_url, logo_svg, degraded = parse_page(html, r.url)
+            row["title"] = title
+            # 降级壳（WAF 挑战页 / 空壳 202 / 备案页 / 停靠页）：当作中间页处理，
+            # 链接收回奶龙域名本身，不再展示别人家的拦截文案。
+            if degraded:
+                row["blocked"] = degraded
+            else:
+                row["_page"] = {
+                    "title": title,
+                    "logo_url": logo_url,
+                    "logo_svg": logo_svg,
+                }
     return row
 
 
@@ -742,6 +809,331 @@ def jump_type(method_str: str, hop_count: int) -> str:
     if hop_count > 1:
         return "direct"
     return "none"
+
+
+# ==================== 降级页：站点还活着，但给爬虫的不是正门 ====================
+# ★ 为什么需要：一批页面对非浏览器客户端返回的是「降级壳」—— WAF 挑战页
+#   （ehall.blcu.edu.cn 的「无感知访问」）、备案拦截页（腾讯云「备案」页）、
+#   域名停靠页（xn--...top 的「没有找到站点」）、软 404（标题「404 Not Found」）。
+#   HTTP 码是 200/202，旧逻辑认为「抓到了」，可标题就是这些垃圾文案，
+#   校徽也抓不到 —— 用户看到的是「能爬但内容是拦截页」。
+#
+# ★ 判据只收**无歧义**的两类，绝不做「页面短就当空壳」这种启发式：
+#     1. 标题命中已知的降级/拦截文案（下面这张表）；
+#     2. HTML 命中 WAF/人机挑战页的代码特征（标题未必稳定，靠代码认）。
+#   为什么这么保守：真高校的落地页也常常「短」—— njust 对爬虫返回空壳 202、
+#   cucn 是个 476 字节的 Vue SPA 壳、bjmu 的校徽是内联 SVG…… 它们都**有效重定向
+#   到了真实学校**。用「短」当判据会把这批活跳转打成 blocked，链接被收回奶龙域名，
+#   反而丢了本来正确的收录 —— 和「让更多网站正确被爬取」背道而驰。
+#   宁可让空壳页维持原样（和改动前一致，不算回归），也不误伤真跳转。
+DEGRADED_TITLE_PATTERNS = (
+    # 停放 / 无站点 / 域名过期
+    r"没有找到站点", r"未找到该站点", r"站点不存在", r"网页无法显示",
+    # ICP 备案拦截（标题里出现「备案」基本只可能是它）
+    r"备案",
+    # WAF / 人机挑战页（标题直给的那批）
+    r"无感知访问", r"访问过于频繁", r"人机验证", r"安全验证", r"滑动验证",
+    # 软 404 / 403 / 405：站点活着但明确说「没有」
+    r"404\s*not\s*found", r"页面不存在", r"^403\b", r"405\s*not\s*allowed",
+    # 建设中 / 维护中
+    r"站点建设中", r"建设中", r"网站维护", r"coming\s*soon", r"即将上线",
+)
+_DEGRADED_TITLE_RES = [re.compile(p, re.I) for p in DEGRADED_TITLE_PATTERNS]
+
+# WAF / 人机挑战页的 HTML 特征（标题未必稳定，靠这些也认）
+_DEGRADED_BODY_PATTERNS = (
+    (re.compile(r"var\s+_0x[0-9a-f]+\s*=", re.I), "疑似 WAF/反爬脚本页"),
+    (re.compile(r"acw_sc__v[23]\s*=", re.I), "阿里云 WAF 挑战页"),
+    (re.compile(r"(_show_digital|waf_verify|/ajax.*verify)", re.I), "WAF 挑战页"),
+)
+
+
+def degraded_reason(html: str, title: str) -> str:
+    """这个页面是不是「降级壳 / 拦截页」？是的话返回一句人话，否则 None。
+
+    纯函数，方便单测。只做两类**无歧义**判断（详细理由见上面那段注释）：
+      1. 标题命中已知降级文案（「没有找到站点」「备案」「无感知访问」……）；
+      2. HTML 命中 WAF/人机挑战页的代码特征。
+    刻意**不做**「页面短就当空壳」——那会误伤 njust/cucn/bjmu 这些
+    有效重定向到真实学校、只是落地页反爬的站点。
+    """
+    t = (title or "").strip()
+    for rx in _DEGRADED_TITLE_RES:
+        if rx.search(t):
+            return f"页面降级：{t[:40]}"
+
+    for rx, why in _DEGRADED_BODY_PATTERNS:
+        if rx.search(html):
+            return why
+
+    return None
+
+
+def _pick_by_weight(cands) -> tuple:
+    """按 (权重, 素材在页面里的位置) 挑最优解。权重高者胜；同权重取更靠前的。"""
+    best = None
+    for weight, idx, url in cands:
+        if not url:
+            continue
+        key = (weight, -idx)
+        if best is None or key > (best[0], -best[1]):
+            best = (weight, idx, url)
+    return (best[2], best[0]) if best else ("", 0)
+
+
+def _img_tag_score(img) -> int:
+    """一个 <img> 元素值不值得当校徽。打分逻辑和 score_image 同源但更宽容：
+    站点经常把校徽的 alt 写成校名（「大连交通大学」）而不写 logo 字样，
+    所以 src/alt/class/id 里出现 logo/icon 才加分；都没有的话靠
+    「靠近页面开头 + 尺寸像横排字标」这两个弱信号兜底。"""
+    parts = []
+    for attr in ("src", "data-src", "data-original", "alt", "title", "class", "id"):
+        v = img.get(attr)
+        if not v:
+            continue
+        if isinstance(v, list):
+            v = " ".join(v)
+        parts.append(str(v).lower())
+    text = " ".join(parts)
+    if "logo" in text:
+        return 8
+    if "icon" in text:
+        return 5
+    w, h = img.get("width"), img.get("height")
+    try:
+        if w and h and int(w) >= 2 * int(h):
+            return 2          # 横排字标，像校徽
+    except (TypeError, ValueError):
+        pass
+    return 0
+
+
+def _svg_tag_score(tag) -> int:
+    """内联 <svg> 元素值不值得当校徽（站点常把校名直接画成 SVG 放在页头）。"""
+    text = " ".join(str(tag.get(a, "")) for a in ("class", "id")).lower()
+    if "logo" in text:
+        return 8
+    if "icon" in text:
+        return 5
+    try:
+        w, h = int(tag.get("width") or 0), int(tag.get("height") or 0)
+        if w and h:
+            return 3 if w >= 2 * h else 0
+    except (TypeError, ValueError):
+        pass
+    return 2
+
+
+def _img_src(img):
+    for attr in ("src", "data-src", "data-original"):
+        v = img.get(attr)
+        if isinstance(v, str) and v.strip():
+            return v.strip()
+    return ""
+
+
+def _unescape_js(raw: str) -> str:
+    """把 JS 字符串字面量里的转义（\\' \\" \\\\ \\n \\uXXXX …）解回真字符。
+
+    ★ unicode_escape 解码器和 Python 字符串字面量共用同一套转义解析，遇到网页
+      内容里的 `\\/`、`\\d` 这类「不合法转义」会抛 DeprecationWarning ——
+      实测一批 document.writeln 注入的页面会刷出几十条，把 CI 日志冲得没法看。
+      这里显式压掉该警告：解码目的只是还原 URL/标签，个别非法序列被
+      `errors="ignore"` 跳过即可，不影响结果。
+    """
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            return raw.encode("utf-8", "ignore").decode("unicode_escape", "ignore")
+    except Exception:      # pragma: no cover - 理论上 errors=ignore 不会抛
+        return raw
+
+
+_CSS_BG_RE = re.compile(r"url\(\s*['\"]?([^'\")]+)['\"]?\s*\)", re.I)
+_CLASS_ATTR_RE = re.compile(r"class\s*=\s*['\"]([^'\"]+)['\"]", re.I)
+_RULE_HEAD_RE = re.compile(r"([^{}/]{1,200})\{")
+
+
+def extract_assets(html: str, page_url: str) -> tuple:
+    """从落地页（含它的内联样式和外部 CSS）里找校徽。
+
+    返回 (candidates, inline_svgs)：
+      · candidates: [(权重, 顺序, 绝对URL)]，权重越大越像校徽；
+      · inline_svgs: [(权重, 顺序, <svg> 原文)]，真校徽（校徽章/字标）通常
+        直接内联在页头，不是一张图片。
+
+    找法按「站点真实用法」分四层，每层都能对上真实踩过的站点：
+      1. <img> / <picture>：src 或 class 里带 logo/icon；
+      2. <a class="logo"> 这类容器：真身可能是 <svg>（bjmu）也可能是 CSS 背景图（djtu）；
+      3. 外部 CSS：.logo { background: url(../img/logo.png) } 这种写法
+         —— 大连交通大学的校徽就藏在 cn.css 里，HTML 里一个字都搜不到；
+      4. <script> 里的 document.writeln(...)：上海交大的页头（连同校徽
+         LogoWhite.png）整个是 JS 注入的，正则把它当文本抠出来。
+
+    CSS 只在「类名/选择器里出现 logo」时才认，绝不全量扫描 ——
+    否则新闻列表里的背景图会把校徽挤掉。
+    """
+    html = html[:MAX_HTML_BODY]
+    order = 0
+    candidates = []
+    inline_svgs = []
+    css_urls = {}       # url -> 首次出现的顺序号（CSS 是并行抓的，统一在末尾按顺序排）
+
+    # ---------- 1) <img> 标签 ----------
+    soup = BeautifulSoup(html, "html.parser")
+    for img in soup.find_all("img"):
+        src = _img_src(img)
+        if not src or src.startswith(("data:", "javascript:", "about:", "#")):
+            continue
+        if "favicon" in src.lower():
+            continue          # 站点 icon 不是校徽
+        score = _img_tag_score(img)
+        if score:
+            candidates.append((score, order, urljoin(page_url, src)))
+        order += 1
+
+    # ---------- 2) 内联 <svg> 标签 ----------
+    for tag in soup.find_all("svg"):
+        score = _svg_tag_score(tag)
+        if score:
+            inline_svgs.append((score, order, str(tag)))
+        order += 1
+
+    # ---------- 2b) 带 logo 类名的容器里的 <svg> / 背景图 / 图片 ----------
+    for el in soup.find_all(True):
+        classes = el.get("class") or []
+        if isinstance(classes, str):
+            classes = classes.split()
+        hint = " ".join(classes).lower()
+        if "logo" not in hint and "banner" not in hint:
+            continue
+        inner = el.find("img")
+        if inner is not None:
+            src = _img_src(inner)
+            if src and not src.startswith(("data:", "javascript:", "#")):
+                candidates.append((7, order, urljoin(page_url, src)))
+        inner_svg = el.find("svg")
+        if inner_svg is not None:
+            inline_svgs.append((7, order, str(inner_svg)))
+        for style in ([el.get("style")] if isinstance(el.get("style"), str) else []):
+            for m in _CSS_BG_RE.finditer(style):
+                candidates.append((7, order, urljoin(page_url, m.group(1))))
+        order += 1
+
+    # ---------- 3) 内联 <style> + 外部 CSS 里 .logo{ background:url(...) } ----------
+    def harvest_css(css_text: str, base_url: str):
+        nonlocal order
+        for rule in _RULE_HEAD_RE.finditer(css_text):
+            sel = rule.group(1).lower()
+            if "logo" not in sel and "banner" not in sel:
+                continue
+            brace = css_text.find("{", rule.end() - 1)
+            if brace < 0:
+                continue
+            end = css_text.find("}", brace)
+            decl = css_text[brace:end if end > 0 else brace + 400]
+            for m in _CSS_BG_RE.finditer(decl):
+                url = urljoin(base_url, m.group(1))
+                if url not in css_urls:
+                    css_urls[url] = order
+                    order += 1
+
+    for style in soup.find_all("style"):
+        harvest_css(style.get_text(), page_url)
+
+    css_links = [
+        urljoin(page_url, l.get("href"))
+        for l in soup.find_all("link", rel=lambda v: v and "stylesheet" in v)
+        if isinstance(l.get("href"), str)
+    ][:MAX_CSS_FETCH]      # 只看最前面几个样式表：页头样式几乎总在里面
+
+    fetched = {}
+
+    def _fetch_css(u):
+        try:
+            s = get_session()
+            r, _err = fetch_with_retry(s, u, tiers=0)
+            if r is None:
+                return u, None
+            text = response_text(r)
+            close_response(r)
+            return u, text
+        except Exception:
+            return u, None
+
+    if css_links:
+        with ThreadPoolExecutor(max_workers=min(8, len(css_links))) as pool:
+            for u, text in pool.map(_fetch_css, css_links):
+                if text:
+                    fetched[u] = text
+
+    for u in css_links:
+        if fetched.get(u):
+            harvest_css(fetched[u], u)
+
+    for url, idx in css_urls.items():
+        candidates.append((6, idx, url))
+
+    # ---------- 4) <script> 里 document.writeln("...") 注入的 HTML ----------
+    #   注意只抠 document.write/writeln 的字符串，不碰普通 JS ——
+    #   `var cfg = { url: 'https://…' }` 这种配置对象是跳转目标（extract_next 管），
+    #   不是校徽；把普通脚本整个当 HTML 解析只会引入噪声。
+    script_html = []
+    for sm in SCRIPT_RE.finditer(html):
+        body = sm.group(1)
+        if "document.write" not in body and "writeln" not in body:
+            continue
+        parts = re.findall(r"(['\"])((?:\\.|(?!\1).)*)\1\s*\)?\s*;?", body)
+        chunk = []
+        for raw in (m[1] for m in parts):
+            if not raw:
+                continue
+            if raw.lstrip().startswith(("http://", "https://", "//", "/")):
+                # 明显是资源 URL（src='...'）的字符串直接进候选，不拼 HTML
+                low = raw.lower()
+                if "logo" in low or low.rstrip("/").endswith((".png", ".svg", ".jpg", ".gif", ".webp")):
+                    candidates.append((4, order, urljoin(page_url, raw)))
+                    order += 1
+                continue
+            chunk.append(_unescape_js(raw))
+        if chunk:
+            script_html.append("".join(chunk))
+
+    for frag in script_html:
+        try:
+            fsoup = BeautifulSoup(frag, "html.parser")
+        except Exception:
+            continue
+        for img in fsoup.find_all("img"):
+            src = _img_src(img)
+            if not src or src.startswith(("data:", "javascript:", "#")):
+                continue
+            score = _img_tag_score(img)
+            if score:
+                candidates.append((score, order, urljoin(page_url, src)))
+            order += 1
+        for tag in fsoup.find_all("svg"):
+            score = _svg_tag_score(tag)
+            if score:
+                inline_svgs.append((score, order, str(tag)))
+            order += 1
+
+    return candidates, inline_svgs
+
+
+# 外部 CSS 最多抓几张：页头相关样式几乎总在前几个样式表里，
+# 全量抓取（动辄几十个）只会把阶段 3 拖慢，对找校徽没有额外收益。
+MAX_CSS_FETCH = 4
+
+# 候选权重门槛（和 extract_assets / _img_tag_score 的打分一一对应）：
+#   img 带 logo 字样=8、带 icon 字样=5、横排尺寸=2；
+#   logo 容器里的 img/svg/背景=7；内联 svg 带 logo=8、带尺寸=2~3；
+#   JS 注入的图片按 img 同规则打分；CSS 背景统一给 6。
+# CSS_WEAK_MIN：旧口径没抓到校徽时，新层至少要「明确像校徽」才启用。
+CSS_WEAK_MIN = 5
+# SVG_WEAK_MIN：内联 SVG 校徽必须同时满足「权重 >= 其他一切信号」和这个下限，
+# 光凭 <svg width height> 出现在页头就认领的风险太大（装饰条/图表也是这样）。
+SVG_WEAK_MIN = 6
 
 
 # ==================== 阶段 3：title + logo ====================
@@ -763,48 +1155,91 @@ def score_image(img) -> int:
     return 0
 
 
-def extract_title_logo(session, url, referer=None):
-    """返回 (title, logo_url, err)。★ 支持 Referer；临时性失败走指数退避重试。"""
-    r, err = fetch_with_retry(session, url, allow_redirects=True, referer=referer)
-    if r is None:
-        return "", "", err
+def parse_page(html: str, page_url: str) -> tuple:
+    """解析一个落地页：返回 (title, logo_url, logo_svg, degraded)。
 
-    if r.status_code >= 400:
-        return "", "", f"http_{r.status_code}"
+    title / logo_url 的口径和旧版 extract_title_logo 保持一致（能直接对比新旧结果）；
+    新增两样东西：
+      · logo_svg —— 内联 <svg> 形式的校徽（权重够高时才选中，见 extract_assets）；
+      · degraded —— 页面是不是「降级壳 / 拦截页」，是的话返回一句人话。
 
-    html = response_text(r)
-    if len(html) > MAX_HTML_BODY:
-        html = html[:MAX_HTML_BODY]
-
-    soup = BeautifulSoup(html, "html.parser")
+    纯函数（CSS 抓取在 extract_assets 里），方便单测。
+    """
+    soup = BeautifulSoup(html[:MAX_HTML_BODY], "html.parser")
 
     title = ""
     if soup.title and soup.title.string:
         title = soup.title.string.strip()
 
+    # 旧口径：只看 <img> 的 src/data-src/data-original，logo > icon > 无
     best_src, best_score = "", 0
     for img in soup.find_all("img"):
-        src = img.get("src") or img.get("data-src") or img.get("data-original")
-        if not src or not isinstance(src, str):
+        src = _img_src(img)
+        if not src or src.startswith(("data:", "javascript:", "about:", "#")):
             continue
-        if src.startswith(("data:", "javascript:", "about:", "#")):
+        if "favicon" in src.lower():
             continue
-
-        src_l = src.lower()
-        if "favicon" in src_l:
-            continue
-
         score = score_image(img)
+        src_l = src.lower()
         if "logo" in src_l:
             score = max(score, 2)
         elif "icon" in src_l and score == 0:
             score = 1
-
         if score > best_score:
             best_score, best_src = score, src
+    legacy_logo = urljoin(page_url, best_src) if best_src else ""
 
-    logo_url = urljoin(r.url, best_src) if best_src else ""
-    return title, logo_url, ""
+    # 新口径：四层候选（img / logo 容器 / CSS 背景 / JS 注入），权重制
+    candidates, inline_svgs = extract_assets(html, page_url)
+    picked_url, url_weight = _pick_by_weight(candidates)
+    picked_svg, svg_weight = _pick_by_weight(inline_svgs)
+
+    # logo_url：只在旧口径完全没找到、而 CSS/JS 注入层找到了「明确带 logo 信号」
+    # 的素材时才启用（权重 >= CSS_WEAK_MIN，纯靠「在页面前部」凑数的弱候选不算）。
+    #   CSS_WEAK_MIN 以下的弱候选宁可不放，也不要把新闻配图当校徽摆上墙。
+    logo_url = legacy_logo
+    if not logo_url and url_weight >= CSS_WEAK_MIN:
+        logo_url = picked_url
+
+    # 内联 <svg> 校徽：旧口径没抓到外部图片校徽、且 svg 自己权重够硬时才认
+    # （页头内联的校徽章几乎总是最对的那张）。权重不够的 <svg>
+    # （比如 <svg width="358" height="60"> 这种既没类名又没 logo 字样）
+    # 不会进结果 —— 它们可能是装饰条、图表，认错了比不认更糟。
+    logo_svg = ""
+    if picked_svg and not legacy_logo and svg_weight >= max(url_weight, SVG_WEAK_MIN):
+        logo_svg, logo_url = picked_svg, ""
+
+    degraded = degraded_reason(html, title)
+    return title, logo_url, logo_svg, degraded
+
+
+def extract_title_logo(session, url, referer=None):
+    """返回 (title, logo_url, logo_svg, err)。
+
+    ★ 支持 Referer；临时性失败走指数退避重试。
+    ★ [阶段 3 合并] http_check 现在会把最后一个 2xx/3xx 响应传进来复用，
+      这里只在没有现成响应时才自己发一次请求。
+    """
+    r = None
+    if isinstance(url, tuple):          # (final_url, 响应对象)
+        url, r = url
+    if r is None:
+        r, err = fetch_with_retry(session, url, allow_redirects=True, referer=referer)
+        if r is None:
+            return "", "", "", err
+    else:
+        err = None
+
+    if r.status_code >= 400:
+        return "", "", "", f"http_{r.status_code}"
+
+    try:
+        html = response_text(r)
+    except Exception as exc:            # pragma: no cover - 极端损坏响应
+        return "", "", "", classify_error(exc)
+
+    title, logo_url, logo_svg, _degraded = parse_page(html, r.url)
+    return title, logo_url, logo_svg, err or ""
 
 
 def sniff_image_ext(head: bytes) -> str:
@@ -954,8 +1389,68 @@ def resolve_logo(session, url, key, referer=None) -> str:
         return path
 
 
+def save_inline_svg(svg_text: str, key: str) -> str:
+    """把内联 <svg> 校徽落到 logos/{key}.svg，返回路径。
+
+    ★ 必须补 xmlns：浏览器里内联 SVG 继承页面的命名空间，一旦单独存成文件
+      再用 <img src> 引用，没有 xmlns="http://www.w3.org/2000/svg" 会被当成
+      普通 XML 文本，显示成一片空白。
+    ★ 危险元素一律剔除：<script>（页面里的校徽 SVG 不该执行代码）、
+      <foreignObject>（里面是 HTML，<img> 里根本渲染不了，还可能塞 iframe）。
+    ★ 体积封顶：正常校徽 SVG 几 KB，超过 MAX_LOGO_BYTES 的是整页插画，
+      当校徽摆上去只会糊成一团。
+    """
+    if not svg_text or not key:
+        return ""
+
+    text = svg_text.strip()
+    if not text.lstrip().lower().startswith("<svg"):
+        return ""
+
+    for tag in ("script", "foreignobject"):
+        text = re.sub(
+            rf"(?is)<{tag}\b[^>]*>.*?</{tag}\s*>", "",
+            text,
+        )
+        text = re.sub(rf"(?is)<{tag}\b[^>]*/?>", "", text)
+
+    if "xmlns" not in text[:200].lower():
+        text = re.sub(
+            r"(?i)<svg\b", '<svg xmlns="http://www.w3.org/2000/svg"', text, count=1,
+        )
+
+    data = text.encode("utf-8")
+    if len(data) > MAX_LOGO_BYTES or len(data) < MIN_LOGO_BYTES:
+        return ""
+
+    path = os.path.join(LOGO_DIR, f"{key}.svg")
+    with open(path, "w", encoding="utf-8") as fh:
+        fh.write(text)
+    return path
+
+
+def resolve_inline_svg(svg_text: str, key: str) -> str:
+    """内联 SVG 校徽按落地域名去重落盘（和 resolve_logo 同一套锁）。"""
+    if not svg_text or not key:
+        return ""
+    with _key_lock(key):
+        cached = _LOGO_BY_KEY.get(key)
+        if cached and os.path.isfile(cached) and cached.endswith(".svg"):
+            return cached
+        path = save_inline_svg(svg_text, key)
+        if path:
+            _LOGO_BY_KEY[key] = path
+        return path
+
+
 def enrich(item):
-    """在 http_check 输出上补 title / logo / jump_type。"""
+    """在 http_check 输出上补 title / logo / jump_type。
+
+    ★ [阶段 3 合并] http_check 现在把最后一个 2xx/3xx 响应（以及解析出的
+      标题/降级原因）一起带过来，这里复用它，省掉一次「对 final_url 再 GET 一遍」
+      的往返 —— 170 个活域名 × 一次整页下载，这是最大的一块提速。
+      只有在阶段 2 没留下现成响应时（例如阶段 2.5 复检覆盖了这行）才补发一次。
+    """
     row = dict(item)
     row["jump_type"] = jump_type(row.get("method", ""), row.get("_hop_count", 0))
     row["title"] = ""
@@ -965,27 +1460,42 @@ def enrich(item):
     final_url = row.get("final_url") or ""
     if not final_url or row.get("error"):
         row.pop("_hop_count", None)
+        row.pop("_page", None)
         return row
 
     # 落到中间页 / 拦截页的域名：链接已经收回奶龙域名本身，这时候再去抓标题、
     # 校徽只会抓到别人家的页面（百度搜索结果、DNSPod 广告……），直接跳过。
     if row.get("blocked"):
         row.pop("_hop_count", None)
+        row.pop("_page", None)
         return row
 
     session = get_session()
-    # ★ 抓取最终页时把 final_url 自身当 Referer
-    title, logo_url, err = extract_title_logo(session, final_url, referer=final_url)
-    if err and not row.get("error"):
-        row["error"] = f"page:{err}"
+    page = row.pop("_page", None)
+    if page is not None:
+        # 阶段 2 已经解析过这个页面：直接复用标题/校徽结论，零额外请求
+        row["title"] = page.get("title", "")
+        row["logo_url"] = page.get("logo_url", "")
+        if page.get("logo_svg"):
+            row["logo_path"] = resolve_inline_svg(page["logo_svg"], logo_key(final_url))
+    else:
+        # ★ 抓取最终页时把 final_url 自身当 Referer
+        title, logo_url, logo_svg, err = extract_title_logo(
+            session, final_url, referer=final_url,
+        )
+        if err and not row.get("error"):
+            row["error"] = f"page:{err}"
 
-    row["title"] = title
-    row["logo_url"] = logo_url
+        row["title"] = title
+        row["logo_url"] = logo_url
 
-    if logo_url:
+        if logo_svg:
+            row["logo_path"] = resolve_inline_svg(logo_svg, logo_key(final_url))
+
+    if row["logo_url"] and not row["logo_path"]:
         # ★ 下载 logo 时用最终页 URL 作 Referer，并按「重定向后的域名」存
         row["logo_path"] = resolve_logo(
-            session, logo_url, logo_key(final_url), referer=final_url,
+            session, row["logo_url"], logo_key(final_url), referer=final_url,
         )
 
     row.pop("_hop_count", None)
@@ -1310,7 +1820,8 @@ def main():
     if retry_targets:
         print(f"\n[阶段 2.5] {len(retry_targets)} 个疑似被限流 / 超时，降并发复检")
         retried = thread_map(
-            lambda it: http_check(it, delay=HTTP_RETRY_JITTER, tiers=0), retry_targets,
+            lambda it: http_check(it, delay=HTTP_RETRY_JITTER, tiers=0,
+                                  impersonate=IMPERSONATE_RETRY), retry_targets,
             max_workers=HTTP_RETRY_WORKERS, desc="HTTP复检", chunksize=1,
         )
         by_ascii = {r["ascii"]: r for r in http_results}

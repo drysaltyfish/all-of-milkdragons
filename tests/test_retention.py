@@ -35,9 +35,11 @@ def check(name, cond, extra=""):
 
 # ==================== 指数退避 ====================
 print("\n[backoff_delay] 三级退避，封顶 30s")
-check("第 1 级 = 5s", backoff_delay(0) == 5.0, backoff_delay(0))
-check("第 2 级 = 15s", backoff_delay(1) == 15.0, backoff_delay(1))
-check("第 3 级 = 30s（45 被上限截断）", backoff_delay(2) == 30.0, backoff_delay(2))
+# ★ base 从 5.0 降到 3.0：限流恢复本来就是秒级事件，第一跳多等 2s 换不来多少
+#   成功率，但 170 个域名 × 三级退避 × 并发拖尾，省下来的是实打实的总时长。
+check("第 1 级 = 3s", backoff_delay(0) == 3.0, backoff_delay(0))
+check("第 2 级 = 9s", backoff_delay(1) == 9.0, backoff_delay(1))
+check("第 3 级 = 27s", backoff_delay(2) == 27.0, backoff_delay(2))
 check("再往后不会超过上限", backoff_delay(9) == update.BACKOFF_MAX, backoff_delay(9))
 check("正好三级", update.BACKOFF_TIERS == 3, update.BACKOFF_TIERS)
 check("上限就是 30s", update.BACKOFF_MAX == 30.0, update.BACKOFF_MAX)
