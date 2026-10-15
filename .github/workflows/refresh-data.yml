@@ -66,13 +66,22 @@ jobs:
       # ★ 投稿闭环：抓完 update.py 会把「落点在受限教育域名上」的 pending 投稿
       #   自动升成 approved 并写进 community-domains.json，这里把结果回评给投稿人。
       #   注意顺序：必须在 update.py 之后（store 才刚被更新）。
+      # ★ notify 自身幂等：只吐 notified_at 为空的行并就地写回标记，
+      #   随本次数据提交一起落库，同一天重复触发不会再回评。
       - name: 回复被自动收录的投稿
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python triage_report.py notify --since "$(date -u +%F)" | \
+          python triage_report.py notify | \
           while IFS=$'\t' read -r issue domain note; do
             [ -n "$issue" ] || continue
+            # ★ 关掉的 issue 一律不再回复：回评本身不幂等（评论不能撤回），
+            #   这是防重复回评的最后一道闸，也用来兜住修复前遗留的重复。
+            state=$(gh issue view "$issue" --json state --jq .state 2>/dev/null || true)
+            if [ "$state" = "CLOSED" ]; then
+              echo "issue #$issue 已关闭，跳过回复"
+              continue
+            fi
             gh issue comment "$issue" --body \
               "已验证：\`$domain\` 确实跳转到一所学校的官网，已自动收录。下一次部署后出现在页面上。" || true
             gh issue edit "$issue" --add-label 已收录 || true

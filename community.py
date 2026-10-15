@@ -301,6 +301,7 @@ def add_pending(data: dict, domain: str, *, issue=None, reporter="", today=None)
         "reported_by": reporter,
         "reported_at": (today or date.today()).isoformat(),
         "approved_at": "",
+        "notified_at": "",
         "note": "",
     }
     data.setdefault("domains", []).append(entry)

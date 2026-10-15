@@ -136,6 +136,7 @@ check("状态是 pending 而不是 approved", entry["status"] == "pending")
 check("记下了投稿人和日期",
       entry["reported_by"] == "alice" and entry["reported_at"] == TODAY.isoformat())
 check("记下了 punycode", entry["ascii"] == "xn--yus44ct37b.site")
+check("通知标记初始为空（还没回过 issue）", entry.get("notified_at") == "")
 
 store, dup, err = C.add_pending(store, "https://百奶宫.site/x", issue=2, reporter="bob", today=TODAY)
 check("同一个域名的不同写法判重复", dup is None and "已经在投稿名单里" in err, err)
@@ -307,6 +308,63 @@ T.cmd_approve(_ap.Namespace(store=tmp2, ascii="", domain="没这个域名.com", 
 check("未知域名不会被悄悄加进去",
       C.find(C.load(tmp2), C.to_ascii("没这个域名.com")) is None)
 
+
+# ==================== notify：回评必须幂等 ====================
+print("\n[notify] 已经回复过的投稿不再重复回评")
+import contextlib  # noqa: E402
+import io  # noqa: E402
+
+
+def run_notify(store_path):
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        T.cmd_notify(_ap.Namespace(store=store_path))
+    return buf.getvalue()
+
+
+# 模拟：抓取判定自动通过 -> notify 回评一次并写回标记 -> 再跑不再回评
+tmp3 = os.path.join(tempfile.mkdtemp(prefix="notify-"), "s.json")
+st3 = C.empty_store()
+st3, e3, _ = C.add_pending(st3, "百奶宫.site", issue=7, reporter="a", today=TODAY)
+_kept, st3, _c = update.apply_reviews(
+    [{"ascii": e3["ascii"], "domain": "百奶宫.site", "final_status": 200,
+      "final_url": "https://www.suda.edu.cn/"}], st3, TODAY)
+C.save(tmp3, st3)
+
+first = run_notify(tmp3)
+check("自动通过后回评一次", "7\t百奶宫.site" in first, first)
+check("notify 写回 notified_at",
+      bool(C.find(C.load(tmp3), e3["ascii"]).get("notified_at")))
+second = run_notify(tmp3)
+check("同一天再跑不再重复回评", second.strip() == "", second)
+
+# 自愈：修复前通过、但一直没回评的老投稿，仍会被补评一次（不因过了当天而丢失）
+st4 = C.empty_store()
+st4["domains"] = [{"domain": "老.site", "ascii": "xn--old.site", "status": "approved",
+                   "issue": 8, "approved_at": "2026-10-01"}]
+tmp4 = os.path.join(tempfile.mkdtemp(prefix="notify-old-"), "s.json")
+C.save(tmp4, st4)
+old_first = run_notify(tmp4)
+check("修复前漏回评的老投稿会补评一次", "8\t老.site" in old_first, old_first)
+check("补评后也不会再回", run_notify(tmp4).strip() == "")
+
+# 没有 issue 的 approved（手塞 JSON / 模板域名）不该回评
+st5 = C.empty_store()
+st5["domains"] = [{"domain": "无issue.site", "ascii": "xn--noissue.site",
+                   "status": "approved", "approved_at": TODAY.isoformat()}]
+tmp5 = os.path.join(tempfile.mkdtemp(prefix="notify-noissue-"), "s.json")
+C.save(tmp5, st5)
+check("没有对应 issue 的 approved 不回评", run_notify(tmp5).strip() == "")
+
+# 手动放行由 promote job 自己回评，notify 不应再回一次
+st6 = C.empty_store()
+st6, e6, _ = C.add_pending(st6, "手动.site", issue=9, reporter="b", today=TODAY)
+tmp6 = os.path.join(tempfile.mkdtemp(prefix="notify-approve-"), "s.json")
+C.save(tmp6, st6)
+T.cmd_approve(_ap.Namespace(store=tmp6, ascii="", domain="手动.site", note="维护者手动放行"))
+check("手动放行记下 notified_at",
+      bool(C.find(C.load(tmp6), e6["ascii"]).get("notified_at")))
+check("手动放行后 notify 不再重复回评", run_notify(tmp6).strip() == "")
 
 print()
 if FAILED:

@@ -13,7 +13,7 @@ update.py 抓完之后按落点判定（见 community.classify_landing），
                                       校验并写入 pending，打印 JSON 结果
     approve  --ascii A                维护者放行：pending -> approved
     reject   --ascii A --reason R     维护者否决
-    notify   [--since YYYY-MM-DD]     列出今天有状态变化的条目（给 workflow 发评论用）
+    notify                            列出还没回评过的已收录投稿（给 workflow 回评用）
 
 为什么要单独一个脚本而不是写在 workflow 的 bash 里：这些判断（域名合法性、
 是否已被模板覆盖、配额）都是纯逻辑，放这里才能被 tests/test_community.py 覆盖。
@@ -120,6 +120,12 @@ def cmd_accept(args):
 
 
 def cmd_approve(args):
+    """维护者放行：pending -> approved。
+
+    ★ promote job 放行后会**自己**给 issue 回评并关闭，所以这里顺手记下
+      `notified_at`。否则下一轮 refresh-data 的 notify 还会把这条已经
+      回复过的投稿再回一次（同一条 issue 收到两条「已收录」）。
+    """
     store = C.load(args.store)
     key = args.ascii or C.to_ascii(C.normalize(args.domain))
     if not key:
@@ -130,11 +136,18 @@ def cmd_approve(args):
         out(ok=False, reason="名单里没有这个域名")
         return 0
     if entry.get("status") == "approved":
+        # 已经通过：可能上一轮已由 notify 回过 issue。补齐标记，
+        # 避免维护者重贴 approved 标签后 promote/notify 各回一次。
+        if entry.get("issue") and not entry.get("notified_at"):
+            entry["notified_at"] = date.today().isoformat()
+            C.save(args.store, store)
         out(ok=True, ascii=key, status="approved", note="本来就是 approved")
         return 0
     entry["status"] = "approved"
     entry["approved_at"] = date.today().isoformat()
     entry["note"] = args.note or "维护者手动放行"
+    if entry.get("issue"):
+        entry["notified_at"] = date.today().isoformat()
     C.save(args.store, store)
     out(ok=True, ascii=key, status="approved", note=entry["note"])
     return 0
@@ -154,16 +167,28 @@ def cmd_reject(args):
 
 
 def cmd_notify(args):
-    """打印今天刚被自动通过的投稿，供 workflow 去 issue 下发通知。
+    """打印**还没回复过**的已收录投稿，供 workflow 回评 + 关 issue。
 
     输出是 tab 分隔：issue号 <TAB> 域名 <TAB> 落地域名
+
+    ★ 幂等的唯一判据：这条投稿的 issue 还没被回复过（notified_at 为空）。
+      不再用「approved_at == 今天」—— refresh-data 一天会被 workflow_dispatch
+      触发多次（新投稿入池、维护者放行都会点它），按日期判断会把同一条
+      已经关闭的 issue 反复回评（issue #2 就被回过两次）。
+      打印前先把 notified_at 写回 store（抢占），随抓取结果一起提交；
+      同一天重复触发、中途失败后重跑，都只会回评一次；
+      反过来，之前漏掉的回评也不会因为过了当天而永久丢失。
     """
-    since = args.since or date.today().isoformat()
     store = C.load(args.store)
+    changed = False
     for entry in C.by_status(store, "approved"):
-        if entry.get("approved_at") != since or not entry.get("issue"):
+        if entry.get("notified_at") or not entry.get("issue"):
             continue
+        entry["notified_at"] = date.today().isoformat()
+        changed = True
         print(f"{entry['issue']}\t{entry['domain']}\t{entry.get('note', '')}")
+    if changed:
+        C.save(args.store, store)
     return 0
 
 
@@ -194,7 +219,6 @@ def build_parser():
     rj.set_defaults(func=cmd_reject)
 
     n = sub.add_parser("notify")
-    n.add_argument("--since", default="")
     n.set_defaults(func=cmd_notify)
     return p
 

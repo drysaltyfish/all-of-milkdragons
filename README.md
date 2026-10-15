@@ -396,7 +396,7 @@ python3 analyze_logos.py
 未通过的投稿行不会被写进 `result.json`，于是 `prune_logos.py` 下一轮会顺手
 删掉它的校徽 —— **没通过审核的投稿不会把图片留在仓库里**。
 
-### 两个踩过的坑
+### 踩过的坑
 
 * **黑名单关键词不能按子串匹配**。`bet` 是 `bethel` 的子串，用子串会把
   `bethel.edu.cn` 这种完全正常的教育域名误杀。现在 ASCII 关键词按**整段标签**
@@ -406,6 +406,13 @@ python3 analyze_logos.py
   最早 workflow 里用 `python -c` 内联做 punycode 转换，那段代码缩进比 YAML
   块标量浅，直接把 `run: |` 截断了，workflow 文件根本解析不了。
   把归一化收进 CLI 里，顺带被单测覆盖。
+
+* **回评不能按「`approved_at == 今天`」判断**。refresh-data 一天会被手动触发多次
+  （新投稿入池、维护者放行都会点它），按日期判断会把同一条已经关闭的 issue 反复回评
+  （issue #2 被回过两次）。现在每条投稿在 `community-domains.json` 里带一个
+  `notified_at`：`notify` 只吐它为空的行，并在打印前就地写回标记、随抓取数据一起提交，
+  所以回评只发生一次；手动放行由 promote job 直接回评，`cmd_approve` 也会顺手写标记。
+  workflow 里再加一道「issue 已关闭就跳过」的闸兜底。
 
 ### 校徽与体积上限
 
