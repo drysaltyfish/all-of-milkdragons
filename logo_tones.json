@@ -148,8 +148,8 @@
     "tone": "dark"
   },
   "logos/www.dhu.edu.cn.png": {
-    "aspect": 1.0,
-    "tone": "dark"
+    "aspect": 3.338,
+    "tone": "light"
   },
   "logos/www.djtu.edu.cn.png": {
     "aspect": 4.456,
@@ -165,6 +165,10 @@
   },
   "logos/www.ecust.edu.cn.png": {
     "aspect": 1.0,
+    "tone": "light"
+  },
+  "logos/www.fafu.edu.cn.png": {
+    "aspect": 4.534,
     "tone": "light"
   },
   "logos/www.fudan.edu.cn.png": {
@@ -248,8 +252,8 @@
     "tone": "light"
   },
   "logos/www.hljucm.net.png": {
-    "aspect": 6.095,
-    "tone": "light"
+    "aspect": 6.187,
+    "tone": "dark"
   },
   "logos/www.hnu.edu.cn.png": {
     "aspect": 3.206,
@@ -295,9 +299,9 @@
     "aspect": 0.859,
     "tone": "light"
   },
-  "logos/www.jlu.edu.cn.jpg": {
-    "aspect": 3.174,
-    "tone": "dark"
+  "logos/www.jlu.edu.cn.png": {
+    "aspect": 3.583,
+    "tone": "light"
   },
   "logos/www.jnu.edu.cn.svg": {
     "aspect": 3.117,
@@ -328,7 +332,7 @@
     "tone": "light"
   },
   "logos/www.lzjtu.edu.cn.png": {
-    "aspect": 4.018,
+    "aspect": 3.983,
     "tone": "light"
   },
   "logos/www.nankai.edu.cn.png": {
@@ -495,6 +499,10 @@
     "aspect": 1.363,
     "tone": "light"
   },
+  "logos/www.sxu.edu.cn.jpg": {
+    "aspect": 2.078,
+    "tone": "dark"
+  },
   "logos/www.szpu.edu.cn.png": {
     "aspect": 4.631,
     "tone": "light"
@@ -577,6 +585,10 @@
   },
   "logos/www.xmu.edu.cn.png": {
     "aspect": 3.531,
+    "tone": "light"
+  },
+  "logos/www.xtu.edu.cn.png": {
+    "aspect": 2.95,
     "tone": "light"
   },
   "logos/www.ylu.edu.cn.png": {
