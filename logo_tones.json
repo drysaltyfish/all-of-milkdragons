@@ -16,8 +16,12 @@
     "tone": "light"
   },
   "logos/hbcet.hpu.edu.cn.png": {
-    "aspect": 7.529,
+    "aspect": 3.325,
     "tone": "light"
+  },
+  "logos/home.lut.edu.cn.svg": {
+    "aspect": 1.0,
+    "tone": "dark"
   },
   "logos/m.bilibili.com.png": {
     "aspect": 2.222,
@@ -93,6 +97,10 @@
   },
   "logos/www.cafuc.edu.cn.png": {
     "aspect": 4.558,
+    "tone": "light"
+  },
+  "logos/www.cau.edu.cn.png": {
+    "aspect": 3.232,
     "tone": "light"
   },
   "logos/www.ccnu.edu.cn.png": {
@@ -180,8 +188,8 @@
     "tone": "light"
   },
   "logos/www.fafu.edu.cn.png": {
-    "aspect": 4.534,
-    "tone": "light"
+    "aspect": 4.738,
+    "tone": "dark"
   },
   "logos/www.fjmu.edu.cn.png": {
     "aspect": 4.793,
@@ -340,7 +348,7 @@
     "tone": "light"
   },
   "logos/www.lzjtu.edu.cn.png": {
-    "aspect": 3.983,
+    "aspect": 4.018,
     "tone": "light"
   },
   "logos/www.nankai.edu.cn.png": {
@@ -419,16 +427,8 @@
     "aspect": 5.219,
     "tone": "dark"
   },
-  "logos/www.qau.edu.cn.png": {
-    "aspect": 4.211,
-    "tone": "light"
-  },
   "logos/www.qhit.edu.cn.png": {
     "aspect": 4.301,
-    "tone": "light"
-  },
-  "logos/www.qhu.edu.cn.png": {
-    "aspect": 3.306,
     "tone": "light"
   },
   "logos/www.qust.edu.cn.png": {
@@ -447,12 +447,20 @@
     "aspect": 3.517,
     "tone": "light"
   },
+  "logos/www.scu.edu.cn.png": {
+    "aspect": 3.103,
+    "tone": "light"
+  },
   "logos/www.scut.edu.cn.png": {
     "aspect": 4.183,
     "tone": "light"
   },
   "logos/www.sdu.edu.cn.svg": {
     "aspect": 3.224,
+    "tone": "light"
+  },
+  "logos/www.sdufe.edu.cn.png": {
+    "aspect": 4.449,
     "tone": "light"
   },
   "logos/www.sdut.edu.cn.png": {
@@ -536,8 +544,8 @@
     "tone": "light"
   },
   "logos/www.tongji.edu.cn.png": {
-    "aspect": 3.0,
-    "tone": "light"
+    "aspect": 1.0,
+    "tone": "dark"
   },
   "logos/www.tyut.edu.cn.png": {
     "aspect": 3.831,
@@ -576,7 +584,7 @@
     "tone": "light"
   },
   "logos/www.wzu.edu.cn.png": {
-    "aspect": 3.85,
+    "aspect": 3.825,
     "tone": "light"
   },
   "logos/www.xatu.edu.cn.png": {
@@ -633,10 +641,6 @@
   },
   "logos/www.zjxu.edu.cn.png": {
     "aspect": 3.494,
-    "tone": "light"
-  },
-  "logos/www.zuel.edu.cn.svg": {
-    "aspect": 4.559,
     "tone": "light"
   },
   "logos/www.zzu.edu.cn.png": {
