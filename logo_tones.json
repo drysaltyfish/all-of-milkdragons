@@ -295,10 +295,6 @@
     "aspect": 5.267,
     "tone": "light"
   },
-  "logos/www.hust.edu.cn.png": {
-    "aspect": 4.255,
-    "tone": "light"
-  },
   "logos/www.huznu.edu.cn.png": {
     "aspect": 4.776,
     "tone": "dark"
@@ -392,7 +388,7 @@
     "tone": "light"
   },
   "logos/www.neuq.edu.cn.png": {
-    "aspect": 5.375,
+    "aspect": 5.338,
     "tone": "light"
   },
   "logos/www.neusoft.edu.cn.png": {
@@ -404,11 +400,7 @@
     "tone": "light"
   },
   "logos/www.njtech.edu.cn.png": {
-    "aspect": 3.035,
-    "tone": "dark"
-  },
-  "logos/www.njuit.edu.cn.svg": {
-    "aspect": 6.461,
+    "aspect": 2.935,
     "tone": "dark"
   },
   "logos/www.njupt.edu.cn.png": {
