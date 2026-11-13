@@ -19,14 +19,6 @@
     "aspect": 7.529,
     "tone": "light"
   },
-  "logos/home.lut.edu.cn.svg": {
-    "aspect": 1.0,
-    "tone": "dark"
-  },
-  "logos/m.bilibili.com.png": {
-    "aspect": 2.222,
-    "tone": "dark"
-  },
   "logos/mob.xjtu.edu.cn.png": {
     "aspect": 3.867,
     "tone": "light"
@@ -95,10 +87,6 @@
     "aspect": 4.558,
     "tone": "light"
   },
-  "logos/www.cau.edu.cn.png": {
-    "aspect": 3.232,
-    "tone": "light"
-  },
   "logos/www.ccnu.edu.cn.png": {
     "aspect": 3.753,
     "tone": "light"
@@ -117,10 +105,6 @@
   },
   "logos/www.cqu.edu.cn.png": {
     "aspect": 3.183,
-    "tone": "dark"
-  },
-  "logos/www.cqytxy.edu.cn.png": {
-    "aspect": 7.901,
     "tone": "dark"
   },
   "logos/www.csu.edu.cn.png": {
@@ -160,8 +144,8 @@
     "tone": "dark"
   },
   "logos/www.dhu.edu.cn.png": {
-    "aspect": 3.338,
-    "tone": "light"
+    "aspect": 1.0,
+    "tone": "dark"
   },
   "logos/www.djtu.edu.cn.png": {
     "aspect": 4.456,
@@ -189,6 +173,10 @@
   },
   "logos/www.fjmu.edu.cn.png": {
     "aspect": 4.466,
+    "tone": "dark"
+  },
+  "logos/www.fjsmu.edu.cn.png": {
+    "aspect": 11.228,
     "tone": "dark"
   },
   "logos/www.fudan.edu.cn.png": {
@@ -276,8 +264,8 @@
     "tone": "light"
   },
   "logos/www.hljucm.net.png": {
-    "aspect": 6.095,
-    "tone": "light"
+    "aspect": 6.187,
+    "tone": "dark"
   },
   "logos/www.hnu.edu.cn.png": {
     "aspect": 3.206,
@@ -459,16 +447,8 @@
     "aspect": 3.224,
     "tone": "light"
   },
-  "logos/www.sdufe.edu.cn.png": {
-    "aspect": 4.449,
-    "tone": "light"
-  },
   "logos/www.sdut.edu.cn.png": {
     "aspect": 4.4,
-    "tone": "light"
-  },
-  "logos/www.seu.edu.cn.png": {
-    "aspect": 3.244,
     "tone": "light"
   },
   "logos/www.shmtu.edu.cn.png": {
@@ -568,8 +548,8 @@
     "tone": "dark"
   },
   "logos/www.usts.edu.cn.png": {
-    "aspect": 4.303,
-    "tone": "light"
+    "aspect": 3.979,
+    "tone": "dark"
   },
   "logos/www.whcp.edu.cn.png": {
     "aspect": 4.908,
