@@ -156,8 +156,8 @@
     "tone": "dark"
   },
   "logos/www.dhu.edu.cn.png": {
-    "aspect": 3.338,
-    "tone": "light"
+    "aspect": 1.0,
+    "tone": "dark"
   },
   "logos/www.djtu.edu.cn.png": {
     "aspect": 4.456,
@@ -180,8 +180,8 @@
     "tone": "light"
   },
   "logos/www.fafu.edu.cn.png": {
-    "aspect": 4.738,
-    "tone": "dark"
+    "aspect": 4.534,
+    "tone": "light"
   },
   "logos/www.fjmu.edu.cn.png": {
     "aspect": 4.793,
@@ -276,8 +276,8 @@
     "tone": "light"
   },
   "logos/www.hljucm.net.png": {
-    "aspect": 6.095,
-    "tone": "light"
+    "aspect": 6.187,
+    "tone": "dark"
   },
   "logos/www.hnu.edu.cn.png": {
     "aspect": 3.206,
@@ -290,10 +290,6 @@
   "logos/www.hrbust.edu.cn.png": {
     "aspect": 5.267,
     "tone": "light"
-  },
-  "logos/www.huznu.edu.cn.png": {
-    "aspect": 4.776,
-    "tone": "dark"
   },
   "logos/www.imust.edu.cn.png": {
     "aspect": 3.321,
@@ -360,7 +356,7 @@
     "tone": "light"
   },
   "logos/www.nchu.edu.cn.png": {
-    "aspect": 4.067,
+    "aspect": 4.066,
     "tone": "light"
   },
   "logos/www.ncut.edu.cn.png": {
@@ -459,10 +455,6 @@
     "aspect": 3.224,
     "tone": "light"
   },
-  "logos/www.sdufe.edu.cn.png": {
-    "aspect": 4.449,
-    "tone": "light"
-  },
   "logos/www.sdut.edu.cn.png": {
     "aspect": 4.4,
     "tone": "light"
@@ -490,10 +482,6 @@
   "logos/www.sit.edu.cn.png": {
     "aspect": 4.948,
     "tone": "light"
-  },
-  "logos/www.suet.edu.cn.jpg": {
-    "aspect": 1.775,
-    "tone": "dark"
   },
   "logos/www.sustech.edu.cn.png": {
     "aspect": 3.791,
@@ -566,10 +554,6 @@
   "logos/www.usts.edu.cn.png": {
     "aspect": 3.979,
     "tone": "dark"
-  },
-  "logos/www.whcp.edu.cn.png": {
-    "aspect": 4.908,
-    "tone": "light"
   },
   "logos/www.wnu.edu.cn.png": {
     "aspect": 4.688,
@@ -650,10 +634,6 @@
   "logos/www.zzuli.edu.cn.png": {
     "aspect": 5.077,
     "tone": "light"
-  },
-  "logos/www2.stu.edu.cn.jpg": {
-    "aspect": 5.899,
-    "tone": "dark"
   },
   "logos/xn--6kr28k0gz4em6vs31c.com.svg": {
     "aspect": 5.893,
