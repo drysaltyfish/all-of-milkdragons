@@ -83,6 +83,10 @@
     "aspect": 3.943,
     "tone": "light"
   },
+  "logos/www.bupt.edu.cn.png": {
+    "aspect": 3.712,
+    "tone": "light"
+  },
   "logos/www.cafuc.edu.cn.png": {
     "aspect": 4.558,
     "tone": "light"
@@ -176,7 +180,7 @@
     "tone": "light"
   },
   "logos/www.fjmu.edu.cn.png": {
-    "aspect": 4.793,
+    "aspect": 4.466,
     "tone": "dark"
   },
   "logos/www.fjsmu.edu.cn.png": {
@@ -272,7 +276,7 @@
     "tone": "light"
   },
   "logos/www.hnu.edu.cn.png": {
-    "aspect": 3.256,
+    "aspect": 3.206,
     "tone": "light"
   },
   "logos/www.hnust.edu.cn.svg": {
@@ -548,7 +552,7 @@
     "tone": "dark"
   },
   "logos/www.wnu.edu.cn.png": {
-    "aspect": 4.565,
+    "aspect": 4.688,
     "tone": "dark"
   },
   "logos/www.wust.edu.cn.png": {
